@@ -38,11 +38,6 @@ function checkReqs (e) {
 		}
 		if (pwReqs[el]["stat"] == "unmet") allmet = false;
 	}
-	if (allmet) {
-		submitBtn.removeAttribute("disabled");
-	} else {
-		submitBtn.setAttribute("disabled", "disabled");
-	}
 }
 
 pword1.addEventListener("keyup", checkReqs, false);
