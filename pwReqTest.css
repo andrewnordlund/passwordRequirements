@@ -1,0 +1,12 @@
+.fieldHolder {
+	margin-bottom: 1em;
+}
+.fieldHolder label {
+	display: block;
+}
+.met {
+	color: green;
+}
+.unmet {
+	color: #AA0000;
+}
