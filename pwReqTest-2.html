@@ -13,21 +13,21 @@
 		<div id="mainContent">
 			<div class="fieldHolder">
 				<label for="pword1">Password:</label>
-				<input name="pword1" id="pword1" aria-describedby="passwordRequirements" type="password" autocomplete="new-password">
+				<input name="pword1" id="pword1" aria-describedby="passDesc 8chars lowerCase upperCase specialChar digit match" type="password" autocomplete="new-password">
 			</div>
 			<div class="fieldHolder">
 				<label for="pword2">Confirm Password:</label>
-				<input name="pword2" id="pword2" type="password" autocomplete="new-password">
+				<input name="pword2" id="pword2" type="password" autocomplete="new-password" aria-describedby="match">
 			</div>
 			<div id="passwordRequirements">
-				<p>Your password must contain at least:</p>
+				<p id="passDesc">Your password must contain at least:</p>
 				<ul>
-					<li id="8chars" aria-live="polite" aria-atomic="true">8 characters (<span class="unmet">Unmet</span>)</li>
-					<li id="lowerCase" aria-live="polite" aria-atomic="true">1 Lowercase letter (<span class="unmet">Unmet</span>)</li>
-					<li id="upperCase" aria-live="polite" aria-atomic="true">1 Uppercase letter (<span class="unmet">Unmet</span>)</li>
-					<li id="specialChar" aria-live="polite" aria-atomic="true">1 Special character (<span class="unmet">Unmet</span>)</li>
-					<li id="digit" aria-live="polite" aria-atomic="true">1 digit (<span class="unmet">Unmet</span>)</li>
-					<li id="match" aria-live="polite" aria-atomic="true">Passwords must match (<span class="unmet">Unmet</span>)</li>
+					<li id="8chars">8 characters (<span class="unmet">Unmet</span>)</li>
+					<li id="lowerCase">1 Lowercase letter (<span class="unmet">Unmet</span>)</li>
+					<li id="upperCase">1 Uppercase letter (<span class="unmet">Unmet</span>)</li>
+					<li id="specialChar">1 Special character (<span class="unmet">Unmet</span>)</li>
+					<li id="digit">1 digit (<span class="unmet">Unmet</span>)</li>
+					<li id="match">Passwords must match (<span class="unmet">Unmet</span>)</li>
 				</ul>
 			</div>
 			<input value="Submit" id="submitBtn" type="button">
@@ -71,7 +71,7 @@
 						<dt>Internet Explorer 11</dt>
 						<dd>When focus lands on the password field, all requirements are read as they should be. Then as I type a password when a met/unmet changes, the entire set of password requirements are read out again followed by the requirement whose status had changed.</dd>
 					</dl>
-				</section>
+				<section>
 				<section>
 					<h4>Narrator</h4>
 					<dl>
@@ -84,36 +84,7 @@
 						<dt>Internet Explorer 11</dt>
 						<dd>Does not read out the requirements when focus lands on the password input.  It should.  Then as you type, it reads out the criteria as they're met/unmet.  Example: when you type the first capital letter it reads "1 uppercase letter met, 3 of 6 1 uppercase letter met closing parenthesis".</dd>
 					</dl>
-				</section>
 				<section>
-					<h4>NVDA 2017.4</h4>
-					<dl>
-						<dt>Firefox 55</dt>
-						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
-						<dt>Firefox 60</dt>
-						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
-						<dt>Firefox 63</dt>
-						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
-						<dt>Internet Explorer 11</dt>
-						<dd>Reads out the criteria as they're met/unmet, but reads out "met" or "unmet" as it was <em>before</em> the change.  Example: when you type the first capital letter it reads "Bullet 1 uppercase letter unmet".  If you hit backspace to delete that character, the "met" changes to "unmet", and NVDA reads "Bullet 1 uppercase letter met".</dd>
-					</dl>
-				</section>
-				<section>
-					<h4>JAWS 18</h4>
-					<dl>
-						<dt>Firefox 55</dt>
-						<dd>It just says "star".  Nothing about the requirements.</dd>
-						<dt>Firefox 60</dt>
-						<dd>Reads the characters as you enter them.  Nothing about the requirements.  Note that <code>aria-describedby</code> isn't being read.</dd>
-						<dt>Firefox 63</dt>
-						<dd>Reads the characters as you enter them.  Nothing about the requirements.  Note that <code>aria-describedby</code> isn't being read.</dd>
-						<dt>Opera 51</dt>
-						<dd>JAWS does not read the <code>aria-describedby</code> text but tells you to press <kbd>JAWS Key+Alt+R</kbd> to hear descriptive text.  <kbd>Insert+Alt+R</kbd> does not work.  However, once you start typing in a password, once there's a change in the list (ie: a requirement changing from "unmet" to "met") the whole list is read out again.  Except when you type the same password into the second field.  Then when the "Passwords must match" changes from "unmet" to "met", JAWS doesn't read out any of the list.</dd>
-						<dt>Internet Explorer 11</dt>
-						<dd>Reads out the whole list when field recieves focus, as desired.  When you put the first character in, it re-reads the whole 
-list, then reads out the one thing that's changed. For example if you type "P" it will read the whole list and "1 Uppercase letter met".  Then if you type "a" it will just read "1 lowercase letter met".</dd>
-					</dl>
-				</section>
 			</section>
 			<section>
 				<h3>iOS with VoiceOver</h3>
@@ -123,16 +94,6 @@ list, then reads out the one thing that's changed. For example if you type "P" i
 						<dt>Sarafi, Firefox, and Chrome</dt>
 						<dd>When focusing on the Password field, VO reads "Your password must contain at least" but doesn't read the rest.  As a password is 
 being typed, the met criteria are being read, as it should be.  Example: after typing the first uppercase letter I hear "Bullet one uppercase letter met"</dd>
-						<dt>Opera Mini</dt>
-						<dd>VoiceOver does not work with Opera Mini</dd>
-					</dl>
-				</section>
-				<section>
-					<h4>iOS v10</h4>
-					<dl>
-						<dt>Sarafi, Firefox, and Chrome</dt>
-						<dd>When focusing on the Password field, VO reads "Your password must contain at least" but doesn't read the rest.  As a password is 
-being typed, the met criteria are being read, as it should be.</dd>
 						<dt>Opera Mini</dt>
 						<dd>VoiceOver does not work with Opera Mini</dd>
 					</dl>
@@ -150,30 +111,12 @@ being typed, the met criteria are being read, as it should be.</dd>
 						<dt>Chrome</dt>
 						<dd>VO reads the password requirements as it should. As requirements are met VO reads "bullet" twice followed by the new status.  Then, sometimes, it reads the entire requirements section again.  Example after typing the first uppercase letter it reads "Bullet bullet one uppercase letter met.  Your massword must contain at least....".  Then if I type a lowercase letter it reads "Bullet bullet one lowercase letter met."</dd>
 					</dl>
-				</section>
-
-				<section>
-					<h4>Mac OS X 10.9.5</h4>
-					<dl>
-						<dt>Sarafi</dt>
-						<dd>VO only reads "Your password must contain at least".  It does not read the list.  As requirements are met/unmet, VO reads out the change as it should.</dd>
-						<dt>Firefox 57</dt>
-						<dd>VO reads the password requirements as it should.  But as you type in a password, VO reads nothing.</dd>
-						<dt>Firefox 61</dt>
-						<dd>VO does not read anything on this page, no the contents, not the labels.  Nothing.</dd>
-						<dt>Firefox 62, and 63</dt>
-						<dd>When I try to run Firefox (Dev edition or Nightly) at the same time as VoiceOver, Firefox crashes.</dd>
-						<dt>Chrome</dt>
-						<dd>VO reads the password requirements as it should.  Whenever a character is typed, VO reads it as "bullet".  If you have 5 characters typed in, it reads "bullet" 5 times.  Then, when one of the requirements becomes met, it does read that as it should. When you delete a character and a requirement becomes unmet, it reads that too, as it should.</dd>
-						<dt>Opera</dt>
-						<dd>VO reads the password requirements as it should.  Whenever a character is typed, VO reads it as "bullet".  If you have 5 characters typed in, it reads "bullet" 5 times.  Then, when one of the requirements becomes met, it does read that as it should. When you delete a character and a requirement becomes unmet, it reads that too, as it should.</dd>
-					</dl>
-				</section>
-
+				</section>	
 			</section>
+
 			<h3>Conclusion</h3>
 			<p>NVDA+Firefox or JAWS+Internet Explorer 11 work best.  NVDA+Opera and JAWS+Firefox don't work at all.  Works well enough on iOS. VoiceOver of Mac OS X 10.9.5 really only works as it should in Chrome and Opera, and almost in Firefox. Perhaps I need to upgrade my Mac OS.</p>
-			<p>UPDATED: <time>2022-06-07</time>:  It seems that when an input is <code>aria-describedby</code> a section that updates dynamically, most stacks will read out the entire described region.  Perhaps, instead of a live region, each item was separately descrbed, like with <a href="pwReqTest-2.html">Example 2</a>.</p>
+			<p>UPDATED: <time>2022-06-07</time>:  It seems that when an input is <code>aria-describedby</code> a section that updates dynamically, most stacks will read out the entire described region.  Perhaps, instead of a live region, each item was separately descrbed?</p>
 			<h3>Recommendations</h3>
 			<ol>
 				<li>It would be good to put the password requirements before the password fields rather than after.</li>
