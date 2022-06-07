@@ -12,11 +12,11 @@
 		<div id="mainContent">
 			<div class="fieldHolder">
 				<label for="pword1">Password:</label>
-				<input name="pword1" id="pword1" aria-describedby="passwordRequirements" type="password">
+				<input name="pword1" id="pword1" aria-describedby="passwordRequirements" type="password" autocomplete="new-password">
 			</div>
 			<div class="fieldHolder">
 				<label for="pword2">Confirm Password:</label>
-				<input name="pword2" id="pword2" type="password">
+				<input name="pword2" id="pword2" type="password" autocomplete="new-password">
 			</div>
 			<div id="passwordRequirements">
 				<p>Your password must contain at least:</p>
@@ -46,6 +46,45 @@
 			<section>
 				<h3>Windows:</h3>
 				<section>
+					<h4>NVDA 2022.1</h4>
+					<dl>
+						<dt>Firefox 100</dt>
+						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
+						<dt>Edge 102</dt>
+						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
+						<dt>Chrome 101</dt>
+						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
+						<dt>Internet Explorer 11</dt>
+						<dd>Reads out the criteria as they're met/unmet, but reads out "met" or "unmet" as it was <em>before</em> the change.  Example: when you type the first capital letter it reads "Bullet 1 uppercase letter unmet".  If you hit backspace to delete that character, the "met" changes to "unmet", and NVDA reads "Bullet 1 uppercase letter met".</dd>
+					</dl>
+				</section>
+				<section>
+					<h4>JAWS 18</h4>
+					<dl>
+						<dt>Firefox 100</dt>
+						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
+						<dt>Edge 102</dt>
+						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
+						<dt>Chrome 101</dt>
+						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
+						<dt>Internet Explorer 11</dt>
+						<dd>Reads out the criteria as they're met/unmet, but reads out "met" or "unmet" as it was <em>before</em> the change.  Example: when you type the first capital letter it reads "Bullet 1 uppercase letter unmet".  If you hit backspace to delete that character, the "met" changes to "unmet", and NVDA reads "Bullet 1 uppercase letter met".</dd>
+					</dl>
+				<section>
+				<section>
+					<h4>Narrator</h4>
+					<dl>
+						<dt>Firefox 100</dt>
+						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
+						<dt>Edge 102</dt>
+						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
+						<dt>Chrome 101</dt>
+						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
+						<dt>Internet Explorer 11</dt>
+						<dd>Reads out the criteria as they're met/unmet, but reads out "met" or "unmet" as it was <em>before</em> the change.  Example: when you type the first capital letter it reads "Bullet 1 uppercase letter unmet".  If you hit backspace to delete that character, the "met" changes to "unmet", and NVDA reads "Bullet 1 uppercase letter met".</dd>
+					</dl>
+				<section>
+
 					<h4>NVDA 2017.4</h4>
 					<dl>
 						<dt>Firefox 55</dt>
@@ -54,8 +93,6 @@
 						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
 						<dt>Firefox 63</dt>
 						<dd>Reads the criteria as they're met/unmet, as it should be.</dd>
-						<dt>Opera 51</dt>
-						<dd>Does not read out the changes.</dd>
 						<dt>Internet Explorer 11</dt>
 						<dd>Reads out the criteria as they're met/unmet, but reads out "met" or "unmet" as it was <em>before</em> the change.  Example: when you type the first capital letter it reads "Bullet 1 uppercase letter unmet".  If you hit backspace to delete that character, the "met" changes to "unmet", and NVDA reads "Bullet 1 uppercase letter met".</dd>
 					</dl>
@@ -78,31 +115,65 @@ list, then reads out the one thing that's changed. For example if you type "P" i
 				</section>
 			</section>
 			<section>
-				<h3>iOS 10 with VoiceOver</h3>
-				<dl>
-					<dt>Sarafi, Firefox, and Chrome</dt>
-					<dd>When focusing on the Password field, VO reads "Your password must contain at least" but doesn't read the rest.  As a password is 
-being typed, the met criteria are being read, as it should be.</dd>
-					<dt>Opera Mini</dt>
-					<dd>VoiceOver does not work with Opera Mini</dd>
-				</dl>
+				<h3>iOS with VoiceOver</h3>
+				<section>
+					<h4>iOS v14</h4>
+					<dl>
+						<dt>Sarafi, Firefox, and Chrome</dt>
+						<dd>When focusing on the Password field, VO reads "Your password must contain at least" but doesn't read the rest.  As a password is 
+being typed, the met cri	teria are being read, as it should be.</dd>
+						<dt>Opera Mini</dt>
+						<dd>VoiceOver does not work with Opera Mini</dd>
+					</dl>
+				</section>
+				<section>
+					<h4>iOS v10</h4>
+					<dl>
+						<dt>Sarafi, Firefox, and Chrome</dt>
+						<dd>When focusing on the Password field, VO reads "Your password must contain at least" but doesn't read the rest.  As a password is 
+being typed, the met cri	teria are being read, as it should be.</dd>
+						<dt>Opera Mini</dt>
+						<dd>VoiceOver does not work with Opera Mini</dd>
+					</dl>
+				</section>
 			</section>
 			<section>
-				<h3>Mac OS X 10.9.5 with VoiceOver</h3>
-				<dl>
-					<dt>Sarafi</dt>
-					<dd>VO only reads "Your password must contain at least".  It does not read the list.  As requirements are met/unmet, VO reads out the change as it should.</dd>
-					<dt>Firefox 57</dt>
-					<dd>VO reads the password requirements as it should.  But as you type in a password, VO reads nothing.</dd>
-					<dt>Firefox 61</dt>
-					<dd>VO does not read anything on this page, no the contents, not the labels.  Nothing.</dd>
-					<dt>Firefox 62, and 63</dt>
-					<dd>When I try to run Firefox (Dev edition or Nightly) at the same time as VoiceOver, Firefox crashes.</dd>
-					<dt>Chrome</dt>
-					<dd>VO reads the password requirements as it should.  Whenever a character is typed, VO reads it as "bullet".  If you have 5 characters typed in, it reads "bullet" 5 times.  Then, when one of the requirements becomes met, it does read that as it should. When you delete a character and a requirement becomes unmet, it reads that too, as it should.</dd>
-					<dt>Opera</dt>
-					<dd>VO reads the password requirements as it should.  Whenever a character is typed, VO reads it as "bullet".  If you have 5 characters typed in, it reads "bullet" 5 times.  Then, when one of the requirements becomes met, it does read that as it should. When you delete a character and a requirement becomes unmet, it reads that too, as it should.</dd>
-				</dl>
+				<h3>Mac OS X with VoiceOver</h3>
+				<section>
+					<h4>Mac OS X 10.15.7 (Catalina)</h4>
+					<dl>
+						<dt>Sarafi</dt>
+						<dd>VO only reads "Your password must contain at least".  It does not read the list.  As requirements are met/unmet, VO reads out the change as it should.</dd>
+						<dt>Firefox 57</dt>
+						<dd>VO reads the password requirements as it should.  But as you type in a password, VO reads nothing.</dd>
+						<dt>Firefox 61</dt>
+						<dd>VO does not read anything on this page, no the contents, not the labels.  Nothing.</dd>
+						<dt>Firefox 62, and 63</dt>
+						<dd>When I try to run Firefox (Dev edition or Nightly) at the same time as VoiceOver, Firefox crashes.</dd>
+						<dt>Chrome</dt>
+						<dd>VO reads the password requirements as it should.  Whenever a character is typed, VO reads it as "bullet".  If you have 5 characters typed in, it reads "bullet" 5 times.  Then, when one of the requirements becomes met, it does read that as it should. When you delete a character and a requirement becomes unmet, it reads that too, as it should.</dd>
+						<dt>Opera</dt>
+						<dd>VO reads the password requirements as it should.  Whenever a character is typed, VO reads it as "bullet".  If you have 5 characters typed in, it reads "bullet" 5 times.  Then, when one of the requirements becomes met, it does read that as it should. When you delete a character and a requirement becomes unmet, it reads that too, as it should.</dd>
+					</dl>
+				</section>
+
+				<section>
+					<h4>Mac OS X 10.9.5</h4>
+					<dl>
+						<dt>Sarafi</dt>
+						<dd>VO only reads "Your password must contain at least".  It does not read the list.  As requirements are met/unmet, VO reads out the change as it should.</dd>
+						<dt>Firefox 57</dt>
+						<dd>VO reads the password requirements as it should.  But as you type in a password, VO reads nothing.</dd>
+						<dt>Firefox 61</dt>
+						<dd>VO does not read anything on this page, no the contents, not the labels.  Nothing.</dd>
+						<dt>Firefox 62, and 63</dt>
+						<dd>When I try to run Firefox (Dev edition or Nightly) at the same time as VoiceOver, Firefox crashes.</dd>
+						<dt>Chrome</dt>
+						<dd>VO reads the password requirements as it should.  Whenever a character is typed, VO reads it as "bullet".  If you have 5 characters typed in, it reads "bullet" 5 times.  Then, when one of the requirements becomes met, it does read that as it should. When you delete a character and a requirement becomes unmet, it reads that too, as it should.</dd>
+						<dt>Opera</dt>
+						<dd>VO reads the password requirements as it should.  Whenever a character is typed, VO reads it as "bullet".  If you have 5 characters typed in, it reads "bullet" 5 times.  Then, when one of the requirements becomes met, it does read that as it should. When you delete a character and a requirement becomes unmet, it reads that too, as it should.</dd>
+					</dl>
+				</section>
 
 			</section>
 			<h3>Conclusion</h3>
