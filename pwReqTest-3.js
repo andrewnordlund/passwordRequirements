@@ -19,6 +19,7 @@ let myPwReqs = {};
 
 function init () {
 	passwordRequirementsDiv = document.getElementById("passwordRequirements");
+	defLang = getLang(passwordRequirementsDiv);
 	passwordDesc = document.getElementById("passDesc");
 	if (passwordDesc) passwordDesc.textContent = stringBundle["desc"][defLang];
 	let reqsList = document.createElement("ul");
@@ -34,7 +35,6 @@ function init () {
 			passwords[i].setAttribute("autocomplete", "new-password");
 		
 			if (passwords[i].classList.contains("newPassword")) {
-				defLang = getLang(passwords[i]);
 
 				// build myPwReqs
 				if (passwords[i].hasAttribute("data-minchars")) {
@@ -145,6 +145,7 @@ function checkReqs (e) {
 			if (myPwReqs[el]["stat"] == "unmet") {
 				change = true;
 				myPwReqs[el]["stat"] = "met";
+				statSpan.classList.remove("met", "unmet")
 				//var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
 				//statSpan.innerHTML = myPwReqs[el]["stat"];
 				//statSpan.classList.add("met");
@@ -165,7 +166,7 @@ function checkReqs (e) {
 			//liveReg.textContent = myPwReqs[el]["text"][defLang] + " " + stringBundle[myPwReqs[el]["stat"]][defLang];
 			var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
 			statSpan.innerHTML = stringBundle[myPwReqs[el]["stat"]][defLang];
-			statSpan.classList.remove("met", "unmet")
+			statSpan.classList.remove("met", "unmet");
 			statSpan.classList.add(myPwReqs[el]["stat"]);
 		}
 		if (myPwReqs[el]["stat"] == "unmet") allmet = false;
