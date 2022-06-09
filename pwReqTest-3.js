@@ -145,6 +145,7 @@ function checkReqs (e) {
 			if (myPwReqs[el]["stat"] == "unmet") {
 				change = true;
 				myPwReqs[el]["stat"] = "met";
+				statSpan.classList.remove("met", "unmet")
 				//var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
 				//statSpan.innerHTML = myPwReqs[el]["stat"];
 				//statSpan.classList.add("met");
@@ -165,7 +166,7 @@ function checkReqs (e) {
 			//liveReg.textContent = myPwReqs[el]["text"][defLang] + " " + stringBundle[myPwReqs[el]["stat"]][defLang];
 			var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
 			statSpan.innerHTML = stringBundle[myPwReqs[el]["stat"]][defLang];
-			statSpan.classList.remove("met", "unmet")
+			statSpan.classList.remove("met", "unmet");
 			statSpan.classList.add(myPwReqs[el]["stat"]);
 		}
 		if (myPwReqs[el]["stat"] == "unmet") allmet = false;
