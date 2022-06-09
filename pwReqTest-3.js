@@ -128,17 +128,18 @@ function getLang(n) {
 
 function newLI (req) {
 	let newLI = document.createElement("li");
-	newLI.id = "pwReqsList" + req;
+	newLI.id = "pwReqsList" + req + "LI";
 	newLI.classList.add("pwReqsList" + req);
 
 	let newSpan = document.createElement("span");
+	newSpan.id = "pwReqsList" + req + "Span";
 	newSpan.setAttribute("aria-live", "assertive");
 	newSpan.setAttribute("aria-atomic", "true");
 	newSpan.innerHTML = myPwReqs[req]["text"][defLang] + " <span class=\"unmet\">" + stringBundle["unmet"][defLang]  + "</span>";
 
 	newLI.appendChild(newSpan);
 	myPwReqs[req]["el"] = newSpan;
-	descriptors.push("pwReqsList" + req);
+	descriptors.push("pwReqsList" + req + "Span");
 	return newLI;
 } // End of newLI
 
