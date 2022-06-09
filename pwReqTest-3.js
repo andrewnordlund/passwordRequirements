@@ -70,7 +70,11 @@ function init () {
 				}
 				addAriaDescribedBy(passwords[i]);
 				passwords[i].addEventListener("keypress", function(ev) {removeAriaDescribedBy(ev.target);}, false);
-				passwords[i].addEventListener("blur", function(ev) {addAriaDescribedBy(ev.target);}, false);
+				passwords[i].addEventListener("blur", function(ev) {
+						setTimeout(function() {
+							addAriaDescribedBy(ev.target);
+						}, 1000);
+					}, false);
 			} else {
 				if (passwords[i].hasAttribute("data-match")) {
 					let minChars = passwords[i].getAttribute("data-match");
