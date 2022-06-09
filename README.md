@@ -1,4 +1,4 @@
 # passwordRequirements
-An accessible dynamic password requirements checker - that still has lots of work to do before it's usable!
+An accessible dynamic password requirements checker.
 
-Hosted here: [https://andrewnordlund.github.io/passwordRequirements/pwReqTest.html](https://andrewnordlund.github.io/passwordRequirements/pwReqTest.html).
+Hosted here: [https://andrewnordlund.github.io/passwordRequirements/pwReqTest-3.html](https://andrewnordlund.github.io/passwordRequirements/pwReqTest-3.html).

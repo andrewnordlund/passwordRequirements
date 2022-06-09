@@ -175,6 +175,7 @@ being typed, the met criteria are being read, as it should be.</dd>
 			<p>NVDA+Firefox or JAWS+Internet Explorer 11 work best.  NVDA+Opera and JAWS+Firefox don't work at all.  Works well enough on iOS. VoiceOver of Mac OS X 10.9.5 really only works as it should in Chrome and Opera, and almost in Firefox. Perhaps I need to upgrade my Mac OS.</p>
 			<p>UPDATED: <time>2022-06-07</time>:  It seems that when an input is <code>aria-describedby</code> a section that updates dynamically, most stacks will read out the entire described region.  Perhaps, instead of a live region, each item was separately descrbed, like with <a href="pwReqTest-2.html">Example 2</a>?  Nope, turns out that's not ideal either.</p>
 			<p>In Windows it seems that whenever <em>one</em> thing changes that describes an input, all of that input's descriptors are read out again.  And on Apple systems, it's not the case.  This could be a nightmare.  The only good way I can think of doing this is having a live region that only lists what's changed, and after 1 keystroke, remove the <code>aria-describedby</code> from the input, then re-attach it on blur.</p>
+			<p>UPDATE <time>2022-06-09</time>:  I think I have finished a <a href="pwReqTest-3.html">working example</a>.</p>
 			<h3>Recommendations</h3>
 			<ol>
 				<li>It would be good to put the password requirements before the password fields rather than after.</li>
