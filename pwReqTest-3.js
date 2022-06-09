@@ -186,6 +186,7 @@ function checkReqs (e) {
 				//var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
 				//statSpan.innerHTML = myPwReqs[el]["stat"];
 				//statSpan.classList.add("met");
+				//statSpan.classList.remove("unmet");
 			}
 		} else {
 			if (myPwReqs[el]["stat"] == "met") {
@@ -194,13 +195,15 @@ function checkReqs (e) {
 				//var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
 				//statSpan.innerHTML = myPwReqs[el]["stat"];
 				//statSpan.classList.add("unmet");
+				//statSpan.classList.remove("met");
 			
 			}
 		}
 		if (change) {
 			//liveReg.textContent = myPwReqs[el]["text"][defLang] + " " + stringBundle[myPwReqs[el]["stat"]][defLang];
 			var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
-			statSpan.innerHTML = myPwReqs[el]["stat"];
+			statSpan.innerHTML = stringBundle[myPwReqs[el]["stat"]][defLang];
+			statSpan.classList.remove("met", "unmet")
 			statSpan.classList.add(myPwReqs[el]["stat"]);
 		}
 		if (myPwReqs[el]["stat"] == "unmet") allmet = false;
