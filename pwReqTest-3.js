@@ -20,6 +20,9 @@ let myPwReqs = {};
 function init () {
 	passwordRequirementsDiv = document.getElementById("passwordRequirements");
 	defLang = getLang(passwordRequirementsDiv);
+	if (!stringBundle["desc"][defLang]) {
+		defLang = "en";
+	}
 	passwordDesc = document.getElementById("passDesc");
 	if (passwordDesc) passwordDesc.textContent = stringBundle["desc"][defLang];
 	let reqsList = document.createElement("ul");
@@ -69,10 +72,6 @@ function init () {
 		}
 		
 		addAriaDescribedBy(document.querySelector(".newPassword"));
-		/*liveReg = document.createElement("div");
-		liveReg.setAttribute("style", "display:none;");
-		liveReg.setAttribute("aria-live", "assertive");
-		passwordRequirementsDiv.appendChild(liveReg);*/
 	}
 } // End of init
 
@@ -86,9 +85,9 @@ function addAriaDescribedBy(txt) {
 
 function getLang(n) {
 	if (n.hasAttribute("lang")) {
-		return n.getAttribute("lang").replace(/-.*$/, "");
+		return (stringBundle["desc"][n.getAttribute("lang").replace(/-.*$/, "")] ? n.getAttribute("lang").replace(/-.*$/, "") : defLang);
 	} else {
-		return (n.parentNode === null ? defLang : getLang(n.parentNode));
+		return (n.nodeName == "HTML" || n.parentNode.nodeName == "#document" ? defLang : getLang(n.parentNode));
 	}
 } // End of getLang
 
@@ -109,35 +108,9 @@ function newLI (req) {
 	return newLI;
 } // End of newLI
 
-/*
-var pword1, pword2, submitBtn = null;
-var pwReqs = {
-	"8chars" : {"stat" : "unmet", "el" : null, check : function (p) { return p.length >= 8;}},
-	"lowerCase" : {"stat" : "unmet", "el" : null, check : function (p) { return p.match(/[a-z]/);}},
-	"upperCase" : {"stat" : "unmet", "el" : null, check : function (p) { return p.match(/[A-Z]/);}},
-	"specialChar" : {"stat" : "unmet", "el" : null, check : function (p) { return p.match(/[^\w\s]/);}},
-	"digit" : {"stat" : "unmet", "el" : null, check : function (p) { return p.match(/[0-9]/);}},
-	"match" : {"stat" : "unmet", "el" : null, check : function (p) { return pword1.value == pword2.value && pword1.value.match(/\S/);}},
-}
-
-pword1 = document.getElementById("pword1");
-pword2 = document.getElementById("pword2");
-for (var el in pwReqs) {
-	pwReqs[el]["el"] = document.getElementById(el);
-}
-submitBtn = document.getElementById("submitBtn");
-*/
 function checkReqs (e) {
 	let thisP = e.target;
 	let otherP = getOtherP(thisP);
-		/*
-	if (p.hasAttribute("data-match")) {
-		p = document.getElementById(p.getAttribute("data-match"));
-		if (p === e.target) {
-			p = document.querySelector(".newPassword");
-		}
-	}
-	*/
 	let allmet = true;
 	for (var el in myPwReqs) {
 		let change = false;
@@ -145,25 +118,15 @@ function checkReqs (e) {
 			if (myPwReqs[el]["stat"] == "unmet") {
 				change = true;
 				myPwReqs[el]["stat"] = "met";
-				statSpan.classList.remove("met", "unmet")
-				//var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
-				//statSpan.innerHTML = myPwReqs[el]["stat"];
-				//statSpan.classList.add("met");
-				//statSpan.classList.remove("unmet");
 			}
 		} else {
 			if (myPwReqs[el]["stat"] == "met") {
 				change = true;
 				myPwReqs[el]["stat"] = "unmet";
-				//var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
-				//statSpan.innerHTML = myPwReqs[el]["stat"];
-				//statSpan.classList.add("unmet");
-				//statSpan.classList.remove("met");
 			
 			}
 		}
 		if (change) {
-			//liveReg.textContent = myPwReqs[el]["text"][defLang] + " " + stringBundle[myPwReqs[el]["stat"]][defLang];
 			var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
 			statSpan.innerHTML = stringBundle[myPwReqs[el]["stat"]][defLang];
 			statSpan.classList.remove("met", "unmet");
@@ -171,7 +134,7 @@ function checkReqs (e) {
 		}
 		if (myPwReqs[el]["stat"] == "unmet") allmet = false;
 	}
-}
+} // End of checkReqs
 
 function getOtherP (thisP) {
 	try {
@@ -182,10 +145,5 @@ function getOtherP (thisP) {
 		return null;
 	}
 } // End of getOtherP
-
-/*
-pword1.addEventListener("keyup", checkReqs, false);
-pword2.addEventListener("keyup", checkReqs, false);
-*/
 
 init();
