@@ -1,5 +1,6 @@
 let passwords, passwordDesc, liveReg, passwordRequirementsDiv = null;
 let defLang = "en";
+let descriptors = ["passDesc"];
 
 let stringBundle = {
 	"desc" : {"en" : "Your password must contain at least:", "fr" : "Votre mot de passe doit contenir au moins :"},
@@ -53,9 +54,6 @@ function init () {
 		
 			if (passwords[i].classList.contains("newPassword")) {
 				defLang = getLang(passwords[i]);
-				addAriaDescribedBy(passwords[i]);
-				passwords[i].addEventListener("keypress", function(ev) {removeAriaDescribedBy(ev.target);}, false);
-				passwords[i].addEventListener("blur", function(ev) {addAriaDescribedBy(ev.target);}, false);
 
 				// build myPwReqs
 				if (passwords[i].hasAttribute("data-minchars")) {
@@ -70,6 +68,9 @@ function init () {
 					}
 					
 				}
+				addAriaDescribedBy(passwords[i]);
+				passwords[i].addEventListener("keypress", function(ev) {removeAriaDescribedBy(ev.target);}, false);
+				passwords[i].addEventListener("blur", function(ev) {addAriaDescribedBy(ev.target);}, false);
 			} else {
 				if (passwords[i].hasAttribute("data-match")) {
 					let minChars = passwords[i].getAttribute("data-match");
@@ -102,10 +103,10 @@ function init () {
 			passwords[i].addEventListener("keyup", checkReqs, false);
 		}
 		
-		liveReg = document.createElement("div");
-		//liveReg.style.display="none";
-		liveReg.setAttribute("aria-live", "polite");
-		passwordRequirementsDiv.appendChild(liveReg);
+		/*liveReg = document.createElement("div");
+		liveReg.setAttribute("style", "display:none;");
+		liveReg.setAttribute("aria-live", "assertive");
+		passwordRequirementsDiv.appendChild(liveReg);*/
 	}
 } // End of init
 
@@ -114,7 +115,7 @@ function removeAriaDescribedBy(txt) {
 } // End of removeAriaDescribedBy
 
 function addAriaDescribedBy(txt) {
-	txt.setAttribute("aria-describedby", "passwordRequirements");
+	txt.setAttribute("aria-describedby", descriptors.join(" "));
 } // End of addAriaDescribedBy
 
 function getLang(n) {
@@ -129,8 +130,15 @@ function newLI (req) {
 	let newLI = document.createElement("li");
 	newLI.id = "pwReqsList" + req;
 	newLI.classList.add("pwReqsList" + req);
-	newLI.innerHTML = myPwReqs[req]["text"][defLang] + " <span class=\"unmet\">" + stringBundle["unmet"][defLang]  + "</span>";
-	myPwReqs[req]["el"] = newLI;
+
+	let newSpan = document.createElement("span");
+	newSpan.setAttribute("aria-live", "assertive");
+	newSpan.setAttribute("aria-atomic", "true");
+	newSpan.innerHTML = myPwReqs[req]["text"][defLang] + " <span class=\"unmet\">" + stringBundle["unmet"][defLang]  + "</span>";
+
+	newLI.appendChild(newSpan);
+	myPwReqs[req]["el"] = newSpan;
+	descriptors.push("pwReqsList" + req);
 	return newLI;
 } // End of newLI
 
@@ -185,7 +193,7 @@ function checkReqs (e) {
 			}
 		}
 		if (change) {
-			liveReg.textContent = myPwReqs[el]["text"][defLang] + " " + stringBundle[myPwReqs[el]["stat"]][defLang];
+			//liveReg.textContent = myPwReqs[el]["text"][defLang] + " " + stringBundle[myPwReqs[el]["stat"]][defLang];
 			var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
 			statSpan.innerHTML = myPwReqs[el]["stat"];
 			statSpan.classList.add(myPwReqs[el]["stat"]);
