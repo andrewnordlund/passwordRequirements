@@ -73,7 +73,7 @@ function init () {
 				passwords[i].addEventListener("blur", function(ev) {
 						setTimeout(function() {
 							addAriaDescribedBy(ev.target);
-						}, 1000);
+						}, 500);
 					}, false);
 			} else {
 				if (passwords[i].hasAttribute("data-match")) {
