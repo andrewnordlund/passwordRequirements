@@ -13,31 +13,13 @@ let  allPwReqs = {
 	"specialChar" : {"stat" : "unmet", "el" : null, "text" : {"en" : "1 special character", "fr" : "1 caractère spécial"}, check : function (p1, p2) { return p1.value.match(/[^\w\s]/) || p2.value.match(/[^\w\s]/);}},
 	"digit" : {"stat" : "unmet", "el" : null, "text" : {"en" : "1 digit", "fr" : "1 chiffre"}, check : function (p1, p2) { return p1.value.match(/[0-9]/) || p2.value.match(/[0-9]/);}},
 }
-/*	"match" : {"stat" : "unmet", "el" : null, "text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, check : function (p) {
-			let p1 = p;
-			let p2 = null;
-			try {
-				p2 = document.getElementById(p.getAttribute("data-match"));
-			}
-			catch (ex) {
-				console.error ("Error with getting password matching: " + ex.toString());
-				let passwords = document.querySelectorAll("input[type=password]");
-				if (passwords.length > 1) {
-					p1 = passwords[passwords.length-2];
-					p2 = passwords[passwords.length-1];
-				}
-			}
-			return p1.value == p2.value && pd1.value.match(/\S/);
-		}
-	}
-};
-*/
 
 let myPwReqs = {};
 
 
 function init () {
 	passwordRequirementsDiv = document.getElementById("passwordRequirements");
+	defLang = getLang(passwordRequirementsDiv);
 	passwordDesc = document.getElementById("passDesc");
 	if (passwordDesc) passwordDesc.textContent = stringBundle["desc"][defLang];
 	let reqsList = document.createElement("ul");
@@ -53,7 +35,6 @@ function init () {
 			passwords[i].setAttribute("autocomplete", "new-password");
 		
 			if (passwords[i].classList.contains("newPassword")) {
-				defLang = getLang(passwords[i]);
 
 				// build myPwReqs
 				if (passwords[i].hasAttribute("data-minchars")) {
@@ -68,7 +49,6 @@ function init () {
 					}
 					
 				}
-				addAriaDescribedBy(passwords[i]);
 				passwords[i].addEventListener("keypress", function(ev) {removeAriaDescribedBy(ev.target);}, false);
 				passwords[i].addEventListener("blur", function(ev) {
 						setTimeout(function() {
@@ -79,25 +59,6 @@ function init () {
 				if (passwords[i].hasAttribute("data-match")) {
 					let minChars = passwords[i].getAttribute("data-match");
 					myPwReqs["match"] = {"stat" : "unmet", "text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, "el" : null, check :  function (p1, p2) {
-						/*
-							let thisP = p;
-							let otherP = getOtherP(thisP);
-
-							if (!otherP) {
-								try {
-									thisP = document.querySelector(".newPassword");
-									otherP = document.querySelector(".confirmPassword");
-								}
-								catch (ex) {
-									console.error ("Error with getting password matching: " + ex.message);
-									let passwords = document.querySelectorAll("input[type=password]");
-									if (passwords.length > 1) {
-										thisP = passwords[passwords.length-2];
-										otherP = passwords[passwords.length-1];
-									}
-								}
-							}
-							*/
 							return p1.value == p2.value && p1.value.match(/\S/);
 						}
 					};
@@ -107,6 +68,7 @@ function init () {
 			passwords[i].addEventListener("keyup", checkReqs, false);
 		}
 		
+		addAriaDescribedBy(document.querySelector(".newPassword"));
 		/*liveReg = document.createElement("div");
 		liveReg.setAttribute("style", "display:none;");
 		liveReg.setAttribute("aria-live", "assertive");
@@ -183,6 +145,7 @@ function checkReqs (e) {
 			if (myPwReqs[el]["stat"] == "unmet") {
 				change = true;
 				myPwReqs[el]["stat"] = "met";
+				statSpan.classList.remove("met", "unmet")
 				//var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
 				//statSpan.innerHTML = myPwReqs[el]["stat"];
 				//statSpan.classList.add("met");
@@ -203,7 +166,7 @@ function checkReqs (e) {
 			//liveReg.textContent = myPwReqs[el]["text"][defLang] + " " + stringBundle[myPwReqs[el]["stat"]][defLang];
 			var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
 			statSpan.innerHTML = stringBundle[myPwReqs[el]["stat"]][defLang];
-			statSpan.classList.remove("met", "unmet")
+			statSpan.classList.remove("met", "unmet");
 			statSpan.classList.add(myPwReqs[el]["stat"]);
 		}
 		if (myPwReqs[el]["stat"] == "unmet") allmet = false;
