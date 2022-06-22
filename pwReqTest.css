@@ -25,6 +25,10 @@
 ul.pwReqsUL {
   list-style: none;
 }
+ul.pwReqsUL li::before {
+  content: "\200B";
+}
+
 
 .invisibleStuff {
 	clip:rect(1px,1px,1px,1px);
@@ -34,10 +38,4 @@ ul.pwReqsUL {
 	position:absolute;
 	width:1px
 }
-
-/*
-ul li::before {
-  content: "\200B";
-}
-*/
 
