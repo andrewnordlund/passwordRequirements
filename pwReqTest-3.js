@@ -94,13 +94,14 @@ function getLang(n) {
 function newLI (req) {
 	let newLI = document.createElement("li");
 	newLI.id = "pwReqsList" + req + "LI";
-	newLI.classList.add("pwReqsList" + req);
+	newLI.classList.add("pwReqsList" + req, "requnmet");
+	//newLI.classList.add
 
 	let newSpan = document.createElement("span");
 	newSpan.id = "pwReqsList" + req + "Span";
 	newSpan.setAttribute("aria-live", "assertive");
 	newSpan.setAttribute("aria-atomic", "true");
-	newSpan.innerHTML = myPwReqs[req]["text"][defLang] + " <span class=\"unmet\">" + stringBundle["unmet"][defLang]  + "</span>";
+	newSpan.innerHTML = myPwReqs[req]["text"][defLang] + " <span class=\"invisibleStuff unmet\">" + stringBundle["unmet"][defLang]  + "</span>";
 
 	newLI.appendChild(newSpan);
 	myPwReqs[req]["el"] = newSpan;
@@ -127,10 +128,14 @@ function checkReqs (e) {
 			}
 		}
 		if (change) {
-			var statSpan = myPwReqs[el]["el"].getElementsByTagName("span")[0];
-			statSpan.innerHTML = stringBundle[myPwReqs[el]["stat"]][defLang];
-			statSpan.classList.remove("met", "unmet");
-			statSpan.classList.add(myPwReqs[el]["stat"]);
+			let statSpan = myPwReqs[el]["el"];
+			let innerSpan = statSpan.getElementsByTagName("span")[0];
+			innerSpan.innerHTML = stringBundle[myPwReqs[el]["stat"]][defLang];
+			innerSpan.classList.remove("met", "unmet");
+			innerSpan.classList.add(myPwReqs[el]["stat"]);
+
+			statSpan.parentNode.classList.remove("reqmet", "requnmet");
+			statSpan.parentNode.classList.add("req" + myPwReqs[el]["stat"]);
 		}
 		if (myPwReqs[el]["stat"] == "unmet") allmet = false;
 	}
