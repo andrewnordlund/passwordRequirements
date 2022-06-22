@@ -94,8 +94,12 @@ function getLang(n) {
 function newLI (req) {
 	let newLI = document.createElement("li");
 	newLI.id = "pwReqsList" + req + "LI";
-	newLI.classList.add("pwReqsList" + req, "requnmet");
+	newLI.classList.add("pwReqsList" + req);
 	//newLI.classList.add
+	let checkSpan = document.createElement("span");
+	checkSpan.classList.add("requnmet");
+	checkSpan.setAttribute("aria-hidden", "true");
+	newLI.appendChild(checkSpan);
 
 	let newSpan = document.createElement("span");
 	newSpan.id = "pwReqsList" + req + "Span";
@@ -134,8 +138,8 @@ function checkReqs (e) {
 			innerSpan.classList.remove("met", "unmet");
 			innerSpan.classList.add(myPwReqs[el]["stat"]);
 
-			statSpan.parentNode.classList.remove("reqmet", "requnmet");
-			statSpan.parentNode.classList.add("req" + myPwReqs[el]["stat"]);
+			statSpan.parentNode.firstChild.classList.remove("reqmet", "requnmet");
+			statSpan.parentNode.firstChild.classList.add("req" + myPwReqs[el]["stat"]);
 		}
 		if (myPwReqs[el]["stat"] == "unmet") allmet = false;
 	}
