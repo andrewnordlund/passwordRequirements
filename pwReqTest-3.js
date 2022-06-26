@@ -24,17 +24,6 @@ let nordburgPwReq = {
 	custPwRequirements : {},
 
 	init : function () {
-//		passwordRequirementsDiv = document.getElementById("passwordRequirements");
-//		defLang = getLang(passwordRequirementsDiv);
-//		if (!stringBundle["description"][defLang]) {
-//			defLang = "en";
-//		}
-//		passwordDesc = document.getElementById("passDesc");
-//		let reqsList = document.createElement("ul");
-//		reqsList.id = "pwReqsUL";
-//		reqsList.classList.add("pwReqsUL");
-//		passwordRequirementsDiv.appendChild(reqsList);
-
 
 		let lang = nordburgPwReq.defLang;
 
@@ -77,7 +66,6 @@ let nordburgPwReq = {
 
 
 					// build myPwReqs
-					//nordburgPwReq.myPwReqs[passwords[i].id] = {"reqs" : {}, "lang" : lang, "descriptor" :  passwordDesc, "reqsList" : reqsList, "el" : null, "stat" : "unmet"};
 
 					if (passwords[i].hasAttribute("data-minchars")) {
 						let minChars = passwords[i].getAttribute("data-minchars");
@@ -100,23 +88,13 @@ let nordburgPwReq = {
 							let otherP = passwords[i].getAttribute("data-match");
 							
 							if (!nordburgPwReq.myPwReqs[otherP]){
-								console.log ("Creating object for otherP: " + otherP + ".");
 								nordburgPwReq.myPwReqs[otherP] = {"reqs" : {}, "lang" : lang, "descriptor" :  passwordDesc, "reqsList" : reqsList};
 							}
-							/*
-							console.log ("gonna associate data-match " + passwords[i].id + " with otherP: " + otherP + ".");
-							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"] = {"stat" : "unmet", "text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, "li" : null, check :  function (p1, p2) {
-									return p1 == p2 && p1.match(/\S/);
-								}
-							};
-							//reqsList.appendChild(newLI("match"));
-							*/
 						}
 						catch (ex) {
 							console.error ("ERROR: ensure there are two passwords with data-match attributes referring to each other's ID value.  Error: " + ex.message);
 							return null;
 						}
-						//console.log (i + ": pwrd2 now has " + Object.keys(nordburgPwReq.myPwReqs["pword2"]["reqs"]).length + " requirements.");
 					}
 					
 					passwords[i].addEventListener("keypress", function(ev) {nordburgPwReq.removeAriaDescribedBy(ev.target);}, false);
@@ -130,13 +108,11 @@ let nordburgPwReq = {
 					if (passwords[i].hasAttribute("data-match")) {
 						try {
 							let otherP = passwords[i].getAttribute("data-match");
-							//console.log ("gonna associate data-match " + passwords[i].id + " with otherP: " + otherP.id + ".");
 							nordburgPwReq.myPwReqs[passwords[i].id]["descriptor"] = nordburgPwReq.myPwReqs[otherP]["descriptor"];
 							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"] = {"stat" : "unmet", "text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, "li" : null, check :  function (p1, p2) {
 									return p1 == p2 && p1.match(/\S/);
 								}
 							};
-							//reqsList.appendChild(newLI("match"));
 						}
 						catch (ex) {
 							console.error ("ERROR: ensure there are two passwords with data-match attributes referring to each other's ID value.  Error: " + ex.message);
@@ -145,27 +121,36 @@ let nordburgPwReq = {
 					}
 					
 				}
-				passwords[i].addEventListener("keyup", function (e) {console.log ("keyup: " + e.target.id); nordburgPwReq.checkReqs(e);}, false);
-				passwords[i].addEventListener("change", function (e) {console.log ("change: " + e.target.id); nordburgPwReq.checkReqs(e);}, false);
+				passwords[i].addEventListener("keyup", nordburgPwReq.checkReqs, false);
+				passwords[i].addEventListener("change", nordburgPwReq.checkReqs, false);
 			}
+
+			// Now add Custom Rules
+			if (nordburgPwReq.custPwRequirements) {
+				for (let pid in nordburgPwReq.custPwRequirements) {
+					if (document.getElementById(pid) && nordburgPwReq.myPwReqs[pid]) {
+						for (let custReq in nordburgPwReq.custPwRequirements[pid]) {
+							nordburgPwReq.myPwReqs[pid]["reqs"][custReq] = Object.assign({}, nordburgPwReq.custPwRequirements[pid][custReq]);
+						}
+
+					} else {
+						console.error ("Your password requirment isn't written correctly.  See the documentation.");
+					}
+				}
+			}
+
 			//Now build the list with myReqs
 			
 			for (let id in nordburgPwReq.myPwReqs) {
-				//console.log (`\n\nDealing with id: ${id}.`);
-				//console.log ("It has " + Object.keys(nordburgPwReq.myPwReqs[id]["reqs"]).length + " requirements.");
-				//if (Object.keys(nordburgPwReq.myPwReqs[id]).length > 0) {
-					for (let req in nordburgPwReq.myPwReqs[id]["reqs"]) {
-						//console.log(`Dealing with req: ${req}.`);
-						nordburgPwReq.myPwReqs[id]["reqsList"].appendChild(nordburgPwReq.newLI(req, id));
-						//console.log ("Associating " + id + " with " + nordburgPwReq.myPwReqs[id]["reqs"][req]["li"].id);
-					}
-					nordburgPwReq.addAriaDescribedBy(document.getElementById(id));
-					//nordburgPwReq.checkAssoc();
-				//}
+				for (let req in nordburgPwReq.myPwReqs[id]["reqs"]) {
+					nordburgPwReq.myPwReqs[id]["reqsList"].appendChild(nordburgPwReq.newLI(req, id));
+				}
+				nordburgPwReq.addAriaDescribedBy(document.getElementById(id));
 			}
 		}
 	}, // End of init
 	checkAssoc : function () {
+		// This is entirely for debugging purposes.
 		console.log ("Gotta check if associations are still correct.");
 		for (let id in nordburgPwReq.myPwReqs) {
 			console.log (`\n\ncheckAssoc::Dealing with id: ${id}.`);
@@ -203,7 +188,6 @@ let nordburgPwReq = {
 	}, // End of getLang
 
 	newLI : function (req, rid) {
-		//console.log ("Building li for [" + rid + "]: " + req + ".");
 		
 		let newLI = document.createElement("li");
 		newLI.id = "pwReqsList" + req + "LI" + rid;
@@ -229,7 +213,6 @@ let nordburgPwReq = {
 		nordburgPwReq.myPwReqs[rid]["reqs"][req]["li"] = newSpan;
 		
 		if (nordburgPwReq.descriptors[rid]) nordburgPwReq.descriptors[rid]["descriptors"].push("pwReqsList" + req + "Span" + rid);
-		//console.log ("Descriptors for " + rid + ": " + nordburgPwReq["descriptors"][rid]["descriptors"] + ".");
 		
 		return newLI;
 	}, // End of newLI
@@ -239,14 +222,11 @@ let nordburgPwReq = {
 		let thisPid = thisP.id
 		let otherP = nordburgPwReq.getOtherP(thisP);
 		let otherPid = otherP.id;
-		let allmet = true;	// What the heck is this for?
 		for (let req in nordburgPwReq.myPwReqs[thisP.id]["reqs"]) {
 			nordburgPwReq.checkReq(thisP, otherP, req);
-			if (nordburgPwReq.myPwReqs[thisP.id]["reqs"][req]["stat"] == "unmet") allmet = false;
 		}
 		for (let req in nordburgPwReq.myPwReqs[otherP.id]["reqs"]) {
 			nordburgPwReq.checkReq(otherP, thisP, req);
-			if (nordburgPwReq.myPwReqs[otherP.id]["reqs"][req]["stat"] == "unmet") allmet = false;
 		}
 	}, // End of checkReqs
 	checkReq : function (p1, p2, req) {
@@ -282,28 +262,6 @@ let nordburgPwReq = {
 			return null;
 		}
 	}, // End of getOtherP
-	
-	cloneJSON : function (obj) {
-		// Stolen from https://stackoverflow.com/questions/4120475/how-to-create-and-clone-a-json-object
-		// basic type deep copy
-		if (obj === null || obj === undefined || typeof obj !== 'object')  {
-			return obj
-		}
-		// array deep copy
-		if (obj instanceof Array) {
-			var cloneA = [];
-			for (var i = 0; i < obj.length; ++i) {
-				cloneA[i] = cloneJSON(obj[i]);
-			}              
-			return cloneA;
-		}                  
-		// object deep copy
-		var cloneO = {};   
-		for (var i in obj) {
-			cloneO[i] = cloneJSON(obj[i]);
-		}
-		return cloneO;
-	}, // End of cloneJSON
 }
 
 document.addEventListener("DOMContentLoaded", nordburgPwReq.init, false);

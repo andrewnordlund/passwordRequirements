@@ -13,16 +13,18 @@
 		</header>
 		<div id="mainContent">
 		<script>
-				
-				nordburgPwReq.custPwRequirements["pword1"] = {"text" : {"en" : "At least two digits", "fr" : "Au moins deux chiffres"}, check : function (p1, p2) {
-					let re = /\d.*\d/;
-					return p1.value.match(re) || p2.value.match(re);
-				}};
-				nordburgPwReq.custPwRequirements["pword3"] = {"text" : {"en" : "At least one accented character", "fr" : "Au moins un caractère accentué"}, check : function (p1, p2) { 
+				nordburgPwReq.custPwRequirements["pword1"] = {"notPassword" : {"text" : {"en" : "Not 'Password'", "fr" : "Pas de 'Password'"}, check : function (p1, p2) {
+					let re = /password/i;
+					return !(p1.match(re) || p2.match(re));
+				}}};
+				/*
+				nordburgPwReq.custPwRequirements["pword3"] = {"accented" : {"text" : {"en" : "At least one accented character", "fr" : "Au moins un caractère accentué"}, check : function (p1, p2) { 
 					let re = /À-ÖØ-öø-ÿ/;
-					return p1.value.match(re) || p2.value.match(re);
+					return p1.match(re) || p2.match(re);
 				}
-			}
+			}};
+*/
+			
 			</script>
 			<section>
 				<h2>In English</h2>
