@@ -157,7 +157,7 @@ let nordburgPwReq = {
 			console.log ("checkAssoc::Dealing with id: " + id + ".");
 			if (Object.keys(nordburgPwReq.myPwReqs[id]).length > 0) {
 				for (let req in nordburgPwReq.myPwReqs[id]["reqs"]) {
-					console.log (`checkAssoc::Gonna check req: ${req}.`);
+					console.log ("checkAssoc::Gonna check req: " + req + ".");
 					try {
 						console.log ("Associated " + id + " with " + nordburgPwReq.myPwReqs[id]["reqs"][req]["li"].id);
 					}
