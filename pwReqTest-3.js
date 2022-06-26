@@ -199,8 +199,9 @@ let nordburgPwReq = {
 
 		let checkSpan = document.createElement("span");
 		checkSpan.classList.add("pwCheckSpan", "req" + initStat); 
+		checkSpan.classList.add("glyphicon","glyphicon-remove");
 		checkSpan.setAttribute("aria-hidden", "true");
-		checkSpan.textContent = (initStat == "met" ? "✔" : "✘");
+		//checkSpan.textContent = (initStat == "met" ? "✔" : "✘");
 		newLI.appendChild(checkSpan);
 
 		let newSpan = document.createElement("span");
@@ -208,6 +209,7 @@ let nordburgPwReq = {
 		newSpan.setAttribute("aria-live", "assertive");
 		newSpan.setAttribute("aria-atomic", "true");
 		newSpan.classList.add("pwReqText");
+		//newSpan.classList.add("glyphicon","glyphicon-remove");
 		let lang = nordburgPwReq.myPwReqs[rid]["lang"];
 		newSpan.innerHTML = nordburgPwReq.myPwReqs[rid]["reqs"][req]["text"][lang] + " <span class=\"invisibleStuff unmet\">" + nordburgPwReq.stringBundle[initStat][lang]  + "</span>";
 
@@ -252,9 +254,11 @@ let nordburgPwReq = {
 			statSpan.classList.remove("met", "unmet");
 			statSpan.classList.add(nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
 
-			textSpan.parentNode.firstChild.classList.remove("reqmet", "requnmet");
-			textSpan.parentNode.firstChild.textContent = (nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] == "met" ? "✔" : "✘");
-			textSpan.parentNode.firstChild.classList.add("req" + nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
+			//textSpan.parentNode.firstChild.classList.remove("reqmet", "requnmet");
+			textSpan.parentNode.firstChild.classList.remove("glyphicon-ok", "glyphicon-remove");
+			//textSpan.parentNode.firstChild.textContent = (nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] == "met" ? "✔" : "✘");
+			//textSpan.parentNode.firstChild.classList.add("req" + nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
+			textSpan.parentNode.firstChild.classList.add("glyphicon-" + (nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] == "met" ? "ok" : "remove"));
 		}
 		return nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"];
 	}, // End of checkReq

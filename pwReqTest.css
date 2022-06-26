@@ -4,36 +4,46 @@
 .fieldHolder label {
 	display: block;
 }
+/*
 .met {
 	color: green;
 }
 .unmet {
 	color: #AA0000;
 }
+*/
+/*
 .pwCheckSpan {
 	display: inline-block;
-	
 	width: 1em;
 }
-.reqmet::before, .requnmet::before {
+*/
+/*.reqmet::before, .requnmet::before {
 	/*display: inline-block;
 	float: right;
 	width: 1.5rem;
 	overflow: visible;
-	text-align: center*/
-}
+	text-align: center* /
+}*/
+/*
 .requnmet::before,.requnmet {
-	/*content: "✘";*/
+	/*content: "✘";* /
 	color: #AA0000;
 }
+*/
+/*
 .reqmet::before, .reqmet {
-	/*content: "✔";*/
+	/*content: "✔";* /
+	content: "\f00c";
 	color: #00A41E;
 }
+*/
+/*
 .pwReqText {
 	vertical-align: top;
-	display: inline-block;
+	/*display: inline-block;* /
 }
+*/
 
 ul.pwReqsUL {
   list-style: none;
@@ -46,6 +56,7 @@ ul.pwReqsUL>li {
 }
 ul.pwReqsUL>li>span {
 	display: table-cell;
+	min-width: 1.5em;
 }
 .invisibleStuff {
 	clip:rect(1px,1px,1px,1px);
