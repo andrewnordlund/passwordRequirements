@@ -154,7 +154,7 @@ let nordburgPwReq = {
 		// This is entirely for debugging purposes.
 		console.log ("Gotta check if associations are still correct.");
 		for (let id in nordburgPwReq.myPwReqs) {
-			console.log (`\n\ncheckAssoc::Dealing with id: ${id}.`);
+			console.log ("checkAssoc::Dealing with id: " + id + ".");
 			if (Object.keys(nordburgPwReq.myPwReqs[id]).length > 0) {
 				for (let req in nordburgPwReq.myPwReqs[id]["reqs"]) {
 					console.log (`checkAssoc::Gonna check req: ${req}.`);
