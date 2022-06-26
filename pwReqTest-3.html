@@ -13,9 +13,14 @@
 		</header>
 		<div id="mainContent">
 		<script>
-				nordburgPwReq.myPwReqs["accents"] = {"stat" : "unmet", "el" : null, "text" : {"en" : "At least one accented character", "fr" : "Au moins un caractère accentué"}, check : function (p1, p2) { 
-					let regexp = /À-ÖØ-öø-ÿ/;
-					return p1.value.match(regexp) || p2.value.match(regexp);
+				
+				nordburgPwReq.custPwRequirements["pword1"] = {"text" : {"en" : "At least two digits", "fr" : "Au moins deux chiffres"}, check : function (p1, p2) {
+					let re = /\d.*\d/;
+					return p1.value.match(re) || p2.value.match(re);
+				}};
+				nordburgPwReq.custPwRequirements["pword3"] = {"text" : {"en" : "At least one accented character", "fr" : "Au moins un caractère accentué"}, check : function (p1, p2) { 
+					let re = /À-ÖØ-öø-ÿ/;
+					return p1.value.match(re) || p2.value.match(re);
 				}
 			}
 			</script>
@@ -23,27 +28,27 @@
 				<h2>In English</h2>
 				<div class="fieldHolder">
 					<label for="pword1">Password:</label>
-					<input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar digit doubleChars" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordRequirements">
+					<input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar digit doubleChars" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn">
 				</div>
 				<div class="fieldHolder">
 					<label for="pword2">Confirm Password:</label>
 					<input name="pword2" id="pword2" type="password" class="confirmPassword" data-match="pword1">
 				</div>
-				<div id="passwordRequirements">
+				<div id="passwordRequirementsEn">
 				</div>
 				<input value="Submit" id="submitBtn" type="button">
 			
 			<section lang="fr">
+				<div id="passwordRequirementsFr">
+				</div>
 				<h2>En Français</h2>
 				<div class="fieldHolder">
 					<label for="pword3">Mot de passe :</label>
-					<input name="pword3" id="pword3" type="password" class="newPassword lowercase uppercase specialChar digit doubleChars" data-minchars="8" data-match="pword4"  data-passwordRequirementsDiv="passwordRequirements">
+					<input name="pword3" id="pword3" type="password" class="newPassword lowercase uppercase specialChar digit doubleChars" data-minchars="8" data-match="pword4"  data-passwordRequirementsDiv="passwordRequirementsFr">
 				</div>
 				<div class="fieldHolder">
 					<label for="pword4">Confirmez le mot de passe :</label>
-					<input name="pword4" id="pword4" type="password" class="confirmPassword" data-match="pword4">
-				</div>
-				<div id="passwordRequirements">
+					<input name="pword4" id="pword4" type="password" class="confirmPassword" data-match="pword3">
 				</div>
 				<input value="Submit" id="submitBtn2" type="button">
 			</section>
