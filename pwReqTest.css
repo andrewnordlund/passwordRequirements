@@ -10,17 +10,20 @@
 .unmet {
 	color: #AA0000;
 }
-.requnmet,.reqmet {
+.pwCheckSpan {
+	display: inline-block;
+	
+	width: 1em;
 }
-.requnmet::before {
-	content: "✘";
+.reqmet::before, .requnmet::before {
+	width: 1.5rem;
+	overflow: hidden;
+}
+.requnmet::before,.requnmet {
 	color: #AA0000;
-	margin-right: 4px;
 }
-.reqmet::before {
-	content: "✔";
+.reqmet::before, .reqmet {
 	color: #00A41E;
-	margin-right: 4px;
 }
 ul.pwReqsUL {
   list-style: none;
@@ -28,8 +31,6 @@ ul.pwReqsUL {
 ul.pwReqsUL li::before {
   content: "\200B";
 }
-
-
 .invisibleStuff {
 	clip:rect(1px,1px,1px,1px);
 	height:1px;
@@ -38,4 +39,3 @@ ul.pwReqsUL li::before {
 	position:absolute;
 	width:1px
 }
-

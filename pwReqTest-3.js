@@ -1,19 +1,19 @@
 let nordburgPwReq = {
-	//passwordDesc : null,
-	//passwordRequirementsDiv : null,
+	version : "0.1.0",
 	defLang : "en",
 	descriptors : {},
 
 	stringBundle : {
-		"description" : {"en" : "Your password must contain at least:", "fr" : "Votre mot de passe doit contenir au moins :"},
+		"description" : {"en" : "Your password must contain:", "fr" : "Votre mot de passe doit contenir :"},
 		"met" : {"en" : "Met", "fr" : "Remplie"},
 		"unmet" : {"en" : "Unmet", "fr" : "n'a pas été remplie"}
 	},
 	allPwReqs : {
-		"lowercase" : {"text" : {"en" : "1 lowercase letter", "fr" : "1 lettre minuscule"}, check : function (p1, p2) {return p1.match(/[a-z]/) || p2.match(/[a-z]/);}},
-		"uppercase" : {"text" : {"en" : "1 uppercase letter", "fr" : "1 lettre majuscule"}, check : function (p1, p2) {return p1.match(/[A-Z]/) || p2.match(/[A-Z]/);}},
-		"specialChar" : {"text" : {"en" : "1 special character", "fr" : "1 caractère spécial"}, check : function (p1, p2) { return p1.match(/[^\w\s]/) || p2.match(/[^\w\s]/);}},
-		"digit" : {"text" : {"en" : "1 digit", "fr" : "1 chiffre"}, check : function (p1, p2) { return p1.match(/[0-9]/) || p2.match(/[0-9]/);}},
+		"lowercase" : {"text" : {"en" : "at least 1 lowercase letter", "fr" : "au moins 1 lettre minuscule"}, check : function (p1, p2) {return p1.match(/[a-z]/) || p2.match(/[a-z]/);}},
+		"uppercase" : {"text" : {"en" : "at least 1 uppercase letter", "fr" : "au moins 1 lettre majuscule"}, check : function (p1, p2) {return p1.match(/[A-Z]/) || p2.match(/[A-Z]/);}},
+		"specialChar" : {"text" : {"en" : "at least 1 special character", "fr" : "au moins 1 caractère spécial"}, check : function (p1, p2) { return p1.match(/[^\w\s]/) || p2.match(/[^\w\s]/);}},
+		"digit" : {"text" : {"en" : "at least 1 digit", "fr" : "au moins 1 chiffre"}, check : function (p1, p2) { return p1.match(/[0-9]/) || p2.match(/[0-9]/);}},
+		"nospaces" : {"text" : {"en" : "no spaces", "fr" : "sans espaces"}, check : function (p1, p2) { return !(p1.match(/[\s\n\t\f ]/) || p2.match(/[\s\n\t\f ]/));}},
 		"doubleChars" : {"text" : {"en" : "No two characters the same consecutively", "fr" : "Il n'y a pas deux personnages identiques consécutivement"}, check : function (p1, p2) { 
 				let regexp = /(.)\1/g;
 				return !(p1.match(regexp) || p2.match(regexp));
@@ -47,7 +47,6 @@ let nordburgPwReq = {
 						lang = nordburgPwReq.defLang;
 					}
 					nordburgPwReq.myPwReqs[passwords[i].id]["lang"] = lang;
-					//passwordDesc = document.getElementById("passDesc");
 					
 					let passwordDesc = null;
 					passwordDesc = document.createElement("p");
@@ -69,8 +68,11 @@ let nordburgPwReq = {
 
 					if (passwords[i].hasAttribute("data-minchars")) {
 						let minChars = passwords[i].getAttribute("data-minchars");
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"] = {"stat" : "unmet", "text" : {"en" : minChars + " characters", "fr" : minChars + " caractères"}, "li" : null, check :  function(p1, p2) { return p1.length >= minChars || p2.length >= minChars;}};
-						//reqsList.appendChild(newLI("minchars"));
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"] = {"stat" : "unmet", "text" : {"en" : "at least " + minChars + " characters", "fr" : "au moins " + minChars + " caractères"}, "li" : null, check :  function(p1, p2) { return p1.length >= minChars || p2.length >= minChars;}};
+					}
+					if (passwords[i].hasAttribute("data-maxchars")) {
+						let maxChars = passwords[i].getAttribute("data-maxchars");
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"] = {"stat" : "unmet", "text" : {"en" : "a maximum of " + maxChars + " characters", "fr" : "un maximum de " + maxChars + " caractères"}, "li" : null, check :  function(p1, p2) { return p1.length <= maxChars && p2.length <= maxChars;}};
 					}
 
 					for (let req in nordburgPwReq.allPwReqs) {
@@ -78,7 +80,6 @@ let nordburgPwReq = {
 							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][req] = Object.assign({}, nordburgPwReq.allPwReqs[req]);
 							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][req]["stat"] = "unmet";
 							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][req]["li"] = null;
-							//reqsList.appendChild(newLI(req));
 						}
 						
 					}
@@ -197,8 +198,9 @@ let nordburgPwReq = {
 		nordburgPwReq.myPwReqs[rid]["reqs"][req]["stat"] = initStat;
 
 		let checkSpan = document.createElement("span");
-		checkSpan.classList.add("req" + initStat); 
+		checkSpan.classList.add("pwCheckSpan", "req" + initStat); 
 		checkSpan.setAttribute("aria-hidden", "true");
+		checkSpan.textContent = (initStat == "met" ? "✔" : "✘");
 		newLI.appendChild(checkSpan);
 
 		let newSpan = document.createElement("span");
@@ -243,13 +245,15 @@ let nordburgPwReq = {
 			}
 		}
 		if (change) {
-			let statSpan = nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["li"];
-			let innerSpan = statSpan.getElementsByTagName("span")[0];
-			innerSpan.innerHTML = nordburgPwReq.stringBundle[nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]][nordburgPwReq.myPwReqs[p1.id]["lang"]];
-			innerSpan.classList.remove("met", "unmet");
-			innerSpan.classList.add(nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
-			statSpan.parentNode.firstChild.classList.remove("reqmet", "requnmet");
-			statSpan.parentNode.firstChild.classList.add("req" + nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
+			let textSpan = nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["li"];
+			let statSpan = textSpan.getElementsByTagName("span")[0];
+			statSpan.innerHTML = nordburgPwReq.stringBundle[nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]][nordburgPwReq.myPwReqs[p1.id]["lang"]];
+			statSpan.classList.remove("met", "unmet");
+			statSpan.classList.add(nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
+
+			textSpan.parentNode.firstChild.classList.remove("reqmet", "requnmet");
+			textSpan.parentNode.firstChild.textContent = (nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] == "met" ? "✔" : "✘");
+			textSpan.parentNode.firstChild.classList.add("req" + nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
 		}
 		return nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"];
 	}, // End of checkReq
