@@ -16,20 +16,36 @@
 	width: 1em;
 }
 .reqmet::before, .requnmet::before {
+	/*display: inline-block;
+	float: right;
 	width: 1.5rem;
-	overflow: hidden;
+	overflow: visible;
+	text-align: center*/
 }
 .requnmet::before,.requnmet {
+	/*content: "✘";*/
 	color: #AA0000;
 }
 .reqmet::before, .reqmet {
+	/*content: "✔";*/
 	color: #00A41E;
 }
+.pwReqText {
+	vertical-align: top;
+	display: inline-block;
+}
+
 ul.pwReqsUL {
   list-style: none;
 }
 ul.pwReqsUL li::before {
   content: "\200B";
+}
+ul.pwReqsUL>li {
+	display: table-row;
+}
+ul.pwReqsUL>li>span {
+	display: table-cell;
 }
 .invisibleStuff {
 	clip:rect(1px,1px,1px,1px);

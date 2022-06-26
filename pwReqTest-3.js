@@ -207,6 +207,7 @@ let nordburgPwReq = {
 		newSpan.id = "pwReqsList" + req + "Span" + rid;
 		newSpan.setAttribute("aria-live", "assertive");
 		newSpan.setAttribute("aria-atomic", "true");
+		newSpan.classList.add("pwReqText");
 		let lang = nordburgPwReq.myPwReqs[rid]["lang"];
 		newSpan.innerHTML = nordburgPwReq.myPwReqs[rid]["reqs"][req]["text"][lang] + " <span class=\"invisibleStuff unmet\">" + nordburgPwReq.stringBundle[initStat][lang]  + "</span>";
 
