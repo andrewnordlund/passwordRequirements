@@ -9,11 +9,11 @@ let nordburgPwReq = {
 		"unmet" : {"en" : "Unmet", "fr" : "n'a pas été remplie"}
 	},
 	allPwReqs : {
-		"lowercase" : {"text" : {"en" : "at least 1 lowercase letter", "fr" : "au moins 1 lettre minuscule"}, check : function (p1, p2) {return p1.match(/[a-z]/) || p2.match(/[a-z]/);}},
-		"uppercase" : {"text" : {"en" : "at least 1 uppercase letter", "fr" : "au moins 1 lettre majuscule"}, check : function (p1, p2) {return p1.match(/[A-Z]/) || p2.match(/[A-Z]/);}},
-		"specialChar" : {"text" : {"en" : "at least 1 special character", "fr" : "au moins 1 caractère spécial"}, check : function (p1, p2) { return p1.match(/[^\w\s]/) || p2.match(/[^\w\s]/);}},
-		"digit" : {"text" : {"en" : "at least 1 digit", "fr" : "au moins 1 chiffre"}, check : function (p1, p2) { return p1.match(/[0-9]/) || p2.match(/[0-9]/);}},
-		"nospaces" : {"text" : {"en" : "no spaces", "fr" : "sans espaces"}, check : function (p1, p2) { return !(p1.match(/[\s\n\t\f ]/) || p2.match(/[\s\n\t\f ]/));}},
+		"lowercase" : {"text" : {"en" : "At least 1 lowercase letter", "fr" : "Au moins 1 lettre minuscule"}, check : function (p1, p2) {return p1.match(/[a-z]/) || p2.match(/[a-z]/);}},
+		"uppercase" : {"text" : {"en" : "At least 1 uppercase letter", "fr" : "Au moins 1 lettre majuscule"}, check : function (p1, p2) {return p1.match(/[A-Z]/) || p2.match(/[A-Z]/);}},
+		"specialChar" : {"text" : {"en" : "At least 1 special character", "fr" : "Au moins 1 caractère spécial"}, check : function (p1, p2) { return p1.match(/[^\w\s]/) || p2.match(/[^\w\s]/);}},
+		"digit" : {"text" : {"en" : "at least 1 digit", "fr" : "Au moins 1 chiffre"}, check : function (p1, p2) { return p1.match(/[0-9]/) || p2.match(/[0-9]/);}},
+		"nospaces" : {"text" : {"en" : "no spaces", "fr" : "Sans espaces"}, check : function (p1, p2) { return !(p1.match(/[\s\n\t\f ]/) || p2.match(/[\s\n\t\f ]/));}},
 		"doubleChars" : {"text" : {"en" : "No two characters the same consecutively", "fr" : "Il n'y a pas deux personnages identiques consécutivement"}, check : function (p1, p2) { 
 				let regexp = /(.)\1/g;
 				return !(p1.match(regexp) || p2.match(regexp));
@@ -68,11 +68,11 @@ let nordburgPwReq = {
 
 					if (passwords[i].hasAttribute("data-minchars")) {
 						let minChars = passwords[i].getAttribute("data-minchars");
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"] = {"stat" : "unmet", "text" : {"en" : "at least " + minChars + " characters", "fr" : "au moins " + minChars + " caractères"}, "li" : null, check :  function(p1, p2) { return p1.length >= minChars || p2.length >= minChars;}};
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"] = {"stat" : "unmet", "text" : {"en" : "At least " + minChars + " characters", "fr" : "Au moins " + minChars + " caractères"}, "li" : null, check :  function(p1, p2) { return p1.length >= minChars || p2.length >= minChars;}};
 					}
 					if (passwords[i].hasAttribute("data-maxchars")) {
 						let maxChars = passwords[i].getAttribute("data-maxchars");
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"] = {"stat" : "unmet", "text" : {"en" : "a maximum of " + maxChars + " characters", "fr" : "un maximum de " + maxChars + " caractères"}, "li" : null, check :  function(p1, p2) { return p1.length <= maxChars && p2.length <= maxChars;}};
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"] = {"stat" : "unmet", "text" : {"en" : "A maximum of " + maxChars + " characters", "fr" : "Un maximum de " + maxChars + " caractères"}, "li" : null, check :  function(p1, p2) { return p1.length <= maxChars && p2.length <= maxChars;}};
 					}
 
 					for (let req in nordburgPwReq.allPwReqs) {
@@ -199,9 +199,8 @@ let nordburgPwReq = {
 
 		let checkSpan = document.createElement("span");
 		checkSpan.classList.add("pwCheckSpan", "req" + initStat); 
-		checkSpan.classList.add("glyphicon","glyphicon-remove");
+		checkSpan.classList.add("glyphicon","glyphicon-" + (initStat == "met" ? "ok" : "remove"));
 		checkSpan.setAttribute("aria-hidden", "true");
-		//checkSpan.textContent = (initStat == "met" ? "✔" : "✘");
 		newLI.appendChild(checkSpan);
 
 		let newSpan = document.createElement("span");
@@ -209,7 +208,6 @@ let nordburgPwReq = {
 		newSpan.setAttribute("aria-live", "assertive");
 		newSpan.setAttribute("aria-atomic", "true");
 		newSpan.classList.add("pwReqText");
-		//newSpan.classList.add("glyphicon","glyphicon-remove");
 		let lang = nordburgPwReq.myPwReqs[rid]["lang"];
 		newSpan.innerHTML = nordburgPwReq.myPwReqs[rid]["reqs"][req]["text"][lang] + " <span class=\"invisibleStuff unmet\">" + nordburgPwReq.stringBundle[initStat][lang]  + "</span>";
 
@@ -254,10 +252,7 @@ let nordburgPwReq = {
 			statSpan.classList.remove("met", "unmet");
 			statSpan.classList.add(nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
 
-			//textSpan.parentNode.firstChild.classList.remove("reqmet", "requnmet");
 			textSpan.parentNode.firstChild.classList.remove("glyphicon-ok", "glyphicon-remove");
-			//textSpan.parentNode.firstChild.textContent = (nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] == "met" ? "✔" : "✘");
-			//textSpan.parentNode.firstChild.classList.add("req" + nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
 			textSpan.parentNode.firstChild.classList.add("glyphicon-" + (nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] == "met" ? "ok" : "remove"));
 		}
 		return nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"];

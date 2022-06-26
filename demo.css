@@ -1,0 +1,9 @@
+.fieldHolder {
+	margin-bottom: 1em;
+}
+.fieldHolder label {
+	display: block;
+}
+summary {
+	margin: 1em 0;
+}
