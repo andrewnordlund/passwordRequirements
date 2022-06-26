@@ -126,6 +126,7 @@
 						<dt>Sarafi, Firefox 101, and Chrome</dt>
 						<dd>When focusing on the Password field, VO reads all requirements as it should.  And as a password is typed, the changes are announced.  Full support.</dd>
 					</dl>
+					<p><strong>Note</strong>: In Firefox, the <code>lang</code> is completely ignored.  In Chrome and Safari, when reading through the page, the <code>lang</code> attribute is respected, but when form labels and <code>aria-describedby</code> sections are being read when focus is in an input, it ignores the <code>lang</code> attibute.  For example, my system settings are in English, so all the French is read out with a strong English accent.</p>
 				</section>	
 			</section>
 
