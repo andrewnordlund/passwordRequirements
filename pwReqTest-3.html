@@ -5,25 +5,55 @@
 		<meta content="width=device-width,initial-scale=1" name="viewport">
 		<title>Password Requirements Test Page</title>
 		<link rel="Stylesheet" type="text/css" href="pwReqTest.css">
+		<script src="pwReqTest-3.js"></script>
 	</head>
 	<body>
 		<header>
 		<h1>Password Requirements Test Page</h1>
 		</header>
 		<div id="mainContent">
-			<div class="fieldHolder">
-				<label for="pword1">Password:</label>
-				<input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar digit" data-minchars="8" data-match="pword2">
-			</div>
-			<div class="fieldHolder">
-				<label for="pword2">Confirm Password:</label>
-				<input name="pword2" id="pword2" type="password" class="confirmPassword" data-match="pword1">
-			</div>
-			<div id="passwordRequirements">
-				<p id="passDesc"></p>
-			</div>
-			<input value="Submit" id="submitBtn" type="button">
+		<script>
+				nordburgPwReq.custPwRequirements["pword1"] = {"notPassword" : {"text" : {"en" : "Not 'Password'", "fr" : "Pas de 'Password'"}, check : function (p1, p2) {
+					let re = /password/i;
+					return !(p1.match(re) || p2.match(re));
+				}}};
+				/*
+				nordburgPwReq.custPwRequirements["pword3"] = {"accented" : {"text" : {"en" : "At least one accented character", "fr" : "Au moins un caractère accentué"}, check : function (p1, p2) { 
+					let re = /À-ÖØ-öø-ÿ/;
+					return p1.match(re) || p2.match(re);
+				}
+			}};
+*/
 			
+			</script>
+			<section>
+				<h2>In English</h2>
+				<div class="fieldHolder">
+					<label for="pword1">Password:</label>
+					<input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar digit doubleChars" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn">
+				</div>
+				<div class="fieldHolder">
+					<label for="pword2">Confirm Password:</label>
+					<input name="pword2" id="pword2" type="password" class="confirmPassword" data-match="pword1">
+				</div>
+				<div id="passwordRequirementsEn">
+				</div>
+				<input value="Submit" id="submitBtn" type="button">
+			
+			<section lang="fr">
+				<div id="passwordRequirementsFr">
+				</div>
+				<h2>En Français</h2>
+				<div class="fieldHolder">
+					<label for="pword3">Mot de passe :</label>
+					<input name="pword3" id="pword3" type="password" class="newPassword lowercase uppercase specialChar digit doubleChars" data-minchars="8" data-match="pword4"  data-passwordRequirementsDiv="passwordRequirementsFr">
+				</div>
+				<div class="fieldHolder">
+					<label for="pword4">Confirmez le mot de passe :</label>
+					<input name="pword4" id="pword4" type="password" class="confirmPassword" data-match="pword3">
+				</div>
+				<input value="Submit" id="submitBtn2" type="button">
+			</section>
 		</div>
 		<div>
 			<h2>Notes</h2>
@@ -108,7 +138,6 @@
 		</section>
 		<footer>
 			<p>Here is <a href="#">some random footer link</a>.</p>
-			<script src="pwReqTest-3.js"></script>
 		</footer>
 	
 
