@@ -1,50 +1,29 @@
-.fieldHolder {
-	margin-bottom: 1em;
+@charset "utf-8";
+@font-face {
+	font-family:"Glyphicons Halflings";
+	src:url(fonts/glyphicons-halflings-regular.eot);
+	src:url(fonts/glyphicons-halflings-regular.eot?#iefix) format("embedded-opentype"),
+	url(fonts/glyphicons-halflings-regular.woff2) format("woff2"),
+	url(fonts/glyphicons-halflings-regular.woff) format("woff"),
+	url(fonts/glyphicons-halflings-regular.ttf) format("truetype"),
+	url(fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format("svg")
 }
-.fieldHolder label {
-	display: block;
+
+.glyphicon {
+	font-family:"Glyphicons Halflings";
+	line-height:140%;
+	vertical-align: middle;
 }
-/*
-.met {
-	color: green;
-}
-.unmet {
+ 
+.glyphicon-remove:before {
+	content:"\e014";
 	color: #AA0000;
 }
-*/
-/*
-.pwCheckSpan {
-	display: inline-block;
-	width: 1em;
-}
-*/
-/*.reqmet::before, .requnmet::before {
-	/*display: inline-block;
-	float: right;
-	width: 1.5rem;
-	overflow: visible;
-	text-align: center* /
-}*/
-/*
-.requnmet::before,.requnmet {
-	/*content: "✘";* /
-	color: #AA0000;
-}
-*/
-/*
-.reqmet::before, .reqmet {
-	/*content: "✔";* /
-	content: "\f00c";
+ 
+.glyphicon-ok:before {
+	content:"\e013";
 	color: #00A41E;
 }
-*/
-/*
-.pwReqText {
-	vertical-align: top;
-	/*display: inline-block;* /
-}
-*/
-
 ul.pwReqsUL {
   list-style: none;
 }
@@ -58,6 +37,9 @@ ul.pwReqsUL>li>span {
 	display: table-cell;
 	min-width: 1.5em;
 }
+.pwReqText {
+	vertical-align: middle;
+}
 .invisibleStuff {
 	clip:rect(1px,1px,1px,1px);
 	height:1px;
@@ -66,3 +48,4 @@ ul.pwReqsUL>li>span {
 	position:absolute;
 	width:1px
 }
+

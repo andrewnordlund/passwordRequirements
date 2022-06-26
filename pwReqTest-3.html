@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta content="width=device-width,initial-scale=1" name="viewport">
 		<title>Password Requirements Test Page</title>
-		<link rel="Stylesheet" type="text/css" href="glyphs.css">
+		<link rel="Stylesheet" type="text/css" href="demo.css">
 		<link rel="Stylesheet" type="text/css" href="pwReqTest.css">
 		<script src="pwReqTest-3.js"></script>
 	</head>
@@ -13,18 +13,11 @@
 		<h1>Password Requirements Test Page</h1>
 		</header>
 		<div id="mainContent">
-		<script>
-				nordburgPwReq.custPwRequirements["pword1"] = {"notPassword" : {"text" : {"en" : "Not 'Password'", "fr" : "Pas de 'Password'"}, check : function (p1, p2) {
+			<script>
+				nordburgPwReq.custPwRequirements["pword1"] = {"notPassword" : {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
 					let re = /password/i;
 					return !(p1.match(re) || p2.match(re));
 				}}};
-				/*
-				nordburgPwReq.custPwRequirements["pword3"] = {"accented" : {"text" : {"en" : "At least one accented character", "fr" : "Au moins un caractère accentué"}, check : function (p1, p2) { 
-					let re = /À-ÖØ-öø-ÿ/;
-					return p1.match(re) || p2.match(re);
-				}
-			}};
-*/
 			
 			</script>
 			<section>
@@ -40,6 +33,30 @@
 				<div id="passwordRequirementsEn">
 				</div>
 				<input value="Submit" id="submitBtn" type="button">
+				<details>
+					<summary>Code</summary>
+					<pre>
+&lt;script&gt;
+	nordburgPwReq.custPwRequirements["pword1"] = {"notPassword" : {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
+		let re = /password/i;
+		return !(p1.match(re) || p2.match(re));
+	}}};
+&lt;/script&gt;
+...
+
+&lt;div class="fieldHolder"&gt;
+	&lt;label for="pword1"&gt;Password:&lt;/label&gt;
+	&lt;input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar digit doubleChars nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn"&gt;
+&lt;/div&gt;
+&lt;div class="fieldHolder"&gt;
+	&lt;label for="pword2"&gt;Confirm Password:&lt;/label&gt;
+	&lt;input name="pword2" id="pword2" type="password" class="confirmPassword" data-match="pword1"&gt;
+&lt;/div&gt;
+&lt;div id="passwordRequirementsEn"&gt;&lt;/div&gt;
+
+
+					</pre>
+				</details>
 			
 			<section lang="fr">
 				<div id="passwordRequirementsFr">
@@ -54,6 +71,22 @@
 					<input name="pword4" id="pword4" type="password" class="confirmPassword" data-match="pword3">
 				</div>
 				<input value="Submit" id="submitBtn2" type="button">
+				<details>
+					<summary>Code</summary>
+<pre>
+&lt;div id="passwordRequirementsFr"&gt;&lt;/div&gt;
+...
+&lt;div class="fieldHolder"&gt;
+	&lt;label for="pword3"&gt;Mot de passe :&lt;/label&gt;
+	&lt;input name="pword3" id="pword3" type="password" class="newPassword lowercase uppercase specialChar digit doubleChars" data-minchars="8" data-match="pword4"  data-passwordRequirementsDiv="passwordRequirementsFr"&gt;
+&lt;/div&gt;
+&lt;div class="fieldHolder"&gt;
+	&lt;label for="pword4"&gt;Confirmez le mot de passe :&lt;/label&gt;
+	&lt;input name="pword4" id="pword4" type="password" class="confirmPassword" data-match="pword3"&gt;
+&lt;/div&gt;
+</pre>
+				</details>
+
 			</section>
 		</div>
 		<div>
