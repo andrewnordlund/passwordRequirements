@@ -22,23 +22,23 @@ Ex:
 ```
 <div id="passwordReqs"></div>
 ...
-<label for="pword1">New Passowrd:>
+<label for="pword1">New Passowrd:</label>
 <input type="password" id="pword1" data-match="pword2" class="newPassword" data-passwordRequirementsDiv="passwordReqs">
 ```
 
 * If your password reqirements includes a minimum number of characters, include that number in a `data-minchars` attribute in the New Password Input.  Ex:
 ```
-<label for="pword1">New Passowrd:>
+<label for="pword1">New Passowrd:</label>
 <input type="password" id="pword1" data-match="pword2" class="newPassword" data-minchars="8" data-passwordRequirementsDiv="passwordReqs">
 ```
 * If your password requirements includes a maxmium number of characters (and it really shouldn't unless it's 255 characters or something or if you know absolutely nothing about password strength or IT Security....I'm only including this because there are plenty of IT Security nincompoops out there calling the shots), then include that number in a `data-maxchars` attribute in the New Password Input.  Ex:
 ```
-<label for="pword1">New Passowrd:>
+<label for="pword1">New Passowrd:</label>
 <input type="password" id="pword1" data-match="pword2" class="newPassword" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
 ```
 * For other password requirements, include pre-defined classnames.  For example, if your requirements include a special charactor, add class `specialChar` to the New Passwords input.  (All classes are to be included in the New Passwords input.)  Ex:
 ```
-<label for="pword1">New Passowrd:>
+<label for="pword1">New Passowrd:</label>
 <input type="password" id="pword1" data-match="pword2" class="newPassword specialChar" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
 ```
 ### Built-in Requirements
