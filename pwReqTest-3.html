@@ -85,20 +85,10 @@
 					</details>
 				</section>
 <script>
-			if (Object.assign) {
-				console.log ("We have assign.  Keeping French demo in.");
-				
-			} else {
-				console.log ("We don't have assign.  Taking french demo out.");
+			if (!Object.assign) {
 				let frenchDemoSect = null;
 				frenchDemoSect = document.getElementById("frenchDemoSect");
-				if (frenchDemoSect) {
-					console.log ("Got frenchDemoSect.  Gonna try to remove it.");
-					console.log ("From parentNode: " + frenchDemoSect.parentNode.nodeName + ".");
-					frenchDemoSect.parentNode.removeChild(frenchDemoSect);
-				} else {
-					console.log ("Huh.  Didn't get frenchDemoSect.");
-				}
+				if (frenchDemoSect) frenchDemoSect.parentNode.removeChild(frenchDemoSect);
 			}
 		</script>
 			</div>
