@@ -84,7 +84,7 @@ let nordburgPwReq = {
 							if (Object.assign) {
 								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][reqs[j]] = Object.assign({}, nordburgPwReq.allPwReqs[reqs[j]]);
 							} else {
-								console.warn ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.\n" + ex.message);
+								console.warn ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.");
 								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][reqs[j]] = nordburgPwReq.allPwReqs[reqs[j]];
 							}
 
