@@ -10,21 +10,21 @@
 	</head>
 	<body>
 		<header>
-		<h1>Password Requirements Test Page</h1>
+		<h1 id="theH1">Password Requirements Test Page</h1>
 		</header>
 		<main>
 			<div id="mainContent">
 				<script>
-					nordburgPwReq.custPwRequirements["pword1"] = {"notPassword" : {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
+					nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
 						let re = /password/i;
 						return !(p1.match(re) || p2.match(re));
-					}}};		
+					}};
 				</script>
 				<section>
 					<h2>In English</h2>
 					<div class="fieldHolder">
 						<label for="pword1">New Password:</label>
-						<input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar digit doubleChars nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn">
+						<input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar notPassword digit doubleChars nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn" aria-describedby="theH1">
 					</div>
 					<div class="fieldHolder">
 						<label for="pword2">Confirm Password:</label>
@@ -63,7 +63,7 @@
 					<h2>En Français</h2>
 					<div class="fieldHolder">
 						<label for="pword3">Nouveau mot de passe :</label>
-						<input name="pword3" id="pword3" type="password" class="newPassword lowercase uppercase specialChar digit doubleChars" data-minchars="8" data-match="pword4"  data-passwordRequirementsDiv="passwordRequirementsFr">
+						<input name="pword3" id="pword3" type="password" class="notPassword newPassword lowercase uppercase specialChar digit doubleChars" data-minchars="8" data-match="pword4"  data-passwordRequirementsDiv="passwordRequirementsFr">
 					</div>
 					<div class="fieldHolder">
 						<label for="pword4">Confirmez le mot de passe :</label>
@@ -168,6 +168,7 @@
 							<dd>When focusing on the Password field, VO reads all requirements as it should.  And as a password is typed, the changes are announced.  Full support.</dd>
 						</dl>
 						<p><strong>Note</strong>: In Firefox, the <code>lang</code> is completely ignored.  In Chrome and Safari, when reading through the page, the <code>lang</code> attribute is respected, but when form labels and <code>aria-describedby</code> sections are being read when focus is in an input, it ignores the <code>lang</code> attibute.  For example, my system settings are in English, so all the French is read out with a strong English accent.</p>
+						<p><strong>Note</strong>: After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd> something strange happens. If the status of several criteria changes, only one is read out.  Then as you type requirements' status changes, if the status had changed in the deletion, the status now doesn't get read out, only the requirement.  For example, if you type out "password" then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd> then "P" you'll hear "At least one uppercase letter met." Then if you type "a" you'll hear "At least 1 lowercase letter."  This happens if the live region is either assertive or polite.</p>
 					</section>	
 				</section>
 
