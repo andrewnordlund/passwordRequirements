@@ -4,7 +4,7 @@ An accessible, bilingual, extensible dynamic password requirements checker.
 Password checkers (when setting or resetting a password) in a site are common.  But most of them fall short when it comes to accessibility.  This implementation tries to fix that.
 
 ## How To Use It
-Download from this repo.  You'll need pwReqTest.js and pwReqTest.css and the /fonts directory.  Then in your HTML file, you'll need to include the pwReqTest.js and pwReqTest.css files in the `<head>` of your page.  Then, somewhere on the page, you'll need two password input fields: one for New Password, and one for Confirm Passwords.  (This widget requires/allows you to write those to give them your own styling, layout, etc.  But what is required is the following:
+Download from this repo.  You'll need pwReqTest.js and pwReqTest.css and the /fonts directory.  Then in your HTML file, you'll need to include the pwReqTest.js and pwReqTest.css files in the `<head>` of your page.  Then, somewhere on the page, you'll need two password input fields: one for New Password, and one for Confirm Password.  (This widget requires/allows you to write those to give them your own styling, layout, etc.  But what is required is the following:
 * The New Password input needs to have class `newPassword`
 * The Confirm Password input needs to have class `confirmPassword`
 * The New and Confirm Password inputs each need to have unique `id`s, and they need to have `data-match` attributes that point to each other.  Ex:
