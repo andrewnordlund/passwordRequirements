@@ -77,7 +77,13 @@ let nordburgPwReq = {
 
 					for (let req in nordburgPwReq.allPwReqs) {
 						if (passwords[i].classList.contains(req)) {
-							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][req] = Object.assign({}, nordburgPwReq.allPwReqs[req]);
+							try {
+								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][req] = Object.assign({}, nordburgPwReq.allPwReqs[req]);
+							}
+							catch (ex) {
+								console.error ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.\n" + ex.message);
+								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][req] = nordburgPwReq.allPwReqs[req];
+							}
 							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][req]["stat"] = "unmet";
 							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][req]["li"] = null;
 						}
@@ -131,7 +137,13 @@ let nordburgPwReq = {
 				for (let pid in nordburgPwReq.custPwRequirements) {
 					if (document.getElementById(pid) && nordburgPwReq.myPwReqs[pid]) {
 						for (let custReq in nordburgPwReq.custPwRequirements[pid]) {
-							nordburgPwReq.myPwReqs[pid]["reqs"][custReq] = Object.assign({}, nordburgPwReq.custPwRequirements[pid][custReq]);
+							try {
+								nordburgPwReq.myPwReqs[pid]["reqs"][custReq] = Object.assign({}, nordburgPwReq.custPwRequirements[pid][custReq]);
+							}
+							catch (ex) {
+								console.error ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.\n" + ex.message);
+								nordburgPwReq.myPwReqs[pid]["reqs"][custReq] = nordburgPwReq.custPwRequirements[pid][custReq];
+							}
 						}
 
 					} else {
