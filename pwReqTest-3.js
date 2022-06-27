@@ -58,6 +58,7 @@ let nordburgPwReq = {
 					passwordRequirementsDiv.appendChild(passwordDesc);
 
 					let reqsList = document.createElement("ul");
+					reqsList.setAttribute("role","list");
 					reqsList.id = "pwReqsUL" + i;
 					reqsList.classList.add("pwReqsUL");
 					passwordRequirementsDiv.appendChild(reqsList);
@@ -210,8 +211,10 @@ let nordburgPwReq = {
 		nordburgPwReq.myPwReqs[rid]["reqs"][req]["stat"] = initStat;
 
 		let checkSpan = document.createElement("span");
-		checkSpan.classList.add("pwCheckSpan", "req" + initStat); 
-		checkSpan.classList.add("glyphicon","glyphicon-" + (initStat == "met" ? "ok" : "remove"));
+		checkSpan.classList.add("pwCheckSpan");
+		checkSpan.classList.add("req" + initStat); 
+		checkSpan.classList.add("glyphicon");
+		checkSpan.classList.add("glyphicon-" + (initStat == "met" ? "ok" : "remove"));
 		checkSpan.setAttribute("aria-hidden", "true");
 		newLI.appendChild(checkSpan);
 
@@ -261,11 +264,14 @@ let nordburgPwReq = {
 			let textSpan = nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["li"];
 			let statSpan = textSpan.getElementsByTagName("span")[0];
 			statSpan.innerHTML = nordburgPwReq.stringBundle[nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]][nordburgPwReq.myPwReqs[p1.id]["lang"]];
-			statSpan.classList.remove("met", "unmet");
+			if (statSpan.classList.contains("met")) statSpan.classList.remove("met");
+			if (statSpan.classList.contains("unmet")) statSpan.classList.remove("unmet");
 			statSpan.classList.add(nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
 
-			textSpan.parentNode.firstChild.classList.remove("glyphicon-ok", "glyphicon-remove");
-			textSpan.parentNode.firstChild.classList.add("glyphicon-" + (nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] == "met" ? "ok" : "remove"));
+			let checkSpan = textSpan.parentNode.firstChild;
+			if (checkSpan.classList.contains("glyphicon-ok")) textSpan.parentNode.firstChild.classList.remove("glyphicon-ok");
+			if (checkSpan.classList.contains("glyphicon-remove")) checkSpan.classList.remove("glyphicon-remove");
+			checkSpan.classList.add("glyphicon-" + (nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] == "met" ? "ok" : "remove"));
 		}
 		return nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"];
 	}, // End of checkReq

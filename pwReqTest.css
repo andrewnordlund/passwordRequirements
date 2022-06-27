@@ -1,4 +1,8 @@
 @charset "utf-8";
+
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic&subset=latin,latin-ext);
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin,latin-ext);
+
 @font-face {
 	font-family:"Glyphicons Halflings";
 	src:url(fonts/glyphicons-halflings-regular.eot);
@@ -10,11 +14,21 @@
 }
 
 .glyphicon {
+	position:relative;
+	top:1px;
+	left:0px;
+	display:inline-block;
 	font-family:"Glyphicons Halflings";
-	line-height:140%;
-	vertical-align: middle;
+	font-style:normal;
+	font-weight:400;
+	line-height:1;
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale
 }
  
+html {
+	box-sizing: border-box;
+}
 .glyphicon-remove:before {
 	content:"\e014";
 	color: #AA0000;
@@ -22,16 +36,23 @@
  
 .glyphicon-ok:before {
 	content:"\e013";
-	color: #00A41E;
+	color: #008A1E;
 }
 ul.pwReqsUL {
   list-style: none;
 }
-ul.pwReqsUL li::before {
-  content: "\200B";
+/*
+ul.pwReqsUL>li::before {
+  /*content: "\200B";*
+	content: "A";
+	max-width: 1px;
+	overflow: hidden;
+	display: block;
 }
+*/
 ul.pwReqsUL>li {
 	display: table-row;
+	padding: 0;
 }
 ul.pwReqsUL>li>span {
 	display: table-cell;
@@ -39,6 +60,8 @@ ul.pwReqsUL>li>span {
 }
 .pwReqText {
 	vertical-align: middle;
+}
+.pwCheckSpan {
 }
 .invisibleStuff {
 	clip:rect(1px,1px,1px,1px);
