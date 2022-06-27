@@ -9,10 +9,10 @@ Download from this repo.  You'll need pwReqTest.js and pwReqTest.css and the /fo
 * The Confirm Password input needs to have class `confirmPassword`
 * The New and Confirm Password inputs each need to have unique `id`s, and they need to have `data-match` attributes that point to each other.  Ex:
 ```
-<label for="pword1">New Passowrd:>
+<label for="pword1">New Passowrd:</label>
 <input type="password" id="pword1" data-match="pword2" class="newPassword">
 ...
-<label for="pword2">Confirm Passowrd:>
+<label for="pword2">Confirm Passowrd:</label>
 <input type="password" id="pword2" data-match="pword1" class="confirmPassword">
 ```
 * The list of password requirements needs to appear somewhere on the page.  The Javascript generates that for you, but you need to provide a `<div>` and a reference to that `<div>`.
