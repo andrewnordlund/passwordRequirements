@@ -60,20 +60,25 @@ For example, a system that requires passwords to have at least 1 uppercase lette
 But what if you want to prevent people from, say, using "Password" as a password?  Then you can create your own rule.
 1. Add a `<script> </script>` in your HTML page.
 1. In that script section, you'll need to add your requirement in JSON.  You'll add it to the pre-existing object `nordburgPwReq.custPwRequirements`.  You'll need the following to create a custom rule:
-	- The ID value of the New Password input  (Ex: `pword1`)
-	- The name of your rule  (Ex: `notPassword`)
+	- The name of your rule that follows the rules of CSS class names (Ex: `notPassword`)
 	- The English text of how that rule will be written in the list of rules (Ex: "Does not contain `Password`")
 	- Optionally, you can add other languages if you know their two-character language code.  (Ex: `"fr" : "Ne contient pas 'Password'"`)
 	- A Javascript function called `check` that accepts two values (the values of each Password inputs) and does your computation to return `true` if the requirement is met, and `false` if not.
 
 ```
 <script>
-nordburgPwReq.custPwRequirements["pword1"] = {"notPassword" : {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
+nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
 	let re = /password/i;
 	return !(p1.match(re) || p2.match(re));
-}}};
+}};
 </script>
 ```
+1. Add the name you've given to the list of classes in the New Password Input
+```
+<label for="pword1">New Password:</label>
+<input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar digit notPassword" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
+```
+
 
 ## How it works
 Upon page load, the script takes all the information from the above descrbbed classes, and `data-` attributes and constructs a list of password requirements.  These are referenced with `aria-describedby` in the New Password input.  When you tab to the New Password input and start typing, as conditions become met or unmet, the X's and checkmarks toggle.  There's also text that's exposed only to screen readers that comes after the requirement to tell screen reader users if the condition is met or not.

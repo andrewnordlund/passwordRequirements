@@ -27,6 +27,8 @@ let nordburgPwReq = {
 
 		let lang = nordburgPwReq.defLang;
 
+		nordburgPwReq.dealWithCustomRequirements();
+
 		let passwords = document.querySelectorAll(".newPassword,.confirmPassword");
 		if (passwords) {
 			for (let i = 0; i < passwords.length; i++) {
@@ -76,28 +78,31 @@ let nordburgPwReq = {
 						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"] = {"stat" : "unmet", "text" : {"en" : "A maximum of " + maxChars + " characters", "fr" : "Un maximum de " + maxChars + " caractères"}, "li" : null, check :  function(p1, p2) { return p1.length <= maxChars && p2.length <= maxChars;}};
 					}
 
-					for (let req in nordburgPwReq.allPwReqs) {
-						if (passwords[i].classList.contains(req)) {
-							try {
-								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][req] = Object.assign({}, nordburgPwReq.allPwReqs[req]);
+					let reqs = passwords[i].getAttribute("class").split(" ");
+					for (let j = 0; j < reqs.length; j++) {
+						if (nordburgPwReq.allPwReqs[reqs[j]]) {
+							if (Object.assign) {
+								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][reqs[j]] = Object.assign({}, nordburgPwReq.allPwReqs[reqs[j]]);
+							} else {
+								console.warn ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.\n" + ex.message);
+								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][reqs[j]] = nordburgPwReq.allPwReqs[reqs[j]];
 							}
-							catch (ex) {
-								console.error ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.\n" + ex.message);
-								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][req] = nordburgPwReq.allPwReqs[req];
-							}
-							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][req]["stat"] = "unmet";
-							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][req]["li"] = null;
+
 						}
-						
 					}
 					
 					if (passwords[i].hasAttribute("data-match")) {
 						try {
 							let otherP = passwords[i].getAttribute("data-match");
 							
-							if (!nordburgPwReq.myPwReqs[otherP]){
-								nordburgPwReq.myPwReqs[otherP] = {"reqs" : {}, "lang" : lang, "descriptor" :  passwordDesc, "reqsList" : reqsList};
-							}
+							//if (!nordburgPwReq.myPwReqs[otherP]){
+							//	nordburgPwReq.myPwReqs[otherP] = {"reqs" : {}, "lang" : lang, "descriptor" :  passwordDesc, "reqsList" : reqsList};
+							//}
+							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"] = {"stat" : "unmet", "text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, "li" : null, check :  function (p1, p2) {
+									return p1 == p2 && p1.match(/\S/);
+								}
+							};
+
 						}
 						catch (ex) {
 							console.error ("ERROR: ensure there are two passwords with data-match attributes referring to each other's ID value.  Error: " + ex.message);
@@ -112,7 +117,7 @@ let nordburgPwReq = {
 							}, 500);
 						}, false);
 				} else {
-					
+					/*
 					if (passwords[i].hasAttribute("data-match")) {
 						try {
 							let otherP = passwords[i].getAttribute("data-match");
@@ -127,32 +132,13 @@ let nordburgPwReq = {
 							return null;
 						}
 					}
-					
+					*/
 				}
 				passwords[i].addEventListener("keyup", nordburgPwReq.checkReqs, false);
 				passwords[i].addEventListener("change", nordburgPwReq.checkReqs, false);
 			}
 
-			// Now add Custom Rules
-			if (nordburgPwReq.custPwRequirements) {
-				for (let pid in nordburgPwReq.custPwRequirements) {
-					if (document.getElementById(pid) && nordburgPwReq.myPwReqs[pid]) {
-						for (let custReq in nordburgPwReq.custPwRequirements[pid]) {
-							try {
-								nordburgPwReq.myPwReqs[pid]["reqs"][custReq] = Object.assign({}, nordburgPwReq.custPwRequirements[pid][custReq]);
-							}
-							catch (ex) {
-								console.error ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.\n" + ex.message);
-								nordburgPwReq.myPwReqs[pid]["reqs"][custReq] = nordburgPwReq.custPwRequirements[pid][custReq];
-							}
-						}
-
-					} else {
-						console.error ("Your password requirment isn't written correctly.  See the documentation.");
-					}
-				}
-			}
-
+			
 			//Now build the list with myReqs
 			
 			for (let id in nordburgPwReq.myPwReqs) {
@@ -220,7 +206,7 @@ let nordburgPwReq = {
 
 		let newSpan = document.createElement("span");
 		newSpan.id = "pwReqsList" + req + "Span" + rid;
-		newSpan.setAttribute("aria-live", "assertive");
+		newSpan.setAttribute("aria-live", "polite");
 		newSpan.setAttribute("aria-atomic", "true");
 		newSpan.classList.add("pwReqText");
 		let lang = nordburgPwReq.myPwReqs[rid]["lang"];
@@ -284,6 +270,19 @@ let nordburgPwReq = {
 			return null;
 		}
 	}, // End of getOtherP
+	dealWithCustomRequirements : function () {
+		// Now add Custom Rules
+		if (nordburgPwReq.custPwRequirements) {
+			for (let req in nordburgPwReq.custPwRequirements) {
+				if (Object.assign) {
+					nordburgPwReq.allPwReqs[req] = Object.assign({}, nordburgPwReq.custPwRequirements[req]);
+				} else {
+					console.warn ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.");
+					nordburgPwReq.allPwReqs[req] = nordburgPwReq.custPwRequirements[req];
+				}
+			}
+		}
+	}, // End of dealWithCustomRequirements
 }
 
 document.addEventListener("DOMContentLoaded", nordburgPwReq.init, false);
