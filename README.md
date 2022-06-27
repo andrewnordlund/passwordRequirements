@@ -10,10 +10,10 @@ Download from this repo.  You'll need pwReqTest.js and pwReqTest.css and the /fo
 * The New and Confirm Password inputs each need to have unique `id`s, and they need to have `data-match` attributes that point to each other.  Ex:
 ```
 <label for="pword1">New Passowrd:>
-<input type="password" id="pword1" *data-match="pword2"* *class="newPassword"*>
+<input type="password" id="pword1" data-match="pword2" class="newPassword">
 ...
 <label for="pword2">Confirm Passowrd:>
-<input type="password" id="pword2" *data-match="pword1"* *class="confirmPassword"*>
+<input type="password" id="pword2" data-match="pword1" class="confirmPassword">
 ```
 * The list of password requirements needs to appear somewhere on the page.  The Javascript generates that for you, but you need to provide a `<div>` and a reference to that `<div>`.
 	1. Create a `<div>` somewhere with a unique ID, such as: `<div id="passwordReqs"></div>`
@@ -23,23 +23,23 @@ Ex:
 <div id="passwordReqs"></div>
 ...
 <label for="pword1">New Passowrd:>
-<input type="password" id="pword1" data-match="pword2" class="newPassword" *data-passwordRequirementsDiv="passwordReqs"*>
+<input type="password" id="pword1" data-match="pword2" class="newPassword" data-passwordRequirementsDiv="passwordReqs">
 ```
 
 * If your password reqirements includes a minimum number of characters, include that number in a `data-minchars` attribute in the New Password Input.  Ex:
 ```
 <label for="pword1">New Passowrd:>
-<input type="password" id="pword1" data-match="pword2" class="newPassword" *data-minchars="8"* data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="newPassword" data-minchars="8" data-passwordRequirementsDiv="passwordReqs">
 ```
 * If your password requirements includes a maxmium number of characters (and it really shouldn't unless it's 255 characters or something or if you know absolutely nothing about password strength or IT Security....I'm only including this because there are plenty of IT Security nincompoops out there calling the shots), then include that number in a `data-maxchars` attribute in the New Password Input.  Ex:
 ```
 <label for="pword1">New Passowrd:>
-<input type="password" id="pword1" data-match="pword2" class="newPassword" data-minchars="8" *data-maxchars="20"* data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="newPassword" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
 ```
 * For other password requirements, include pre-defined classnames.  For example, if your requirements include a special charactor, add class `specialChar` to the New Passwords input.  (All classes are to be included in the New Passwords input.)  Ex:
 ```
 <label for="pword1">New Passowrd:>
-<input type="password" id="pword1" data-match="pword2" class="newPassword specialChar" data-minchars="8" *data-maxchars="20"* data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="newPassword specialChar" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
 ```
 ### Built-in Requirements
 This widget comes with the following built-in requirements that can be added with class names:
@@ -60,19 +60,19 @@ For example, a system that requires passwords to have at least 1 uppercase lette
 But what if you want to prevent people from, say, using "Password" as a password?  Then you can create your own rule.
 1. Add a `<script> </script>` in your HTML page.
 1. In that script section, you'll need to add your requirement in JSON.  You'll add it to the pre-existing object `nordburgPwReq.custPwRequirements`.  You'll need the following to create a custom rule:
-	a. The ID value of the New Password input  (Ex: `pword1`)
-	a. The name of your rule  (Ex: "notPassword")
-	a. The English text of how that rule will be written in the list of rules (Ex: "Does not contain `Password`")
-	b. Optionally, you can add other languages if you know their two-character language code.  (Ex: "fr" : "Ne contient pas 'Password'")
-	a. A Javascript function that accepts two values (the values of each Password inputs) and does your computation to return `true` if the requirement is met, and `false` if not.
+	- The ID value of the New Password input  (Ex: `pword1`)
+	- The name of your rule  (Ex: `notPassword`)
+	- The English text of how that rule will be written in the list of rules (Ex: "Does not contain `Password`")
+	- Optionally, you can add other languages if you know their two-character language code.  (Ex: `"fr" : "Ne contient pas 'Password'"`)
+	- A Javascript function called `check` that accepts two values (the values of each Password inputs) and does your computation to return `true` if the requirement is met, and `false` if not.
 
 ```
-&lt;script&gt;
+<script>
 nordburgPwReq.custPwRequirements["pword1"] = {"notPassword" : {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
 	let re = /password/i;
 	return !(p1.match(re) || p2.match(re));
 }}};
-&lt;/script&gt;
+</script>
 ```
 
 ## How it works
