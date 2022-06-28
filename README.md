@@ -112,5 +112,8 @@ nordburgPwReq.allPwReqs["minchars"]["text"]["de"] = "Mindestens %d Zeichen";
 nordburgPwReq.allPwReqs["maxchars"]["text"]["de"] = "Maximal %d Zeichen";
 ```
 
+*IMPORTANT*
+In order for this to work, the components of this widget need to be a descendant of an element marked as the target language.  Ex: for the German example above: `<html lang="de">`.
+
 ## See a Japanese demo
 Hosted here: [https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html](https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html).
