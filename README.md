@@ -4,15 +4,15 @@ An accessible, bilingual, extensible dynamic password requirements checker.
 Password checkers (when setting or resetting a password) in a site are common.  But most of them fall short when it comes to accessibility.  This implementation tries to fix that.
 
 ## How To Use It
-Download from this repo.  You'll need pwReqTest.js and pwReqTest.css and the /fonts directory.  Then in your HTML file, you'll need to include the pwReqTest.js and pwReqTest.css files in the `<head>` of your page.  Then, somewhere on the page, you'll need two password input fields: one for New Password, and one for Confirm Passwords.  (This widget requires/allows you to write those to give them your own styling, layout, etc.  But what is required is the following:
+Download from this repo.  You'll need pwReqTest.js and pwReqTest.css and the /fonts directory.  Then in your HTML file, you'll need to include the pwReqTest.js and pwReqTest.css files in the `<head>` of your page.  Then, somewhere on the page, you'll need two password input fields: one for New Password, and one for Confirm Password.  (This widget requires/allows you to write those to give them your own styling, layout, etc.  But what is required is the following:
 * The New Password input needs to have class `newPassword`
 * The Confirm Password input needs to have class `confirmPassword`
 * The New and Confirm Password inputs each need to have unique `id`s, and they need to have `data-match` attributes that point to each other.  Ex:
 ```
-<label for="pword1">New Passowrd:>
+<label for="pword1">New Passowrd:</label>
 <input type="password" id="pword1" data-match="pword2" class="newPassword">
 ...
-<label for="pword2">Confirm Passowrd:>
+<label for="pword2">Confirm Passowrd:</label>
 <input type="password" id="pword2" data-match="pword1" class="confirmPassword">
 ```
 * The list of password requirements needs to appear somewhere on the page.  The Javascript generates that for you, but you need to provide a `<div>` and a reference to that `<div>`.
@@ -22,23 +22,23 @@ Ex:
 ```
 <div id="passwordReqs"></div>
 ...
-<label for="pword1">New Passowrd:>
+<label for="pword1">New Passowrd:</label>
 <input type="password" id="pword1" data-match="pword2" class="newPassword" data-passwordRequirementsDiv="passwordReqs">
 ```
 
 * If your password reqirements includes a minimum number of characters, include that number in a `data-minchars` attribute in the New Password Input.  Ex:
 ```
-<label for="pword1">New Passowrd:>
+<label for="pword1">New Passowrd:</label>
 <input type="password" id="pword1" data-match="pword2" class="newPassword" data-minchars="8" data-passwordRequirementsDiv="passwordReqs">
 ```
 * If your password requirements includes a maxmium number of characters (and it really shouldn't unless it's 255 characters or something or if you know absolutely nothing about password strength or IT Security....I'm only including this because there are plenty of IT Security nincompoops out there calling the shots), then include that number in a `data-maxchars` attribute in the New Password Input.  Ex:
 ```
-<label for="pword1">New Passowrd:>
+<label for="pword1">New Passowrd:</label>
 <input type="password" id="pword1" data-match="pword2" class="newPassword" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
 ```
 * For other password requirements, include pre-defined classnames.  For example, if your requirements include a special charactor, add class `specialChar` to the New Passwords input.  (All classes are to be included in the New Passwords input.)  Ex:
 ```
-<label for="pword1">New Passowrd:>
+<label for="pword1">New Passowrd:</label>
 <input type="password" id="pword1" data-match="pword2" class="newPassword specialChar" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
 ```
 ### Built-in Requirements
@@ -90,3 +90,30 @@ The green and red for the checkmarks and X's each have a contrast ratio (against
 
 ## See it in action
 Hosted here: [https://andrewnordlund.github.io/passwordRequirements/pwReqTest-3.html](https://andrewnordlund.github.io/passwordRequirements/pwReqTest-3.html).
+
+## Advanced
+### Other Languages
+This widget comes with both English and French.  But other languages are possible too.  It's just a little bit more complicated.  You have to add text for any requirement that you want to use, as well as "met", "unmet", and "Your password must contain."
+
+The "met", "unmet", and "Your password must contain" are all in an object called <code>nordburgPwReq.stringBundle</code>.  Just add entries with keys of your target language's 2 letter code and "met", "unmet", and "description".  For example:  in german you would put somewhere in your HTML:
+```
+<script>
+nordburgPwReq.stringBundle["description"]["de"] = "Ihr Passwort muss enthalten"
+...
+</script>
+```
+And in that same script area to add text to an existing requirement, you'd use the object <code>nordburgPwReq.allPwReqs\["ruleName"\]\["text"\][2-letter language code] = "text to add";</code>
+
+(For maximum length and minimum length, use "%d" where the number would go.)
+
+Example, in German again, for minimum and maximum number of characters, in the same <code>&lt;script&gt;</code> as above:
+```
+nordburgPwReq.allPwReqs["minchars"]["text"]["de"] = "Mindestens %d Zeichen";
+nordburgPwReq.allPwReqs["maxchars"]["text"]["de"] = "Maximal %d Zeichen";
+```
+
+*IMPORTANT*
+In order for this to work, the components of this widget need to be a descendant of an element marked as the target language.  Ex: for the German example above: `<html lang="de">`.
+
+## See a Japanese demo
+Hosted here: [https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html](https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html).

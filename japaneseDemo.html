@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="jp">
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,initial-scale=1" name="viewport">
+		<title>パスワード要件テストページ</title>
+		<link rel="Stylesheet" type="text/css" href="demo.css">
+		<link rel="Stylesheet" type="text/css" href="pwReqTest.css">
+		<script src="pwReqTest-3.js"></script>
+	</head>
+	<body>
+		<header>
+		<h1 id="theH1">パスワード要件テストページ</h1>
+		</header>
+		<main>
+			<div id="mainContent">
+				<script>
+					nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"jp" : "「パスワード」は含まれていません"}, check : function (p1, p2) {
+						let re = /password/i;
+						return !(p1.match(re) || p2.match(re));
+					}};
+					nordburgPwReq.allPwReqs["doubleChars"]["text"]["jp"] = "連続して同じ2文字はありません";
+					nordburgPwReq.allPwReqs["nospaces"]["text"]["jp"] = "場所がない";
+					nordburgPwReq.allPwReqs["minchars"]["text"]["jp"] = "少なくとも%d 文字";
+					nordburgPwReq.allPwReqs["maxchars"]["text"]["jp"] = "最大%d文字";
+					nordburgPwReq.allPwReqs["match"]["text"]["jp"] = "パスワードが一致する必要があります";
+					nordburgPwReq.stringBundle["description"]["jp"] = "パスワードには次のものが含まれている必要があります";
+					nordburgPwReq.stringBundle["met"]["jp"] = "会った";
+					nordburgPwReq.stringBundle["unmet"]["jp"] = "アンメット";
+
+				</script>
+				<section>
+					<h2>日本語で</h2>
+					<div class="fieldHolder">
+						<label for="pword1">新しいパスワード:</label>
+						<input name="pword1" id="pword1" type="password" class="newPassword notPassword doubleChars nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn" aria-describedby="theH1">
+					</div>
+					<div class="fieldHolder">
+						<label for="pword2">パスワードを認証する:</label>
+						<input name="pword2" id="pword2" type="password" class="confirmPassword" data-match="pword1">
+					</div>
+					<div id="passwordRequirementsEn"></div>
+					<div class="fieldHolder">
+						<input value="Submit" id="submitBtn" type="button">
+					</div>
+					<details>
+						<summary>Code</summary>
+						<pre>
+&lt;script&gt;
+	nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"jp" : "「パスワード」は含まれていません"}, check : function (p1, p2) {
+		let re = /password/i;
+		return !(p1.match(re) || p2.match(re));
+	}};
+	nordburgPwReq.allPwReqs["doubleChars"]["text"]["jp"] = "連続して同じ2文字はありません";
+	nordburgPwReq.allPwReqs["nospaces"]["text"]["jp"] = "場所がない";
+	nordburgPwReq.allPwReqs["minchars"]["text"]["jp"] = "少なくとも%d 文字";
+	nordburgPwReq.allPwReqs["maxchars"]["text"]["jp"] = "最大%d文字";
+	nordburgPwReq.allPwReqs["match"]["text"]["jp"] = "パスワードが一致する必要があります";
+	nordburgPwReq.stringBundle["description"]["jp"] = "パスワードには次のものが含まれている必要があります";
+	nordburgPwReq.stringBundle["met"]["jp"] = "会った";
+	nordburgPwReq.stringBundle["unmet"]["jp"] = "アンメット";
+&lt;/script&gt;
+...
+
+&lt;div class="fieldHolder"&gt;
+	&lt;label for="pword1"&gt;新しいパスワード:&lt;/label&gt;
+	&lt;input name="pword1" id="pword1" type="password" class="newPassword notPassword doubleChars nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn"&gt;
+&lt;/div&gt;
+&lt;div class="fieldHolder"&gt;
+	&lt;label for="pword2"&gt;パスワードを認証する:&lt;/label&gt;
+	&lt;input name="pword2" id="pword2" type="password" class="confirmPassword" data-match="pword1"&gt;
+&lt;/div&gt;
+&lt;div id="passwordRequirementsEn"&gt;&lt;/div&gt;
+						</pre>
+					</details>
+				</section>
+
