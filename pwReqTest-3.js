@@ -2,7 +2,8 @@ let nordburgPwReq = {
 	version : "0.1.0",
 	defLang : "en",
 	descriptors : {},
-
+	minchars : {},
+	maxchars : {},
 	stringBundle : {
 		"description" : {"en" : "Your password must contain:", "fr" : "Votre mot de passe doit contenir :"},
 		"met" : {"en" : "Met", "fr" : "Remplie"},
@@ -18,7 +19,11 @@ let nordburgPwReq = {
 				let regexp = /(.)\1/g;
 				return !(p1.match(regexp) || p2.match(regexp));
 			}
-		}
+		},
+		"minchars" : {"text" : {"en" : "At least %d characters", "fr" : "Au moins %d caractères"}, check : function(p1, p2) { return p1.length >= /*nordburgPwReq.minchars*/ 0 || p2.length >= /*nordburgPwReq.minchars;*/ 0}},
+		"maxchars" : {"text" : {"en" : "A maximum of %d characters", "fr" : "Un maximum de %d caractères"}, check : function(p1, p2) { return p1.length <= 255 /*nordburgPwReq.maxchars[pid]*/ && p2.length <= 255 /*nordburgPwReq.maxchars[pid]*/;}},
+		"match" : {"text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, check : function (p1, p2) { return p1 == p2 && p1.match(/\S/);}},
+
 	},
 	myPwReqs : {},
 	custPwRequirements : {},
@@ -69,13 +74,27 @@ let nordburgPwReq = {
 
 					// build myPwReqs
 
-					if (passwords[i].hasAttribute("data-minchars")) {
-						let minChars = passwords[i].getAttribute("data-minchars");
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"] = {"stat" : "unmet", "text" : {"en" : "At least " + minChars + " characters", "fr" : "Au moins " + minChars + " caractères"}, "li" : null, check :  function(p1, p2) { return p1.length >= minChars || p2.length >= minChars;}};
+					if (passwords[i].hasAttribute("data-minchars") || passwords[i].hasAttribute("minlength")) {
+						let minChars = (passwords[i].hasAttribute("data-minchars") ? passwords[i].getAttribute("data-minchars") : passwords[i].getAttribute("minlength")).replace(/\D/g, "");;
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"] = {};
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["text"] = JSON.parse(JSON.stringify(nordburgPwReq.allPwReqs["minchars"]["text"]));
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["check"] = function(p1, p2) { return p1.length >= minChars || p2.length >= minChars;};
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["stat"] = "unmet";
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["li"] = null;
+						for (let lang in nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["text"]) {
+							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["text"][lang] = nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["text"][lang].replace("%d", minChars);
+						}
 					}
-					if (passwords[i].hasAttribute("data-maxchars")) {
-						let maxChars = passwords[i].getAttribute("data-maxchars");
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"] = {"stat" : "unmet", "text" : {"en" : "A maximum of " + maxChars + " characters", "fr" : "Un maximum de " + maxChars + " caractères"}, "li" : null, check :  function(p1, p2) { return p1.length <= maxChars && p2.length <= maxChars;}};
+					if (passwords[i].hasAttribute("data-maxchars") || passwords[i].hasAttribute("maxlength")) {
+						let maxChars = (passwords[i].hasAttribute("data-maxchars") ? passwords[i].getAttribute("data-maxchars") : passwords[i].getAttribute("maxlength")).replace(/\D/g, "");
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"] = {};
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["text"] = JSON.parse(JSON.stringify(nordburgPwReq.allPwReqs["maxchars"]["text"]));
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["check"] = function(p1, p2) { return p1.length <= maxChars && p2.length <= maxChars;};
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["stat"] = "unmet";
+						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["li"] = null;
+						for (let lang in nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["text"]) {
+							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["text"][lang] = nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["text"][lang].replace("%d", maxChars);
+						}
 					}
 
 					let reqs = passwords[i].getAttribute("class").split(" ");
@@ -95,13 +114,18 @@ let nordburgPwReq = {
 						try {
 							let otherP = passwords[i].getAttribute("data-match");
 							
-							//if (!nordburgPwReq.myPwReqs[otherP]){
-							//	nordburgPwReq.myPwReqs[otherP] = {"reqs" : {}, "lang" : lang, "descriptor" :  passwordDesc, "reqsList" : reqsList};
-							//}
-							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"] = {"stat" : "unmet", "text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, "li" : null, check :  function (p1, p2) {
-									return p1 == p2 && p1.match(/\S/);
-								}
-							};
+							if (Object.assign) {
+								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"] = Object.assign({}, nordburgPwReq.allPwReqs["match"]);
+							} else {
+								console.warn ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.");
+								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"] = nordburgPwReq.allPwReqs["match"];
+							}
+							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"]["stat"] = "unmet";
+							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"]["li"] = null;
+
+
+						
+
 
 						}
 						catch (ex) {
@@ -181,7 +205,7 @@ let nordburgPwReq = {
 
 	getLang : function (n) {
 		if (n.hasAttribute("lang")) {
-			return (nordburgPwReq.stringBundle["description"][n.getAttribute("lang").replace(/-.*$/, "")] ? n.getAttribute("lang").replace(/-.*$/, "") : defLang);
+			return (nordburgPwReq.stringBundle["description"][n.getAttribute("lang").replace(/-.*$/, "")] ? n.getAttribute("lang").replace(/-.*$/, "") : nordburgPwReq.defLang);
 		} else {
 			return (n.nodeName == "HTML" || n.parentNode.nodeName == "#document" ? nordburgPwReq.defLang : nordburgPwReq.getLang(n.parentNode));
 		}
@@ -210,7 +234,8 @@ let nordburgPwReq = {
 		newSpan.setAttribute("aria-atomic", "true");
 		newSpan.classList.add("pwReqText");
 		let lang = nordburgPwReq.myPwReqs[rid]["lang"];
-		newSpan.innerHTML = nordburgPwReq.myPwReqs[rid]["reqs"][req]["text"][lang] + " <span class=\"invisibleStuff unmet\">" + nordburgPwReq.stringBundle[initStat][lang]  + "</span>";
+		let txt = (nordburgPwReq.myPwReqs[rid]["reqs"][req]["text"][lang] ? nordburgPwReq.myPwReqs[rid]["reqs"][req]["text"][lang] : nordburgPwReq.myPwReqs[rid]["reqs"][req]["text"][nordburgPwReq.defLang]);
+		newSpan.innerHTML = txt + " <span class=\"invisibleStuff unmet\">" + nordburgPwReq.stringBundle[initStat][lang]  + "</span>";
 
 		newLI.appendChild(newSpan);
 

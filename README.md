@@ -90,3 +90,27 @@ The green and red for the checkmarks and X's each have a contrast ratio (against
 
 ## See it in action
 Hosted here: [https://andrewnordlund.github.io/passwordRequirements/pwReqTest-3.html](https://andrewnordlund.github.io/passwordRequirements/pwReqTest-3.html).
+
+## Advanced
+### Other Languages
+This widget comes with both English and French.  But other languages are possible too.  It's just a little bit more complicated.  You have to add text for any requirement that you want to use, as well as "met", "unmet", and "Your password must contain."
+
+The "met", "unmet", and "Your password must contain" are all in an object called <code>nordburgPwReq.stringBundle</code>.  Just add entries with keys of your target language's 2 letter code and "met", "unmet", and "description".  For example:  in german you would put somewhere in your HTML:
+```
+<script>
+nordburgPwReq.stringBundle["description"]["de"] = "Ihr Passwort muss enthalten"
+...
+</script>
+```
+And in that same script area to add text to an existing requirement, you'd use the object <code>nordburgPwReq.allPwReqs\["ruleName"\]\["text"\][2-letter language code] = "text to add";</code>
+
+(For maximum length and minimum length, use "%d" where the number would go.)
+
+Example, in German again, for minimum and maximum number of characters, in the same <code>&lt;script&gt;</code> as above:
+```
+nordburgPwReq.allPwReqs["minchars"]["text"]["de"] = "Mindestens %d Zeichen";
+nordburgPwReq.allPwReqs["maxchars"]["text"]["de"] = "Maximal %d Zeichen";
+```
+
+## See a Japanese demo
+Hosted here: [https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html](https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html).
