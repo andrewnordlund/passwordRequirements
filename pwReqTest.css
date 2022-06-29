@@ -25,25 +25,28 @@
 }
 .reqmet::before {
 	content: "✔";
-	color: #00A41E;
+	color: black;
 	margin-right: 4px;
-	filter: invert(29%) sepia(87%) saturate(1376%) hue-rotate(113deg) brightness(95%) contrast(105%);
+	filter: brightness(0) saturate(100%) invert(29%) sepia(87%) saturate(1376%) hue-rotate(113deg) brightness(95%) contrast(105%);
 }
  
 html {
 	box-sizing: border-box;
 }
+/*
 .glyphicon-remove:before {
-	/*content:"\e014";*/
+	/*content:"\e014";* /
 	content: "✘";
 	color: #AA0000;
 }
- 
+*/
+ /*
 .glyphicon-ok:before {
-	/*content:"\e013";*/
+	/*content:"\e013";* /
 	content: "✔";
 	color: #008A1E;
 }
+*/
 ul.pwReqsUL {
   list-style: none;
 }
@@ -68,4 +71,5 @@ ul.pwReqsUL>li>span {
 	position:absolute;
 	width:1px
 }
+
 
