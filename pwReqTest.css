@@ -27,6 +27,7 @@
 	content: "✔";
 	color: #00A41E;
 	margin-right: 4px;
+	filter: invert(29%) sepia(87%) saturate(1376%) hue-rotate(113deg) brightness(95%) contrast(105%);
 }
  
 html {
