@@ -1,5 +1,7 @@
 @charset "utf-8";
 
+
+/*
 @font-face {
 	font-family:"Glyphicons Halflings";
 	src:url(fonts/glyphicons-halflings-regular.eot);
@@ -9,23 +11,36 @@
 	url(fonts/glyphicons-halflings-regular.ttf) format("truetype"),
 	url(fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format("svg")
 }
+*/
 .glyphicon {
 	font-family:"Glyphicons Halflings";
 	line-height:140%;
 	vertical-align: middle;
 }
 
+.requnmet::before {
+	content: "✘";
+	color: #AA0000;
+	margin-right: 4px;
+}
+.reqmet::before {
+	content: "✔";
+	color: #00A41E;
+	margin-right: 4px;
+}
  
 html {
 	box-sizing: border-box;
 }
 .glyphicon-remove:before {
-	content:"\e014";
+	/*content:"\e014";*/
+	content: "✘";
 	color: #AA0000;
 }
  
 .glyphicon-ok:before {
-	content:"\e013";
+	/*content:"\e013";*/
+	content: "✔";
 	color: #008A1E;
 }
 ul.pwReqsUL {
