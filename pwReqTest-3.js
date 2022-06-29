@@ -1,5 +1,7 @@
+console.log ("Starting js.");
 let nordburgPwReq = {
 	version : "0.1.0",
+	dbug : false,
 	defLang : "en",
 	descriptors : {},
 	minchars : {},
@@ -29,7 +31,7 @@ let nordburgPwReq = {
 	custPwRequirements : {},
 
 	init : function () {
-
+		console.log ("Initting");
 		let lang = nordburgPwReq.defLang;
 
 		nordburgPwReq.dealWithCustomRequirements();
@@ -223,8 +225,8 @@ let nordburgPwReq = {
 		let checkSpan = document.createElement("span");
 		checkSpan.classList.add("pwCheckSpan");
 		checkSpan.classList.add("req" + initStat); 
-		checkSpan.classList.add("glyphicon");
-		checkSpan.classList.add("glyphicon-" + (initStat == "met" ? "ok" : "remove"));
+		/*checkSpan.classList.add("glyphicon");*/
+		checkSpan.classList.add("req" + initStat);
 		checkSpan.setAttribute("aria-hidden", "true");
 		newLI.appendChild(checkSpan);
 
@@ -280,9 +282,9 @@ let nordburgPwReq = {
 			statSpan.classList.add(nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
 
 			let checkSpan = textSpan.parentNode.firstChild;
-			if (checkSpan.classList.contains("glyphicon-ok")) textSpan.parentNode.firstChild.classList.remove("glyphicon-ok");
-			if (checkSpan.classList.contains("glyphicon-remove")) checkSpan.classList.remove("glyphicon-remove");
-			checkSpan.classList.add("glyphicon-" + (nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] == "met" ? "ok" : "remove"));
+			if (checkSpan.classList.contains("reqmet")) textSpan.parentNode.firstChild.classList.remove("reqmet");
+			if (checkSpan.classList.contains("requnmet")) checkSpan.classList.remove("requnmet");
+			checkSpan.classList.add("req" + nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
 		}
 		return nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"];
 	}, // End of checkReq
@@ -310,4 +312,5 @@ let nordburgPwReq = {
 	}, // End of dealWithCustomRequirements
 }
 
+console.log ("Loaded script");
 document.addEventListener("DOMContentLoaded", nordburgPwReq.init, false);
