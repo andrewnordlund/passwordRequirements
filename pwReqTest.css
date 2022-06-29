@@ -25,11 +25,17 @@
 	margin-right: 4px;
 }
 .reqmet::before {
+	/*
 	content: "✔";
 	color: black;
 	margin-right: 4px;
 	font-weight: 700;
 	filter: brightness(0) saturate(100%) invert(28%) sepia(87%) saturate(1376%) hue-rotate(134deg) brightness(96%) contrast(117%);
+	*/
+	font-family: "Brush Script MT", "fantasy", Papyrus, Coperplate, Verdana, serif;
+	font-weight: 700;
+	color: #008A1E;
+	content: "✓";
 }
  
 html {
