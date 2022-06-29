@@ -21,13 +21,15 @@
 .requnmet::before {
 	content: "✘";
 	color: #AA0000;
+	font-weight: 700;
 	margin-right: 4px;
 }
 .reqmet::before {
 	content: "✔";
 	color: black;
 	margin-right: 4px;
-	filter: brightness(0) saturate(100%) invert(29%) sepia(87%) saturate(1376%) hue-rotate(113deg) brightness(95%) contrast(105%);
+	font-weight: 700;
+	filter: brightness(0) saturate(100%) invert(28%) sepia(87%) saturate(1376%) hue-rotate(134deg) brightness(96%) contrast(117%);
 }
  
 html {
