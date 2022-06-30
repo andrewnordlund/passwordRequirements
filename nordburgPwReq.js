@@ -39,8 +39,6 @@ let nordburgPwReq = {
 			for (let i = 0; i < passwords.length; i++) {
 				let pLang = nordburgPwReq.defLang;
 				if (!nordburgPwReq.myPwReqs[passwords[i].id]) nordburgPwReq.myPwReqs[passwords[i].id] = {"reqs" : {}, "lang" : nordburgPwReq.defLang, "descriptor" :  null, "reqsList" : null, "reqPos"  : "after"};
-				// passwords[i].setAttribute("autocomplete", "new-password");	// This should really be set by the author
-		
 				if (passwords[i].classList.contains("newPassword")) {
 					let passwordRequirementsDiv = null;
 					try {
@@ -206,7 +204,6 @@ let nordburgPwReq = {
 		let checkSpan = document.createElement("span");
 		checkSpan.classList.add("pwCheckSpan");
 		checkSpan.classList.add("req" + initStat); 
-		/*checkSpan.classList.add("glyphicon");*/
 		checkSpan.classList.add("req" + initStat);
 		checkSpan.setAttribute("aria-hidden", "true");
 		newLI.appendChild(checkSpan);
