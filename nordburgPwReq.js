@@ -13,10 +13,10 @@ let nordburgPwReq = {
 	allPwReqs : {
 		"lowercase" : {"text" : {"en" : "At least 1 lowercase letter", "fr" : "Au moins 1 lettre minuscule"}, check : function (p1, p2) {return p1.match(/[a-z]/) || p2.match(/[a-z]/);}},
 		"uppercase" : {"text" : {"en" : "At least 1 uppercase letter", "fr" : "Au moins 1 lettre majuscule"}, check : function (p1, p2) {return p1.match(/[A-Z]/) || p2.match(/[A-Z]/);}},
-		"specialChar" : {"text" : {"en" : "At least 1 special character", "fr" : "Au moins 1 caractère spécial"}, check : function (p1, p2) { return p1.match(/[^\w\s]/) || p2.match(/[^\w\s]/);}},
+		"special-char" : {"text" : {"en" : "At least 1 special character", "fr" : "Au moins 1 caractère spécial"}, check : function (p1, p2) { return p1.match(/[^\w\s]/) || p2.match(/[^\w\s]/);}},
 		"digit" : {"text" : {"en" : "At least 1 digit", "fr" : "Au moins 1 chiffre"}, check : function (p1, p2) { return p1.match(/[0-9]/) || p2.match(/[0-9]/);}},
 		"nospaces" : {"text" : {"en" : "No spaces", "fr" : "Sans espaces"}, check : function (p1, p2) { return !(p1.match(/[\s\n\t\f ]/) || p2.match(/[\s\n\t\f ]/));}},
-		"doubleChars" : {"text" : {"en" : "No two characters the same consecutively", "fr" : "Il n'y a pas deux personnages identiques consécutivement"}, check : function (p1, p2) { 
+		"double-chars" : {"text" : {"en" : "No two characters the same consecutively", "fr" : "Il n'y a pas deux personnages identiques consécutivement"}, check : function (p1, p2) { 
 				let regexp = /(.)\1/g;
 				return !(p1.match(regexp) || p2.match(regexp));
 			}
@@ -38,8 +38,8 @@ let nordburgPwReq = {
 		if (passwords) {
 			for (let i = 0; i < passwords.length; i++) {
 				let pLang = nordburgPwReq.defLang;
-				if (!nordburgPwReq.myPwReqs[passwords[i].id]) nordburgPwReq.myPwReqs[passwords[i].id] = {"reqs" : {}, "lang" : nordburgPwReq.defLang, "descriptor" :  null, "reqsList" : null};
-				passwords[i].setAttribute("autocomplete", "new-password");
+				if (!nordburgPwReq.myPwReqs[passwords[i].id]) nordburgPwReq.myPwReqs[passwords[i].id] = {"reqs" : {}, "lang" : nordburgPwReq.defLang, "descriptor" :  null, "reqsList" : null, "reqPos"  : "after"};
+				// passwords[i].setAttribute("autocomplete", "new-password");	// This should really be set by the author
 		
 				if (passwords[i].classList.contains("newPassword")) {
 					let passwordRequirementsDiv = null;
@@ -50,22 +50,24 @@ let nordburgPwReq = {
 						console.error (ex.message + "\nI think you need to create a <div> with the id that matches the data-passwordRequrementsDiv attribute in your New Password input.");
 					}
 
+					if (passwordRequirementsDiv.classList.contains("req-pos-before")) nordburgPwReq.myPwReqs[passwords[i].id]["reqPos"] = "before";
+					console.log (i + ": Setting reqPos to " + nordburgPwReq.myPwReqs[passwords[i].id]["reqPos"]);
+
 					pLang = nordburgPwReq.getLang(passwordRequirementsDiv);
-					//if (!nordburgPwReq.stringBundle["description"][pLang]) {
-					//	lang = nordburgPwReq.defLang;
-					//}
 					nordburgPwReq.myPwReqs[passwords[i].id]["lang"] = pLang;
 					
 					let passwordDesc = null;
+					let passwordDescText = nordburgPwReq.stringBundle["description"][nordburgPwReq.defLang];
 					passwordDesc = document.createElement("p");
 					passwordDesc.id = "nordburgPwReqPassDesc" + i;
 					if (nordburgPwReq.stringBundle["description"][pLang]) {
-						passwordDesc.textContent = nordburgPwReq.stringBundle["description"][pLang];
+						passwordDescText = nordburgPwReq.stringBundle["description"][pLang];
+						console.log ("Desc for " + pLang + " is available for setting it to " + passwordDescText);
 					} else {
-						passwordDesc.textContent = nordburgPwReq.stringBundle["description"][nordburgPwReq.defLang];
 						passwordDesc.setAttribute("lang", nordburgPwReq.defLang);
-
+						console.log ("Desc for " + pLang + " is not available, so setting lang to " + nordburgPwReq.defLang + ".");
 					}
+					passwordDesc.textContent = passwordDescText;
 					nordburgPwReq.myPwReqs[passwords[i].id]["descriptor"] = passwordDesc;
 					nordburgPwReq.descriptors[passwords[i].id] = {"orig" : null, "descriptors" : [passwordDesc.id]};
 					if (passwords[i].hasAttribute("aria-describedby")) nordburgPwReq.descriptors[passwords[i].id]["orig"] = passwords[i].getAttribute("aria-describedby");
@@ -189,7 +191,7 @@ let nordburgPwReq = {
 
 	getLang : function (n) {
 		if (n.hasAttribute("lang")) {
-			return (nordburgPwReq.stringBundle["description"][n.getAttribute("lang").replace(/-.*$/, "")] ? n.getAttribute("lang").replace(/-.*$/, "") : nordburgPwReq.defLang);
+			return n.getAttribute("lang").replace(/-.*$/, "");
 		} else {
 			return (n.nodeName == "HTML" || n.parentNode.nodeName == "#document" ? nordburgPwReq.defLang : nordburgPwReq.getLang(n.parentNode));
 		}
@@ -228,7 +230,9 @@ let nordburgPwReq = {
 		if (pLang != textLang) newSpan.setAttribute("lang", textLang);
 		let statTextLang = (statLang == textLang ? "" : " lang=\"" + statLang + "\"");
 		
-		newSpan.innerHTML = txt + " <span class=\"invisibleStuff " + initStat + "\"" + statTextLang +"> " + statText + "</span>";
+		let statSpan = "<span class=\"invisibleStuff " + initStat + "\"" + statTextLang +">" + statText + "</span>";
+
+		newSpan.innerHTML = (nordburgPwReq.myPwReqs[rid]["reqPos"] == "before" ? statSpan.replace("</span>", (statLang == "fr" ? " " : "") + ": </span>") + txt : txt + " " +statSpan);
 
 		newLI.appendChild(newSpan);
 
@@ -282,8 +286,11 @@ let nordburgPwReq = {
 			} else {
 				statSpan.setAttribute("lang", statLang);
 			}
-
-			statSpan.textContent = " " + statText;
+			if (nordburgPwReq.myPwReqs[p1.id]["reqPos"] == "before") {
+				if (statLang == "fr") statText += " ";
+				statText += ": ";
+			}
+			statSpan.textContent = statText;
 
 			if (statSpan.classList.contains("met")) statSpan.classList.remove("met");
 			if (statSpan.classList.contains("unmet")) statSpan.classList.remove("unmet");
