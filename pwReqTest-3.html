@@ -4,186 +4,111 @@
 		<meta charset="utf-8">
 		<meta content="width=device-width,initial-scale=1" name="viewport">
 		<title>Password Requirements Test Page</title>
-		<link rel="Stylesheet" type="text/css" href="demo.css">
-		<link rel="Stylesheet" type="text/css" href="pwReqTest.css">
-		<script src="pwReqTest-3.js"></script>
+		<link rel="Stylesheet" type="text/css" href="pwReqTest-3.css">
 	</head>
 	<body>
 		<header>
-		<h1 id="theH1">Password Requirements Test Page</h1>
+		<h1>Password Requirements Test Page</h1>
 		</header>
-		<main>
-			<div id="mainContent">
-				<script>
-					nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
-						let re = /password/i;
-						return !(p1.match(re) || p2.match(re));
-					}};
-				</script>
-				<section>
-					<h2>In English</h2>
-					<div class="fieldHolder">
-						<label for="pword1">New Password:</label>
-						<input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar notPassword digit doubleChars nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn" aria-describedby="theH1">
-					</div>
-					<div class="fieldHolder">
-						<label for="pword2">Confirm Password:</label>
-						<input name="pword2" id="pword2" type="password" class="confirmPassword" data-match="pword1">
-					</div>
-					<div id="passwordRequirementsEn"></div>
-					<div class="fieldHolder">
-						<input value="Submit" id="submitBtn" type="button">
-					</div>
-					<details>
-						<summary>Code</summary>
-						<pre>
-&lt;script&gt;
-	nordburgPwReq.custPwRequirements["pword1"] = {"notPassword" : {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
-		let re = /password/i;
-		return !(p1.match(re) || p2.match(re));
-	}}};
-&lt;/script&gt;
-...
-
-&lt;div class="fieldHolder"&gt;
-	&lt;label for="pword1"&gt;Password:&lt;/label&gt;
-	&lt;input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar digit doubleChars nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn"&gt;
-&lt;/div&gt;
-&lt;div class="fieldHolder"&gt;
-	&lt;label for="pword2"&gt;Confirm Password:&lt;/label&gt;
-	&lt;input name="pword2" id="pword2" type="password" class="confirmPassword" data-match="pword1"&gt;
-&lt;/div&gt;
-&lt;div id="passwordRequirementsEn"&gt;&lt;/div&gt;
-						</pre>
-					</details>
-				</section>
-
-				<section lang="fr" id="frenchDemoSect">
-					<div id="passwordRequirementsFr"></div>
-					<h2>En Français</h2>
-					<div class="fieldHolder">
-						<label for="pword3">Nouveau mot de passe :</label>
-						<input name="pword3" id="pword3" type="password" class="notPassword newPassword lowercase uppercase specialChar digit doubleChars" minlength="8" data-match="pword4"  data-maxchars="20" maxlength="21" data-passwordRequirementsDiv="passwordRequirementsFr">
-					</div>
-					<div class="fieldHolder">
-						<label for="pword4">Confirmez le mot de passe :</label>
-						<input name="pword4" id="pword4" type="password" class="confirmPassword" data-match="pword3">
-					</div>
-					<div class="fieldHolder">
-						<input value="Submit" id="submitBtn2" type="button">
-					</div>
-					<details>
-						<summary>Code</summary>
-<pre>
-&lt;div id="passwordRequirementsFr"&gt;&lt;/div&gt;
-...
-&lt;div class="fieldHolder"&gt;
-	&lt;label for="pword3"&gt;Mot de passe :&lt;/label&gt;
-	&lt;input name="pword3" id="pword3" type="password" class="newPassword lowercase uppercase specialChar digit doubleChars" data-minchars="8" data-match="pword4"  data-passwordRequirementsDiv="passwordRequirementsFr"&gt;
-&lt;/div&gt;
-&lt;div class="fieldHolder"&gt;
-	&lt;label for="pword4"&gt;Confirmez le mot de passe :&lt;/label&gt;
-	&lt;input name="pword4" id="pword4" type="password" class="confirmPassword" data-match="pword3"&gt;
-&lt;/div&gt;
-</pre>
-					</details>
-				</section>
-<script>
-			if (!Object.assign) {
-				let frenchDemoSect = null;
-				frenchDemoSect = document.getElementById("frenchDemoSect");
-				if (frenchDemoSect) frenchDemoSect.parentNode.removeChild(frenchDemoSect);
-			}
-		</script>
+		<div id="mainContent">
+			<div class="fieldHolder">
+				<label for="pword1">Password:</label>
+				<input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar digit" data-minchars="8" data-match="pword2">
 			</div>
-			<div>
-				<h2>Notes</h2>
-				<p>The important parts of this widget are:</p>
-				<ul>
-					<li>Only the first password field references the list of requirements using <code>aria-describedby</code></li>
-					<li>“Met” and “Unmet” only change when the criteria becomes met, or unmet.</li>
-					<li>Each list item is like:  <code>&lt;li aria-live=”assertive” artia-atomic=”true”&gt;</code>.  <code>aria-live=”assertive”</code> makes a screen reader read out the contents when there’s a change, and <code>aria-atomic=”true”</code> makes the screen reader read out the whole line, not just “met” or “unmet”.  Note that each list item needs to be its own live region.  If the whole widget is a live region, then the whole list gets read out whenever there’s a change.  You don’t want that.</li>
-				</ul>
+			<div class="fieldHolder">
+				<label for="pword2">Confirm Password:</label>
+				<input name="pword2" id="pword2" type="password" class="confirmPassword" data-match="pword1">
 			</div>
+			<div id="passwordRequirements">
+				<p id="passDesc"></p>
+			</div>
+			<input value="Submit" id="submitBtn" type="button">
+			
+		</div>
+		<div>
+			<h2>Notes</h2>
+			<p>The important parts of this widget are:</p>
+			<ul>
+				<li>Only the first password field references the list of requirements using <code>aria-describedby</code></li>
+				<li>“Met” and “Unmet” only change when the criteria becomes met, or unmet.</li>
+				<li>Each list item is like:  <code>&lt;li aria-live=”assertive” artia-atomic=”true”&gt;</code>.  <code>aria-live=”assertive”</code> makes a screen reader read out the contents when there’s a change, and <code>aria-atomic=”true”</code> makes the screen reader read out the whole line, not just “met” or “unmet”.  Note that each list item needs to be its own live region.  If the whole widget is a live region, then the whole list gets read out whenever there’s a change.  You don’t want that.</li>
+			</ul>
+		</div>
+		<section>
+			<h2>Screen Reader results</h2>
 			<section>
-				<h2>Screen Reader results</h2>
+				<h3>Windows:</h3>
 				<section>
-					<h3>Windows:</h3>
-					<section>
-						<h4>NVDA 2022.1</h4>
-						<dl>
-							<dt>Firefox 101</dt>
-							<dd>When focusing on the Password field, NVDA reads all requirements as it should.  And as a password is typed, the changes are announced.After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd>, all the changed requirements get read out as they should.  Then as you type again, new requirements status get read out as they should. When you start typing, any pre-existing <code>aria-describedby</code> elements get read out as this widget's <code>aria-describedby</code> references are removed. Full support.</dd>
-							<dt>Edge 103</dt>
-							<dd>When focusing on the Password field, NVDA reads all requirements as it should.  And as a password is typed, the changes are announced.After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd>, all the changed requirements get read out as they should.  Then as you type again, new requirements status get read out as they should.  When you start typing, any pre-existing <code>aria-describedby</code> elements get read out as this widget's <code>aria-describedby</code> references are removed.  Full support.</dd>
-							<dt>Chrome 102</dt>
-							<dd>When focusing on the Password field, NVDA reads all requirements as it should.  And as a password is typed, the changes are announced.After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd>, all the changed requirements get read out as they should.  Then as you type again, new requirements status get read out as they should.  When you start typing, any pre-existing <code>aria-describedby</code> elements get read out as this widget's <code>aria-describedby</code> references are removed.  Full support.</dd>
-							<dt>Internet Explorer 11</dt>
-							<dd>When focus lands on the password field, all requirements are read, but not anything else referenced by <code>aria-describedby</code>. Then as I type a password when a met/unmet changes, that requirement is read out, but the status ("met"/"unmet") is read as it was _before_ the change.  Disappointing.  After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd>, all the changed requirements get read out as they should.  Then as you type again, new requirements status get read out as they should.  When you start typing, any pre-existing <code>aria-describedby</code> elements do not get read out as this widget's <code>aria-describedby</code> references are removed.</dd>
-						</dl>
-					</section>
-					<section>
-						<h4>JAWS 2021</h4>
-						<dl>
-							<dt>Firefox 101</dt>
-							<dd>When focusing on the Password field, JAWS reads all requirements as it should. Changes are announced when typing a password.  After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd> each changed requirement and its new status gets read out.  Then as I type a new password, as requirements are met, the requirment and new status are read. When you start typing, any pre-existing <code>aria-describedby</code> elements get read out as this widget's <code>aria-describedby</code> references are removed. Full support.</dd>
-							<dt>Edge 103</dt>
-							<dd>When focusing on the Password field, JAWS reads all requirements as it should.  And as a password is typed, the changes are announced. When you start typing, any pre-existing <code>aria-describedby</code> elements get read out as this widget's <code>aria-describedby</code> references are removed.  Full support.</dd>
-							<dt>Chrome 102</dt>
-							<dd>When focusing on the Password field, JAWS reads all requirements as it should.  And as a password is typed, the changes are announced.  Full support. After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd> each changed requirement and its new status gets read out.  Then as I type a new password, as requirements are met, the requirment and new status are read.  Full support.  After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd> each changed requirement and its new status gets read out.  Then as I type a new password, as requirements are met, the requirment and new status are read.  When you start typing, any pre-existing <code>aria-describedby</code> elements get read out as this widget's <code>aria-describedby</code> references are removed.  Full support.</dd>
-							<dt>Internet Explorer 11</dt>
-							<dd>When focusing on the Password field, JAWS reads all requirements as it should.  And as a password is typed, the changes are only sometimes, seemingly randomly, announced.  When you start typing, any pre-existing <code>aria-describedby</code> elements get read out as this widget's <code>aria-describedby</code> references are removed.  After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd> no status changes are announced.  When you start typing, any pre-existing <code>aria-describedby</code> elements get read out as this widget's <code>aria-describedby</code> references are removed.</dd>
-						</dl>
-					</section>
-					<section>
-						<h4>Narrator</h4>
-						<dl>
-							<dt>Firefox 101</dt>
-							<dd>Does not read out the requirements when focus lands on the password input.  It should.  Then as you type, it does not read out the criteria as they're met/unmet.  No support.   When you start typing, any pre-existing <code>aria-describedby</code> elements are read out as this widget's <code>aria-describedby</code> references are removed.</dd>
-							<dt>Edge 103</dt>
-							<dd>Does not read out the requirements when focus lands on the password input.  It should.  Then as you type, it does read out the criteria as they're met/unmet.  Also, after you type any character, the blue focus indicator moves to the next element and Narrator reads out "End of line selected."  Note: if "Hear advanced detail, like help text, on buttons and other controls" is turned on in Narrator Settings, then the <code>aria-describedby</code> part is read.  After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd>, all the changed requirements get read out as they should.  Then as you type again, new requirements status get read out as they should.  When you start typing, any pre-existing <code>aria-describedby</code> elements are not read out as this widget's <code>aria-describedby</code> references are removed.</dd>
-							<dt>Chrome 102</dt>
-							<dd>Does not read out the requirements when focus lands on the password input.  It should.  Then as you type, it does read out the criteria as they're met/unmet.  After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd> only the changed statii get read (ex: "Unmet unmet met met").  Then as you type the password, the requirements that were changed in the preceding step are not read out as their status changed; only the status itself.  ("Met met").  When you start typing, any pre-existing <code>aria-describedby</code> elements are not read out as this widget's <code>aria-describedby</code> references are removed.</dd>
-							<dt>Internet Explorer 11</dt>
-							<dd>Does read out the requirements when focus lands on the password input...after a minute of just waiting.  But it only reads out the list items, not the "Your password must contain...." or any other element referenced by <code>aria-describedby</code>.  Then as you type, it reads out the criteria as they're met/unmet twice.  When you start typing, any pre-existing <code>aria-describedby</code> elements are not read out as this widget's <code>aria-describedby</code> references are removed.</dd>
-						</dl>
-					</section>
+					<h4>NVDA 2022.1</h4>
+					<dl>
+						<dt>Firefox 100</dt>
+						<dd>When focusing on the Password field, NVDA reads all requirements as it should.  And as a password is typed, the changes are announced.  Full support.</dd>
+						<dt>Edge 102</dt>
+						<dd>When focusing on the Password field, NVDA reads all requirements as it should.  And as a password is typed, the changes are announced.  Full support.</dd>
+						<dt>Chrome 101</dt>
+						<dd>When focusing on the Password field, NVDA reads all requirements as it should.  And as a password is typed, the changes are announced.  Full support.</dd>
+						<dt>Internet Explorer 11</dt>
+						<dd>When focus lands on the password field, all requirements are read as they should be. Then as I type a password when a met/unmet changes, that requirement is read out, but the status ("met"/"unmet") is read as it was _before_ the change.  Disappointing.  Furthermore, when a condition becomes met, the <code>.unmet</code> class is not removed so the word "Met" shows up in red instead of green.</dd>
+					</dl>
 				</section>
 				<section>
-					<h3>iOS with VoiceOver</h3>
-					<section>
-						<h4>iOS v14</h4>
-						<dl>
-							<dt>Sarafi, Firefox, and Chrome</dt>
-							<dd>When focusing on the Password field, VO reads all requirements as it should.  And as a password is typed, the changes are announced.  Full support.</dd>
-						</dl>
-					</section>
+					<h4>JAWS 2021</h4>
+					<dl>
+						<dt>Firefox 100</dt>
+						<dd>When focusing on the Password field, JAWS reads all requirements as it should.  But as a password is typed, the changes are not announced.</dd>
+						<dt>Edge 102</dt>
+						<dd>When focusing on the Password field, JAWS reads all requirements as it should.  And as a password is typed, the changes are announced.  Full support.</dd>
+						<dt>Chrome 101</dt>
+						<dd>When focusing on the Password field, JAWS reads all requirements as it should.  And as a password is typed, the changes are announced.  Full support.</dd>
+						<dt>Internet Explorer 11</dt>
+						<dd>When focusing on the Password field, JAWS reads all requirements as it should.  And as a password is typed, the changes are announced.  Furthermore, when a condition becomes met, the <code>.unmet</code> class is not removed so the word "Met" shows up in red instead of green.</dd>
+					</dl>
 				</section>
 				<section>
-					<h3>Mac OS X with VoiceOver</h3>
-					<section>
-						<h4>Mac OS X 10.15.7 (Catalina)</h4>
-						<dl>
-							<dt>Sarafi, Firefox 101, and Chrome</dt>
-							<dd>When focusing on the Password field, VO reads all requirements as it should.  And as a password is typed, the changes are announced.  After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd> something strange happens. If the status of several criteria changes, only one is read out.  Then as you type requirements' status changes, if the status had changed in the deletion, the status now doesn't get read out, only the requirement.  For example, if you type out "password" then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd> then "P" you'll hear "At least one uppercase letter met." Then if you type "a" you'll hear "At least 1 lowercase letter."  This happens if the live region is either assertive or polite.</dd>
-						</dl>
-						<p><strong>Note</strong>: In Firefox, the <code>lang</code> is completely ignored.  In Chrome and Safari, when reading through the page, the <code>lang</code> attribute is respected, but when form labels and <code>aria-describedby</code> sections are being read when focus is in an input, it ignores the <code>lang</code> attibute.  For example, my system settings are in English, so all the French is read out with a strong English accent.</p>
-					</section>	
+					<h4>Narrator</h4>
+					<dl>
+						<dt>Firefox 100</dt>
+						<dd>Does not read out the requirements when focus lands on the password input.  It should.  Then as you type, it does not read out the criteria as they're met/unmet.</dd>
+						<dt>Edge 102</dt>
+						<dd>Does not read out the requirements when focus lands on the password input.  It should.  Then as you type, it does read out the criteria as they're met/unmet.  Also, after you type any character, the blue focus indicator moves to the next element and Narrator reads out "End of line selected."  Note: if "Hear advanced detail, like help text, on buttons and other controls" is turned on in Narrator Settings, then the <code>aria-describedby</code> part is read</dd>
+						<dt>Chrome 101</dt>
+						<dd>Does not read out the requirements when focus lands on the password input.  It should.  Then as you type, it does read out the criteria as they're met/unmet.</dd>
+						<dt>Internet Explorer 11</dt>
+						<dd>Does not read out the requirements when focus lands on the password input.  It should.  Then as you type, it does not read out the criteria as they're met/unmet.  No support.  Furthermore, when a condition becomes met, the <code>.unmet</code> class is not removed so the word "Met" shows up in red instead of green.  Total failure.</dd>
+					</dl>
 				</section>
-
-				<h3>Conclusion</h3>
-				<p>This works as expected in most browser, OS, and screen reader combos, except Narrator, which seems to have issues with <code>aria-describedby</code>, with one exception:  If "Hear advanced detail, like help text, on buttons and other controls" is turned on in Narrator Settings, then the <code>aria-describedby</code> part is read in Edge only.  Also, Internet Explorer has reached end of life, so don't worry about it.  Aria-live regions sometimes in JAWS and Firefox sometimes need JAWS to be running before you start Firefox.</p>
-				<h3>Recommendations</h3>
-				<ol>
-					<li>This is the best way I could think of doing.  But it works in most stacks.  Feel free to use!</li>
-				</ol>
 			</section>
-		</main>
+			<section>
+				<h3>iOS with VoiceOver</h3>
+				<section>
+					<h4>iOS v14</h4>
+					<dl>
+						<dt>Sarafi, Firefox, and Chrome</dt>
+						<dd>When focusing on the Password field, VO reads all requirements as it should.  And as a password is typed, the changes are announced.  Full support.</dd>
+					</dl>
+				</section>
+			</section>
+			<section>
+				<h3>Mac OS X with VoiceOver</h3>
+				<section>
+					<h4>Mac OS X 10.15.7 (Catalina)</h4>
+					<dl>
+						<dt>Sarafi, Firefox 101, and Chrome</dt>
+						<dd>When focusing on the Password field, VO reads all requirements as it should.  And as a password is typed, the changes are announced.  Full support.</dd>
+					</dl>
+				</section>	
+			</section>
+
+			<h3>Conclusion</h3>
+			<p>This works as expected in most browser, OS, and screen reader combos, except Narrator, which seems to have issues with <code>aria-describedby</code>, with one exception:  If "Hear advanced detail, like help text, on buttons and other controls" is turned on in Narrator Settings, then the <code>aria-describedby</code> part is read in Edge only.  Also, Internet Explorer is reaching end of life as of today, so don't worry about it.  Aria-live regions aren't working in JAWS and Firefox. This is news to me.</p>
+			<h3>Recommendations</h3>
+			<ol>
+				<li>This is the best way I could think of doing.  But it works in most stacks.  Feel free to use!</li>
+			</ol>
+		</section>
 		<footer>
 			<p>Here is <a href="#">some random footer link</a>.</p>
+			<script src="pwReqTest-3.js"></script>
 		</footer>
-				<script>
-				console.log ("Doing stuff");
-				</script>
-
-</body></html>
+	</body>
+</html>

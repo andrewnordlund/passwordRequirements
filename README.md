@@ -4,7 +4,7 @@ An accessible, bilingual, extensible dynamic password requirements checker.
 Password checkers (when setting or resetting a password) in a site are common.  But most of them fall short when it comes to accessibility.  This implementation tries to fix that.
 
 ## How To Use It
-Download from this repo.  You'll need pwReqTest.js and pwReqTest.css and the /fonts directory.  Then in your HTML file, you'll need to include the pwReqTest.js and pwReqTest.css files in the `<head>` of your page.  Then, somewhere on the page, you'll need two password input fields: one for New Password, and one for Confirm Password.  (This widget requires/allows you to write those to give them your own styling, layout, etc.  But what is required is the following:
+Download from this repo. or `$ npm install nordburgPwReq`.  You'll need nordburgPwReq.js and nordburgPwReq.css.  Then in your HTML file, you'll need to include the nordburgPwReq.js and nordburgPwReq.css files in the `<head>` of your page.  Then, somewhere on the page, you'll need two password input fields: one for New Password, and one for Confirm Password.  (This widget requires/allows you to write those to give them your own styling, layout, etc.  But what is required is the following:
 * The New Password input needs to have class `newPassword`
 * The Confirm Password input needs to have class `confirmPassword`
 * The New and Confirm Password inputs each need to have unique `id`s, and they need to have `data-match` attributes that point to each other.  Ex:
@@ -15,9 +15,10 @@ Download from this repo.  You'll need pwReqTest.js and pwReqTest.css and the /fo
 <label for="pword2">Confirm Passowrd:</label>
 <input type="password" id="pword2" data-match="pword1" class="confirmPassword">
 ```
+	- Note: If, for some reason you only want 1 password `<input>`, just don't make a second one, and leave out the `data-match` attribute from the one you do have.  "Passwords must match" will be left out as a requirement.
 * The list of password requirements needs to appear somewhere on the page.  The Javascript generates that for you, but you need to provide a `<div>` and a reference to that `<div>`.
 	1. Create a `<div>` somewhere with a unique ID, such as: `<div id="passwordReqs"></div>`
-	1. Reference that ID value in a `data-passwordRequirementsDiv`
+	1. Reference that ID value in a `data-passwordRequirementsDiv` attribute in your New Password `<input>`
 Ex:
 ```
 <div id="passwordReqs"></div>
@@ -26,20 +27,27 @@ Ex:
 <input type="password" id="pword1" data-match="pword2" class="newPassword" data-passwordRequirementsDiv="passwordReqs">
 ```
 
-* If your password reqirements includes a minimum number of characters, include that number in a `data-minchars` attribute in the New Password Input.  Ex:
+* If your password reqirements includes a minimum number of characters, include that number in a `minlength` attribute in the New Password `<input>`, and add the class "minchars" to that `<input>`.  Ex:
 ```
 <label for="pword1">New Passowrd:</label>
-<input type="password" id="pword1" data-match="pword2" class="newPassword" data-minchars="8" data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="newPassword minchars" minlength="8" data-passwordRequirementsDiv="passwordReqs">
 ```
 * If your password requirements includes a maxmium number of characters (and it really shouldn't unless it's 255 characters or something or if you know absolutely nothing about password strength or IT Security....I'm only including this because there are plenty of IT Security nincompoops out there calling the shots), then include that number in a `data-maxchars` attribute in the New Password Input.  Ex:
 ```
 <label for="pword1">New Passowrd:</label>
-<input type="password" id="pword1" data-match="pword2" class="newPassword" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="newPassword maxchars" maxlength="20" data-passwordRequirementsDiv="passwordReqs">
 ```
+* If, for some reason, you have different requirements for the length of password that the `<input>` _itself_ will accept, but the length requirements for the passwords are different, then use the native `minlength` and `maxlength` attributes to control that behavior, and use the attributes `data-minchars` and `data-maxchars` for your requirements. And add either class "minchars" and/or "maxchars" to the New Password `<input>`.  For example, if the `<input>` requires between 4 and 25 characters, but your requirements are between 8 and 20:
+```
+<label for="pword1">New Passowrd:</label>
+<input type="password" id="pword1" data-match="pword2" class="newPassword minchars maxchars" data-minchars="8" data-maxchars="20" minlength="4" maxlength="25" data-passwordRequirementsDiv="passwordReqs">
+
+```
+* If you don't want your password minimum or maximum character requirements listed, just the "minchars" and "maxchars" classes from the `<input>`.
 * For other password requirements, include pre-defined classnames.  For example, if your requirements include a special charactor, add class `specialChar` to the New Passwords input.  (All classes are to be included in the New Passwords input.)  Ex:
 ```
 <label for="pword1">New Passowrd:</label>
-<input type="password" id="pword1" data-match="pword2" class="newPassword specialChar" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="newPassword minchars maxchars specialChar" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
 ```
 ### Built-in Requirements
 This widget comes with the following built-in requirements that can be added with class names:
@@ -53,7 +61,7 @@ This widget comes with the following built-in requirements that can be added wit
 For example, a system that requires passwords to have at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character, with a minimum of 8 characters long would be coded like:
 ```
 <label for="pword1">New Password:</label>
-<input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar digit" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
+<input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase specialChar digit" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
 ```
 
 ### Custom Requirements
@@ -76,7 +84,7 @@ nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Does not co
 1. Add the name you've given to the list of classes in the New Password Input
 ```
 <label for="pword1">New Password:</label>
-<input name="pword1" id="pword1" type="password" class="newPassword lowercase uppercase specialChar digit notPassword" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
+<input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase specialChar digit notPassword" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
 ```
 
 
@@ -89,7 +97,7 @@ The green and red for the checkmarks and X's each have a contrast ratio (against
 
 
 ## See it in action
-Hosted here: [https://andrewnordlund.github.io/passwordRequirements/pwReqTest-3.html](https://andrewnordlund.github.io/passwordRequirements/pwReqTest-3.html).
+Hosted here: [https://andrewnordlund.github.io/passwordRequirements/nordburgPwReqTest-Demo.html](https://andrewnordlund.github.io/passwordRequirements/nordburgPwReqTest-Demo.html).
 
 ## Advanced
 ### Other Languages
@@ -113,7 +121,7 @@ nordburgPwReq.allPwReqs["maxchars"]["text"]["de"] = "Maximal %d Zeichen";
 ```
 
 *IMPORTANT*
-In order for this to work, the components of this widget need to be a descendant of an element marked as the target language.  Ex: for the German example above: `<html lang="de">`.
+In order for this to work, the components of this widget need to be a descendant of an element marked as the target language.  Ex: for the German example above: `<html lang="de">`.  On the above-linked Demo page, there's a set of French password `<inputs>` to demonstrate that they're in a `<section lang="fr">` inside a page that's marked as `<html lang="en">`.  The first set of password `<input>`s has no unique language associated with it, so the page language is used.  The French part has French associated with it, so it uses French.  If you use a language in your HTML where there's no text for that language, it will default to English.  In the Japanese Demo, the class "digit" is included, but no translation is given.  So it defaults to English.  (But the appropriate `lang` attributes are used.)
 
 ## See a Japanese demo
 Hosted here: [https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html](https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html).
