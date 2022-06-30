@@ -1,0 +1,42 @@
+.fieldHolder {
+	margin-bottom: 1em;
+}
+.fieldHolder label {
+	display: block;
+}
+.met {
+	color: green;
+}
+.unmet {
+	color: #AA0000;
+}
+.requnmet,.reqmet {
+}
+.requnmet::before {
+	content: "✘";
+	color: #AA0000;
+	margin-right: 4px;
+}
+.reqmet::before {
+	content: "✔";
+	color: #00A41E;
+	margin-right: 4px;
+}
+ul.pwReqsUL {
+  list-style: none;
+}
+
+.invisibleStuff {
+	clip:rect(1px,1px,1px,1px);
+	height:1px;
+	margin:0;
+	overflow:hidden;
+	position:absolute;
+	width:1px
+}
+
+/*
+ul li::before {
+  content: "\200B";
+}
+*/

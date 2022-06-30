@@ -1,316 +1,154 @@
-console.log ("Starting js.");
-let nordburgPwReq = {
-	version : "0.1.0",
-	dbug : false,
-	defLang : "en",
-	descriptors : {},
-	minchars : {},
-	maxchars : {},
-	stringBundle : {
-		"description" : {"en" : "Your password must contain:", "fr" : "Votre mot de passe doit contenir :"},
-		"met" : {"en" : "Met", "fr" : "Remplie"},
-		"unmet" : {"en" : "Unmet", "fr" : "n'a pas été remplie"}
-	},
-	allPwReqs : {
-		"lowercase" : {"text" : {"en" : "At least 1 lowercase letter", "fr" : "Au moins 1 lettre minuscule"}, check : function (p1, p2) {return p1.match(/[a-z]/) || p2.match(/[a-z]/);}},
-		"uppercase" : {"text" : {"en" : "At least 1 uppercase letter", "fr" : "Au moins 1 lettre majuscule"}, check : function (p1, p2) {return p1.match(/[A-Z]/) || p2.match(/[A-Z]/);}},
-		"specialChar" : {"text" : {"en" : "At least 1 special character", "fr" : "Au moins 1 caractère spécial"}, check : function (p1, p2) { return p1.match(/[^\w\s]/) || p2.match(/[^\w\s]/);}},
-		"digit" : {"text" : {"en" : "At least 1 digit", "fr" : "Au moins 1 chiffre"}, check : function (p1, p2) { return p1.match(/[0-9]/) || p2.match(/[0-9]/);}},
-		"nospaces" : {"text" : {"en" : "No spaces", "fr" : "Sans espaces"}, check : function (p1, p2) { return !(p1.match(/[\s\n\t\f ]/) || p2.match(/[\s\n\t\f ]/));}},
-		"doubleChars" : {"text" : {"en" : "No two characters the same consecutively", "fr" : "Il n'y a pas deux personnages identiques consécutivement"}, check : function (p1, p2) { 
-				let regexp = /(.)\1/g;
-				return !(p1.match(regexp) || p2.match(regexp));
-			}
-		},
-		"minchars" : {"text" : {"en" : "At least %d characters", "fr" : "Au moins %d caractères"}, check : function(p1, p2) { return p1.length >= /*nordburgPwReq.minchars*/ 0 || p2.length >= /*nordburgPwReq.minchars;*/ 0}},
-		"maxchars" : {"text" : {"en" : "A maximum of %d characters", "fr" : "Un maximum de %d caractères"}, check : function(p1, p2) { return p1.length <= 255 /*nordburgPwReq.maxchars[pid]*/ && p2.length <= 255 /*nordburgPwReq.maxchars[pid]*/;}},
-		"match" : {"text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, check : function (p1, p2) { return p1 == p2 && p1.match(/\S/);}},
+let passwords, passwordDesc, liveReg, passwordRequirementsDiv = null;
+let defLang = "en";
+let descriptors = ["passDesc"];
 
-	},
-	myPwReqs : {},
-	custPwRequirements : {},
+let stringBundle = {
+	"desc" : {"en" : "Your password must contain at least:", "fr" : "Votre mot de passe doit contenir au moins :"},
+	"met" : {"en" : "Met", "fr" : "Remplie"},
+	"unmet" : {"en" : "Unmet", "fr" : "n'a pas été remplie"}
+};
+let  allPwReqs = {
+	"lowercase" : {"stat" : "unmet", "el" : null, "text" : {"en" : "1 lowercase letter", "fr" : "1 lettre minuscule"}, check : function (p1, p2) { return  p1.value.match(/[a-z]/) || p2.value.match(/[a-z]/);}},
+	"uppercase" : {"stat" : "unmet", "el" : null, "text" : {"en" : "1 uppercase letter", "fr" : "1 lettre majuscule"}, check : function (p1, p2) { return p1.value.match(/[A-Z]/) || p2.value.match(/[A-Z]/);}},
+	"specialChar" : {"stat" : "unmet", "el" : null, "text" : {"en" : "1 special character", "fr" : "1 caractère spécial"}, check : function (p1, p2) { return p1.value.match(/[^\w\s]/) || p2.value.match(/[^\w\s]/);}},
+	"digit" : {"stat" : "unmet", "el" : null, "text" : {"en" : "1 digit", "fr" : "1 chiffre"}, check : function (p1, p2) { return p1.value.match(/[0-9]/) || p2.value.match(/[0-9]/);}},
+}
 
-	init : function () {
-		console.log ("Initting");
-		let lang = nordburgPwReq.defLang;
+let myPwReqs = {};
 
-		nordburgPwReq.dealWithCustomRequirements();
 
-		let passwords = document.querySelectorAll(".newPassword,.confirmPassword");
-		if (passwords) {
-			for (let i = 0; i < passwords.length; i++) {
-				if (!nordburgPwReq.myPwReqs[passwords[i].id]) nordburgPwReq.myPwReqs[passwords[i].id] = {"reqs" : {}, "lang" : nordburgPwReq.defLang, "descriptor" :  null, "reqsList" : null};
-				passwords[i].setAttribute("autocomplete", "new-password");
+function init () {
+	passwordRequirementsDiv = document.getElementById("passwordRequirements");
+	defLang = getLang(passwordRequirementsDiv);
+	if (!stringBundle["desc"][defLang]) {
+		defLang = "en";
+	}
+	passwordDesc = document.getElementById("passDesc");
+	if (passwordDesc) passwordDesc.textContent = stringBundle["desc"][defLang];
+	let reqsList = document.createElement("ul");
+	reqsList.id = "pwReqsUL";
+	reqsList.classList.add("pwReqsUL");
+	passwordRequirementsDiv.appendChild(reqsList);
+
+
+
+	passwords = document.querySelectorAll(".newPassword,.confirmPassword");
+	if (passwords) {
+		for (let i = 0; i < passwords.length; i++) {
+			passwords[i].setAttribute("autocomplete", "new-password");
 		
-				if (passwords[i].classList.contains("newPassword")) {
-					let passwordRequirementsDiv = null;
-					try {
-						passwordRequirementsDiv = document.getElementById(passwords[i].getAttribute("data-passwordRequirementsDiv"));
-					}
-					catch (ex) {
-						console.error (ex.message + "\nI think you need to create a <div> with the id that matches the data-passwordRequrementsDiv attribute in your New Password input.");
-					}
+			if (passwords[i].classList.contains("newPassword")) {
 
-					lang = nordburgPwReq.getLang(passwordRequirementsDiv);
-					if (!nordburgPwReq.stringBundle["description"][lang]) {
-						lang = nordburgPwReq.defLang;
-					}
-					nordburgPwReq.myPwReqs[passwords[i].id]["lang"] = lang;
-					
-					let passwordDesc = null;
-					passwordDesc = document.createElement("p");
-					passwordDesc.id = "nordburgPwReqPassDesc" + i;
-					passwordDesc.textContent = nordburgPwReq.stringBundle["description"][lang];
-					nordburgPwReq.myPwReqs[passwords[i].id]["descriptor"] = passwordDesc;
-					nordburgPwReq.descriptors[passwords[i].id] = {"orig" : null, "descriptors" : [passwordDesc.id]};
-					if (passwords[i].hasAttribute("aria-describedby")) nordburgPwReq.descriptors[passwords[i].id]["orig"] = passwords[i].getAttribute("aria-describedby");
-					passwordRequirementsDiv.appendChild(passwordDesc);
-
-					let reqsList = document.createElement("ul");
-					reqsList.setAttribute("role","list");
-					reqsList.id = "pwReqsUL" + i;
-					reqsList.classList.add("pwReqsUL");
-					passwordRequirementsDiv.appendChild(reqsList);
-					nordburgPwReq.myPwReqs[passwords[i].id]["reqsList"] = reqsList;
-
-
-					// build myPwReqs
-
-					if (passwords[i].hasAttribute("data-minchars") || passwords[i].hasAttribute("minlength")) {
-						let minChars = (passwords[i].hasAttribute("data-minchars") ? passwords[i].getAttribute("data-minchars") : passwords[i].getAttribute("minlength")).replace(/\D/g, "");;
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"] = {};
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["text"] = JSON.parse(JSON.stringify(nordburgPwReq.allPwReqs["minchars"]["text"]));
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["check"] = function(p1, p2) { return p1.length >= minChars || p2.length >= minChars;};
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["stat"] = "unmet";
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["li"] = null;
-						for (let lang in nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["text"]) {
-							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["text"][lang] = nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["text"][lang].replace("%d", minChars);
-						}
-					}
-					if (passwords[i].hasAttribute("data-maxchars") || passwords[i].hasAttribute("maxlength")) {
-						let maxChars = (passwords[i].hasAttribute("data-maxchars") ? passwords[i].getAttribute("data-maxchars") : passwords[i].getAttribute("maxlength")).replace(/\D/g, "");
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"] = {};
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["text"] = JSON.parse(JSON.stringify(nordburgPwReq.allPwReqs["maxchars"]["text"]));
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["check"] = function(p1, p2) { return p1.length <= maxChars && p2.length <= maxChars;};
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["stat"] = "unmet";
-						nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["li"] = null;
-						for (let lang in nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["text"]) {
-							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["text"][lang] = nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["maxchars"]["text"][lang].replace("%d", maxChars);
-						}
-					}
-
-					let reqs = passwords[i].getAttribute("class").split(" ");
-					for (let j = 0; j < reqs.length; j++) {
-						if (nordburgPwReq.allPwReqs[reqs[j]]) {
-							if (Object.assign) {
-								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][reqs[j]] = Object.assign({}, nordburgPwReq.allPwReqs[reqs[j]]);
-							} else {
-								console.warn ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.");
-								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][reqs[j]] = nordburgPwReq.allPwReqs[reqs[j]];
-							}
-
-						}
+				// build myPwReqs
+				if (passwords[i].hasAttribute("data-minchars")) {
+					let minChars = passwords[i].getAttribute("data-minchars");
+					myPwReqs["minchars"] = {"stat" : "unmet", "text" : {"en" : minChars + " characters", "fr" : minChars + " caractères"}, "el" : null, check :  function(p1, p2) { return p1.value.length >= minChars || p2.value.length >= minChars;}};
+					reqsList.appendChild(newLI("minchars"));
+				}
+				for (let req in allPwReqs) {
+					if (passwords[i].classList.contains(req)) {
+						myPwReqs[req] = allPwReqs[req];
+						reqsList.appendChild(newLI(req));
 					}
 					
-					if (passwords[i].hasAttribute("data-match")) {
-						try {
-							let otherP = passwords[i].getAttribute("data-match");
-							
-							if (Object.assign) {
-								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"] = Object.assign({}, nordburgPwReq.allPwReqs["match"]);
-							} else {
-								console.warn ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.");
-								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"] = nordburgPwReq.allPwReqs["match"];
-							}
-							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"]["stat"] = "unmet";
-							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"]["li"] = null;
-
-
-						
-
-
-						}
-						catch (ex) {
-							console.error ("ERROR: ensure there are two passwords with data-match attributes referring to each other's ID value.  Error: " + ex.message);
-							return null;
-						}
-					}
-					
-					passwords[i].addEventListener("keypress", function(ev) {nordburgPwReq.removeAriaDescribedBy(ev.target);}, false);
-					passwords[i].addEventListener("blur", function(ev) {
-							setTimeout(function() {
-								nordburgPwReq.addAriaDescribedBy(ev.target);
-							}, 500);
-						}, false);
-				} else {
-					/*
-					if (passwords[i].hasAttribute("data-match")) {
-						try {
-							let otherP = passwords[i].getAttribute("data-match");
-							nordburgPwReq.myPwReqs[passwords[i].id]["descriptor"] = nordburgPwReq.myPwReqs[otherP]["descriptor"];
-							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"] = {"stat" : "unmet", "text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, "li" : null, check :  function (p1, p2) {
-									return p1 == p2 && p1.match(/\S/);
-								}
-							};
-						}
-						catch (ex) {
-							console.error ("ERROR: ensure there are two passwords with data-match attributes referring to each other's ID value.  Error: " + ex.message);
-							return null;
-						}
-					}
-					*/
 				}
-				passwords[i].addEventListener("keyup", nordburgPwReq.checkReqs, false);
-				passwords[i].addEventListener("change", nordburgPwReq.checkReqs, false);
-			}
-
-			
-			//Now build the list with myReqs
-			
-			for (let id in nordburgPwReq.myPwReqs) {
-				for (let req in nordburgPwReq.myPwReqs[id]["reqs"]) {
-					nordburgPwReq.myPwReqs[id]["reqsList"].appendChild(nordburgPwReq.newLI(req, id));
-				}
-				nordburgPwReq.addAriaDescribedBy(document.getElementById(id));
-			}
-		}
-	}, // End of init
-	checkAssoc : function () {
-		// This is entirely for debugging purposes.
-		console.log ("Gotta check if associations are still correct.");
-		for (let id in nordburgPwReq.myPwReqs) {
-			console.log ("checkAssoc::Dealing with id: " + id + ".");
-			if (Object.keys(nordburgPwReq.myPwReqs[id]).length > 0) {
-				for (let req in nordburgPwReq.myPwReqs[id]["reqs"]) {
-					console.log ("checkAssoc::Gonna check req: " + req + ".");
-					try {
-						console.log ("Associated " + id + " with " + nordburgPwReq.myPwReqs[id]["reqs"][req]["li"].id);
-					}
-					catch (ex) {
-						console.error ("Looks like the li doesn't exist yet?\n" + ex.message);
-					}
+				passwords[i].addEventListener("keypress", function(ev) {removeAriaDescribedBy(ev.target);}, false);
+				passwords[i].addEventListener("blur", function(ev) {
+						setTimeout(function() {
+							addAriaDescribedBy(ev.target);
+						}, 500);
+					}, false);
+			} else {
+				if (passwords[i].hasAttribute("data-match")) {
+					let minChars = passwords[i].getAttribute("data-match");
+					myPwReqs["match"] = {"stat" : "unmet", "text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, "el" : null, check :  function (p1, p2) {
+							return p1.value == p2.value && p1.value.match(/\S/);
+						}
+					};
+					reqsList.appendChild(newLI("match"));
 				}
 			}
+			passwords[i].addEventListener("keyup", checkReqs, false);
 		}
-	}, // End of checkAssoc
-	addAriaDescribedBy : function (txt) {
-		if (nordburgPwReq.descriptors[txt.id]) txt.setAttribute("aria-describedby", (nordburgPwReq.descriptors[txt.id]["orig"] ? nordburgPwReq.descriptors[txt.id]["orig"] + " " : "") + nordburgPwReq.descriptors[txt.id]["descriptors"].join(" "));
-	}, // End of addAriaDescribedBy
-
-	removeAriaDescribedBy :  function (txt) {
-		if (nordburgPwReq.descriptors[txt.id]["orig"]) {
-			txt.setAttribute("aria-describedby", nordburgPwReq.descriptors[txt.id]["orig"]);
-		} else {
-			txt.removeAttribute ("aria-describedby");
-		}
-	}, // End of removeAriaDescribedBy
-
-	getLang : function (n) {
-		if (n.hasAttribute("lang")) {
-			return (nordburgPwReq.stringBundle["description"][n.getAttribute("lang").replace(/-.*$/, "")] ? n.getAttribute("lang").replace(/-.*$/, "") : nordburgPwReq.defLang);
-		} else {
-			return (n.nodeName == "HTML" || n.parentNode.nodeName == "#document" ? nordburgPwReq.defLang : nordburgPwReq.getLang(n.parentNode));
-		}
-	}, // End of getLang
-
-	newLI : function (req, rid) {
 		
-		let newLI = document.createElement("li");
-		newLI.id = "pwReqsList" + req + "LI" + rid;
-		newLI.classList.add("pwReqsList" + req);
-		
-		let initStat = (nordburgPwReq.myPwReqs[rid]["reqs"][req].check("", "") ? "met" : "unmet");
-		nordburgPwReq.myPwReqs[rid]["reqs"][req]["stat"] = initStat;
+		addAriaDescribedBy(document.querySelector(".newPassword"));
+	}
+} // End of init
 
-		let checkSpan = document.createElement("span");
-		checkSpan.classList.add("pwCheckSpan");
-		checkSpan.classList.add("req" + initStat); 
-		/*checkSpan.classList.add("glyphicon");*/
-		checkSpan.classList.add("req" + initStat);
-		checkSpan.setAttribute("aria-hidden", "true");
-		newLI.appendChild(checkSpan);
+function removeAriaDescribedBy(txt) {
+	txt.removeAttribute ("aria-describedby");
+} // End of removeAriaDescribedBy
 
-		let newSpan = document.createElement("span");
-		newSpan.id = "pwReqsList" + req + "Span" + rid;
-		newSpan.setAttribute("aria-live", "polite");
-		newSpan.setAttribute("aria-atomic", "true");
-		newSpan.classList.add("pwReqText");
-		let lang = nordburgPwReq.myPwReqs[rid]["lang"];
-		let txt = (nordburgPwReq.myPwReqs[rid]["reqs"][req]["text"][lang] ? nordburgPwReq.myPwReqs[rid]["reqs"][req]["text"][lang] : nordburgPwReq.myPwReqs[rid]["reqs"][req]["text"][nordburgPwReq.defLang]);
-		newSpan.innerHTML = txt + " <span class=\"invisibleStuff unmet\">" + nordburgPwReq.stringBundle[initStat][lang]  + "</span>";
+function addAriaDescribedBy(txt) {
+	txt.setAttribute("aria-describedby", descriptors.join(" "));
+} // End of addAriaDescribedBy
 
-		newLI.appendChild(newSpan);
+function getLang(n) {
+	if (n.hasAttribute("lang")) {
+		return (stringBundle["desc"][n.getAttribute("lang").replace(/-.*$/, "")] ? n.getAttribute("lang").replace(/-.*$/, "") : defLang);
+	} else {
+		return (n.nodeName == "HTML" || n.parentNode.nodeName == "#document" ? defLang : getLang(n.parentNode));
+	}
+} // End of getLang
 
-		nordburgPwReq.myPwReqs[rid]["reqs"][req]["li"] = newSpan;
-		
-		if (nordburgPwReq.descriptors[rid]) nordburgPwReq.descriptors[rid]["descriptors"].push("pwReqsList" + req + "Span" + rid);
-		
-		return newLI;
-	}, // End of newLI
+function newLI (req) {
+	let newLI = document.createElement("li");
+	newLI.id = "pwReqsList" + req + "LI";
+	newLI.classList.add("pwReqsList" + req, "requnmet");
+	//newLI.classList.add
 
-	checkReqs : function (e) {
-		let thisP = e.target;
-		let thisPid = thisP.id
-		let otherP = nordburgPwReq.getOtherP(thisP);
-		let otherPid = otherP.id;
-		for (let req in nordburgPwReq.myPwReqs[thisP.id]["reqs"]) {
-			nordburgPwReq.checkReq(thisP, otherP, req);
-		}
-		for (let req in nordburgPwReq.myPwReqs[otherP.id]["reqs"]) {
-			nordburgPwReq.checkReq(otherP, thisP, req);
-		}
-	}, // End of checkReqs
-	checkReq : function (p1, p2, req) {
+	let newSpan = document.createElement("span");
+	newSpan.id = "pwReqsList" + req + "Span";
+	newSpan.setAttribute("aria-live", "assertive");
+	newSpan.setAttribute("aria-atomic", "true");
+	newSpan.innerHTML = myPwReqs[req]["text"][defLang] + " <span class=\"invisibleStuff unmet\">" + stringBundle["unmet"][defLang]  + "</span>";
+
+	newLI.appendChild(newSpan);
+	myPwReqs[req]["el"] = newSpan;
+	descriptors.push("pwReqsList" + req + "Span");
+	return newLI;
+} // End of newLI
+
+function checkReqs (e) {
+	let thisP = e.target;
+	let otherP = getOtherP(thisP);
+	let allmet = true;
+	for (var el in myPwReqs) {
 		let change = false;
-		if (nordburgPwReq.myPwReqs[p1.id]["reqs"][req].check(p1.value, p2.value)) {
-			if (nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] == "unmet") {
+		if (myPwReqs[el].check(thisP, otherP)) {
+			if (myPwReqs[el]["stat"] == "unmet") {
 				change = true;
-				nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] = "met";
+				myPwReqs[el]["stat"] = "met";
 			}
 		} else {
-			if (nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] == "met") {
+			if (myPwReqs[el]["stat"] == "met") {
 				change = true;
-				nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] = "unmet";
+				myPwReqs[el]["stat"] = "unmet";
+			
 			}
 		}
 		if (change) {
-			let textSpan = nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["li"];
-			let statSpan = textSpan.getElementsByTagName("span")[0];
-			statSpan.innerHTML = nordburgPwReq.stringBundle[nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]][nordburgPwReq.myPwReqs[p1.id]["lang"]];
-			if (statSpan.classList.contains("met")) statSpan.classList.remove("met");
-			if (statSpan.classList.contains("unmet")) statSpan.classList.remove("unmet");
-			statSpan.classList.add(nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
+			let statSpan = myPwReqs[el]["el"];
+			let innerSpan = statSpan.getElementsByTagName("span")[0];
+			innerSpan.innerHTML = stringBundle[myPwReqs[el]["stat"]][defLang];
+			innerSpan.classList.remove("met", "unmet");
+			innerSpan.classList.add(myPwReqs[el]["stat"]);
 
-			let checkSpan = textSpan.parentNode.firstChild;
-			if (checkSpan.classList.contains("reqmet")) textSpan.parentNode.firstChild.classList.remove("reqmet");
-			if (checkSpan.classList.contains("requnmet")) checkSpan.classList.remove("requnmet");
-			checkSpan.classList.add("req" + nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"]);
+			statSpan.parentNode.classList.remove("reqmet", "requnmet");
+			statSpan.parentNode.classList.add("req" + myPwReqs[el]["stat"]);
 		}
-		return nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"];
-	}, // End of checkReq
-	getOtherP : function (thisP) {
-		try {
-			return document.getElementById(thisP.getAttribute("data-match"));
-		}
-		catch (ex) {
-			console.error ("ERROR: ensure there are two passwords with data-match attributes referring to each other's ID value.  Error: " + ex.message);
-			return null;
-		}
-	}, // End of getOtherP
-	dealWithCustomRequirements : function () {
-		// Now add Custom Rules
-		if (nordburgPwReq.custPwRequirements) {
-			for (let req in nordburgPwReq.custPwRequirements) {
-				if (Object.assign) {
-					nordburgPwReq.allPwReqs[req] = Object.assign({}, nordburgPwReq.custPwRequirements[req]);
-				} else {
-					console.warn ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.");
-					nordburgPwReq.allPwReqs[req] = nordburgPwReq.custPwRequirements[req];
-				}
-			}
-		}
-	}, // End of dealWithCustomRequirements
-}
+		if (myPwReqs[el]["stat"] == "unmet") allmet = false;
+	}
+} // End of checkReqs
 
-console.log ("Loaded script");
-document.addEventListener("DOMContentLoaded", nordburgPwReq.init, false);
+function getOtherP (thisP) {
+	try {
+		return document.getElementById(thisP.getAttribute("data-match"));
+	}
+	catch (ex) {
+		console.error ("ERROR: ensure there are two passwords with data-match attributes referring to each other's ID value.  Error: " + ex.message);
+		return null;
+	}
+} // End of getOtherP
+
+init();

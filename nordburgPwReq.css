@@ -1,5 +1,4 @@
 @charset "utf-8";
-
 .requnmet::before {
 	content: "✘";
 	color: #AA0000;
@@ -12,7 +11,6 @@
 	color: #008A1E;
 	content: "✓";
 }
- 
 html {
 	box-sizing: border-box;
 }
@@ -31,8 +29,6 @@ ul.pwReqsUL>li>span {
 .pwReqText {
 	vertical-align: middle;
 }
-.pwCheckSpan {
-}
 .invisibleStuff {
 	clip:rect(1px,1px,1px,1px);
 	height:1px;
@@ -41,4 +37,3 @@ ul.pwReqsUL>li>span {
 	position:absolute;
 	width:1px
 }
-
