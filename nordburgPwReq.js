@@ -51,7 +51,6 @@ let nordburgPwReq = {
 					}
 
 					if (passwordRequirementsDiv.classList.contains("req-pos-before")) nordburgPwReq.myPwReqs[passwords[i].id]["reqPos"] = "before";
-					console.log (i + ": Setting reqPos to " + nordburgPwReq.myPwReqs[passwords[i].id]["reqPos"]);
 
 					pLang = nordburgPwReq.getLang(passwordRequirementsDiv);
 					nordburgPwReq.myPwReqs[passwords[i].id]["lang"] = pLang;
@@ -62,10 +61,8 @@ let nordburgPwReq = {
 					passwordDesc.id = "nordburgPwReqPassDesc" + i;
 					if (nordburgPwReq.stringBundle["description"][pLang]) {
 						passwordDescText = nordburgPwReq.stringBundle["description"][pLang];
-						console.log ("Desc for " + pLang + " is available for setting it to " + passwordDescText);
 					} else {
 						passwordDesc.setAttribute("lang", nordburgPwReq.defLang);
-						console.log ("Desc for " + pLang + " is not available, so setting lang to " + nordburgPwReq.defLang + ".");
 					}
 					passwordDesc.textContent = passwordDescText;
 					nordburgPwReq.myPwReqs[passwords[i].id]["descriptor"] = passwordDesc;
@@ -232,7 +229,7 @@ let nordburgPwReq = {
 		
 		let statSpan = "<span class=\"invisibleStuff " + initStat + "\"" + statTextLang +">" + statText + "</span>";
 
-		newSpan.innerHTML = (nordburgPwReq.myPwReqs[rid]["reqPos"] == "before" ? statSpan.replace("</span>", (statLang == "fr" ? " " : "") + ": </span>") + txt : txt + " " +statSpan);
+		newSpan.innerHTML = (nordburgPwReq.myPwReqs[rid]["reqPos"] == "before" ? statSpan.replace("</span>", (statLang == "fr" ? " " : "") + ":&nbsp;</span>") + txt : txt + statSpan.replace(">", ">&nbsp;"));
 
 		newLI.appendChild(newSpan);
 
@@ -288,7 +285,9 @@ let nordburgPwReq = {
 			}
 			if (nordburgPwReq.myPwReqs[p1.id]["reqPos"] == "before") {
 				if (statLang == "fr") statText += " ";
-				statText += ": ";
+				statText += ":\u00a0";
+			} else {
+				statText = "\u00a0" + statText;
 			}
 			statSpan.textContent = statText;
 

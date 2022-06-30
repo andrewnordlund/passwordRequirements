@@ -126,8 +126,17 @@ nordburgPwReq.allPwReqs["minchars"]["text"]["de"] = "Mindestens %d Zeichen";
 nordburgPwReq.allPwReqs["maxchars"]["text"]["de"] = "Maximal %d Zeichen";
 ```
 
-*IMPORTANT*
+#### Important
 In order for this to work, the components of this widget need to be a descendant of an element marked as the target language.  Ex: for the German example above: `<html lang="de">`.  On the above-linked Demo page, there's a set of French password `<inputs>` to demonstrate that they're in a `<section lang="fr">` inside a page that's marked as `<html lang="en">`.  The first set of password `<input>`s has no unique language associated with it, so the page language is used.  The French part has French associated with it, so it uses French.  If you use a language in your HTML where there's no text for that language, it will default to English.  In the Japanese Demo, the class "digit" is included, but no translation is given.  So it defaults to English.  (But the appropriate `lang` attributes are used.)
 
 ## See a Japanese demo
 Hosted here: [https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html](https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html).
+
+## Finally
+This widget won't prevent anyone from submitting a form that doesn't meet the requirements set out.  It only indiciates which requirements have been met at any given time. Always be sure to do validation on the back-end.
+
+And, no, I will not implement the horrible design pattern where the Submit button stays disabled until all requirements have been met.  I want this to be an accessible widget.  If you do that elsewhere, stop it!  If there's an error in the form, don't make the user hunt for it!  Let them try to submit, and give them an error message to help them.
+
+If you see any bugs, or would like new features, then submit a bug at [GitHub Issues](https://github.com/andrewnordlund/passwordRequirements/issues).
+
+This uses the [MIT License](https://github.com/andrewnordlund/passwordRequirements/blob/main/LICENSE).
