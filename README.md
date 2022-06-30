@@ -26,7 +26,6 @@ Ex:
 <label for="pword1">New Passowrd:</label>
 <input type="password" id="pword1" data-match="pword2" class="newPassword" data-passwordRequirementsDiv="passwordReqs">
 ```
-
 * If your password reqirements includes a minimum number of characters, include that number in a `minlength` attribute in the New Password `<input>`, and add the class "minchars" to that `<input>`.  Ex:
 ```
 <label for="pword1">New Passowrd:</label>
@@ -44,24 +43,31 @@ Ex:
 
 ```
 * If you don't want your password minimum or maximum character requirements listed, just the "minchars" and "maxchars" classes from the `<input>`.
-* For other password requirements, include pre-defined classnames.  For example, if your requirements include a special charactor, add class `specialChar` to the New Passwords input.  (All classes are to be included in the New Passwords input.)  Ex:
+* For other password requirements, include pre-defined classnames.  For example, if your requirements include a special charactor, add class `special-char` to the New Passwords input.  (All classes are to be included in the New Passwords input.)  Ex:
 ```
 <label for="pword1">New Passowrd:</label>
-<input type="password" id="pword1" data-match="pword2" class="newPassword minchars maxchars specialChar" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="newPassword minchars maxchars special-char" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
+```
+* By default the status of a requiement ("met" or "unmet") comes after the requirement itself.  (Ex: "At least 8 characters (unmet)").  This is only exposed to screen readers, and is hidden from sight.  If you would prefer the status to come before the requirement, add the class `req-pos-before` to the `<div>` you created earlier.  Example:
+```
+<div id="passwordReqs" class="req-pos-before"></div>
+...
+<label for="pword1">New Passowrd:</label>
+<input type="password" id="pword1" data-match="pword2" class="newPassword minchars maxchars special-char" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
 ```
 ### Built-in Requirements
 This widget comes with the following built-in requirements that can be added with class names:
 * *lowercase*: There must be at least 1 lowercase character.
 * *uppercase*: There must be at least 1 uppercase character.
-* *specialChar*: There must be at least 1 special character.
+* *special-char*: There must be at least 1 special character.
 * *digit*: There must be at least 1 numerical character (0-9)
-* *doubleChars*: The same character isn't allowed to appear in the password twice in a row.  (Ex: `..sas...` is fine, but `...ss...` isn't)  (This should probably never be used....but IT Security nincompoops may require it.)
+* *double-chars*: The same character isn't allowed to appear in the password twice in a row.  (Ex: `..sas...` is fine, but `...ss...` isn't)  (This should probably never be used....but IT Security nincompoops may require it.)
 * *nospaces*: Spaces aren't allowed in the password. (This should probably never be used, but, again, IT Security nincompoops)
 
 For example, a system that requires passwords to have at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character, with a minimum of 8 characters long would be coded like:
 ```
 <label for="pword1">New Password:</label>
-<input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase specialChar digit" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
+<input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase special-char digit" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
 ```
 
 ### Custom Requirements
@@ -84,7 +90,7 @@ nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Does not co
 1. Add the name you've given to the list of classes in the New Password Input
 ```
 <label for="pword1">New Password:</label>
-<input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase specialChar digit notPassword" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
+<input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase special-char digit notPassword" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
 ```
 
 
