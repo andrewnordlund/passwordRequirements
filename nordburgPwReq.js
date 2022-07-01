@@ -177,11 +177,7 @@ let nordburgPwReq = {
 	}, // End of addAriaDescribedBy
 
 	removeAriaDescribedBy :  function (txt) {
-		if (nordburgPwReq.descriptors[txt.id]["orig"]) {
-			txt.setAttribute("aria-describedby", nordburgPwReq.descriptors[txt.id]["orig"]);
-		} else {
-			txt.removeAttribute ("aria-describedby");
-		}
+		txt.removeAttribute ("aria-describedby");
 	}, // End of removeAriaDescribedBy
 
 	getLang : function (n) {
