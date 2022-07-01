@@ -28,11 +28,11 @@
 					<h2>In English</h2>
 					<div class="fieldHolder">
 						<label for="pword1">New Password:</label>
-						<input name="pword1" id="pword1" type="password" class="newPassword minlength maxlength lowercase uppercase special-char notPassword digit double-chars nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn" aria-describedby="theH1">
+						<input name="pword1" id="pword1" type="password" class="newPassword minlength maxlength lowercase uppercase special-char notPassword digit double-chars nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn" aria-describedby="theH1" autocomplete="off">
 					</div>
 					<div class="fieldHolder">
 						<label for="pword2">Confirm Password:</label>
-						<input name="pword2" id="pword2" type="password" class="confirmPassword" data-match="pword1">
+						<input name="pword2" id="pword2" type="password" class="confirmPassword" data-match="pword1" autocomplete="off">
 					</div>
 					<div id="passwordRequirementsEn"></div>
 					<div class="fieldHolder">
@@ -63,8 +63,8 @@
 				</section>
 
 				<section lang="fr" id="frenchDemoSect">
-					<div id="passwordRequirementsFr" class="req-pos-before"></div>
 					<h2>En Français</h2>
+					<div id="passwordRequirementsFr" class="req-pos-before"></div>
 					<div class="fieldHolder">
 						<label for="pword3">Nouveau mot de passe :</label>
 						<input name="pword3" id="pword3" type="password" class="notPassword maxchars minchars newPassword lowercase uppercase special-char digit pasMotdepasse double-chars" minlength="4" data-minchars="6" data-match="pword4"  data-maxchars="20" maxlength="21" data-passwordRequirementsDiv="passwordRequirementsFr">
@@ -106,11 +106,25 @@
 				<ul>
 					<li>Only the first password field references the list of requirements using <code>aria-describedby</code></li>
 					<li>“Met” and “Unmet” only change when the criteria becomes met, or unmet.</li>
-					<li>Each list item is like:  <code>&lt;li aria-live=”assertive” artia-atomic=”true”&gt;</code>.  <code>aria-live=”assertive”</code> makes a screen reader read out the contents when there’s a change, and <code>aria-atomic=”true”</code> makes the screen reader read out the whole line, not just “met” or “unmet”.  Note that each list item needs to be its own live region.  If the whole widget is a live region, then the whole list gets read out whenever there’s a change.  You don’t want that.</li>
+					<li>Each list item is like:  <code>&lt;li aria-live=”polite” artia-atomic=”true”&gt;</code>.  <code>aria-live=”polite”</code> makes a screen reader read out the contents when there’s a change, and <code>aria-atomic=”true”</code> makes the screen reader read out the whole line, not just “met” or “unmet”.  Note that each list item needs to be its own live region.  If the whole widget is a live region, then the whole list gets read out whenever there’s a change.  You don’t want that.</li>
 				</ul>
 			</div>
 			<section>
 				<h2>Screen Reader results</h2>
+				<p>In the above, I have the widget demo'd in French and English.  In English, the list of requirements comes after the password inputs.  In French it comes before.  In English, the status of the requirements are exposed to screen readers after the requirement (Ex: "At least 1 uppercase letter. Met").  In French, they come before (Ex: "<span lang="fr">Remplie : Au moins 1 lettre majuscule</span>"). In both languages, the status is a <code>&lt;span&gt;</code> nested inside the <code>&lt;span&gt;</code> that has the requirement.  In English, the <code>&lt;H1&gt;</code> is referenced by the first password input with <code>aria-describedby</code> to demonstrate that you can still use <code>aria-describedby</code> and this widget won't override your values - only add to them.</p>
+				<p>The following tests will be done and results listed below:</p>
+				<dl>
+					<dt>Top to Bottom</dt>
+					<dd>Read through the page top to bottom (<kbd>Insert+Down</kbd> in NVDA, JAWS, and Narrator. <kbd>Control+option+Right</kbd> in VoiceOver OS X, swipe-right in VoiceOver iOS.) to check if the list of requirements is read as a list, if each requirement is listed with its status.</dd>
+					<dt>Bit by Bit</dt>
+					<dd>Read through the page line by line, item by item. (<kbd>Down</kbd> in NVDA and JAWS.  <kbd>Insert+Right</kbd> in Narrator. <kbd>Control+option+right arrow key</kbd> in VoiceOver OS X, swipe-right in VoiceOver iOS.)  This <em>shouldn't</em> give different results than Top to Bottom.  If it never does, I'll just stop tracking, and erase this.  Else, differences will be noted.</dd>
+					<dt>Focusing</dt>
+					<dd>When the first password field takes focus, are all elements referenced by <code>aria-describdedby</code> read out, including the <code>&lt;H1&gt;</code> in the English widget, the phrase "All passwords must contain", and each criteria along with their status?</dd>
+					<dt>Typying</dt>
+					<dd>As you type, when requirements are met or unmet is the change announced?  Does the announcement include both the requirement and its <em>new</em> status?</dd>
+					<dt>Re-typing</dt>
+					<dd>If you type a few characters, then <kbd>Shift+Home</kbd> or <kbd>Shift+Back</kbd> to select the whole password, then delete and start again, all requiremtns should be set to their initial state, then they should change as they're met/unmet as you type more characters.  I'll type "P-a-s-s" to change the status for Uppercase, Lowercase, and no two letters consecutively..  Then Select-all -&gt; Delete -&gt; retype the same thing.</dd>
+				</dl>
 				<section>
 					<h3>Windows:</h3>
 					<section>
@@ -168,12 +182,70 @@
 					<section>
 						<h4>Mac OS X 10.15.7 (Catalina)</h4>
 						<dl>
+							<dt>Safari 15.5</dt>
+							<dd>
+								<dl>
+									<dt>Top to Bottom</dt>
+									<dd class="odd-behavior">It reads properly until I get to the list and read "List 10 items", then it just stops reading.  So if I hit <kbd>Control+Option+A</kbd> again, it reads out the last part of the first item, then jumps down to the first thing outside the list.  Ex: "Unmet Submit button".  Note that when you do get to the list, if you wait for a second or two VoiceOver reads out instructions about navigating the list.  Okay, things have just gotten funny.  In playing with this, now VoiceOver keeps reading the list when it gets to it.  It doesn't stop.  I have no idea what's going on</dd>
+									<dt>Bit by Bit</dt>
+									<dd class="odd-behavior">Most is fine, but each list item is treated as two parts: the requirement, and the status. When you <kbd>Control+Option+right</kbd> to the first requirement, it reads out the requirement and position (ex: "At least 8 characters 1 of 10") then you need to <kbd>Control+Option+Right</kbd> to hear "Unmet".  Then when you get to the French part, it reads out all French text in a French accent.</dd>
+									<dt>Focusing</dt>
+									<dd class="full-support">The name, role, and value are all read.  Then it reads all descriptions including each requirement and its status as it should.  In French, everything is read with a strong English accent.</dd>
+									<dt>Typying</dt>
+									<dd><dd class="full-support">As I type, changed requirements are read out along with their new status.</dd></dd>
+									<dt>Re-typing</dt>
+									<dd class="odd-behavior">When I select everything and delete it, it seems like it's trying to read all changes out, but only says one. ("At least 1 uppercase letter unmet.")  Then as I start typing again, the requirements are read out as their status changes, but the status itself is only read out if it was not announced in the deletion process.  When I re-type "P" I hear "At least one uppercase letter met".  But then when I type "a" I hear "At least one lowercase letter".  When I type "s-s" I hear "No two characters the same consecutively".  But if I type a "!" I hear "At least one special character met".  Then if press <kbd>Backspace</kbd> as statii changes, their requirement along with their new status is read out.</dd>
+								</dl>
+							</dd>
+							<dt>Chrome 103</dt>
+							<dd>
+								<dl>
+									<dt>Top to Bottom</dt>
+									<dd class="full-support">It reads properly all the way down.  Full support.  Hoever, most French is read out in a strong English accent, with the exceptions of <span lang="fr">En Français</span>, "Submit", and "Code", which it reads as French.  It's as though anything added after page-load has its <code>lang</code> attribute ignored.  Note that Chrome is the only one that reads out everything referenced by <code>aria-describedby</code> in a Top-to-Bottom scan.  The others only read that out when the input takes focus.</dd>
+									<dt>Bit by Bit</dt>
+									<dd class="full-support">Everything is fine.  When you get to the list elements, it reads each requirment with its status and position in the list.  Ex: "At least 8 characters unmet 1 of 10."  Same with the French.  It still reads the French in a French accent as it's reading an item.  When it reads something referenced by <code>aria-describedby</code> it reads those parts out in a strong English accent.</dd>
+									<dt>Focusing</dt>
+									<dd class="full-support">The name, role, and value are all read.  Then it reads all descriptions including each requirement and its status as it should.  In French, everything is read with a strong English accent.</dd>
+									<dt>Typying</dt>
+									<dd class="full-support">As I type, changed requirements are read out along with their new status.</dd>
+									<dt>Re-typing</dt>
+									<dd class="odd-behavior">When I select everything and delete it, it seems like it's trying to read all changes out, but only says one. ("At least 1 uppercase letter unmet.")  Then as I start typing again, the requirements are read out as their status changes, but the status itself is only read out if it was not announced in the deletion process.  When I re-type "P" I hear "At least one uppercase letter met".  But then when I type "a" I hear "At least one lowercase letter".  When I type "s-s" I hear "No two characters the same consecutively".  But if I type a "!" I hear "At least one special character met".  Then if press <kbd>Backspace</kbd> as statii changes, their requirement along with their new status is read out.</dd>
+
+								</dl>
+							</dd>
+							<dt>Firefox 102</dt>
+							<dd>
+								<dl>
+									<dt>Top to Bottom</dt>
+									<dd class="odd-behavior">It reads properly until I get to the list and then it only reads the last thing (ie: a <code>&lt;span&gt;</code> in the list.  Ex: "Your password must contain list 10 items unmet met unmet unmet" then for the French: <span lang="fr">Votre mot do passe doit contenir</span> list 10 items <span lang="fr">Ne contient pas 'Password', Un maximum de 20 caractères</span>, etc.  Also, it reads the French part with a really strong English accent.</dd>
+									<dt>Bit by Bit</dt>
+									<dd class="full-support">Everything is fine.  When you get to the list elements, it reads each requirment with its status and position in the list.  Ex: "At least 8 characters unmet 1 of 10."  Same with the French.  Note that it still reads all French in a strong English accent.</dd>
+									<dt>Focusing</dt>
+									<dd class="full-support">The name, role, and value are all read.  Then it reads all descriptions including each requirement and its status as it should.  In French, everything is read with a strong English accent.</dd>
+									<dt>Typying</dt>
+									<dd class="full-support">As I type, changed requirements are read out along with their new status.</dd>
+									<dt>Re-typing</dt>
+									<dd class="odd-behavior">When I select everything and delete it, it seems like it's trying to read all changes out, but only says one. ("At least 1 uppercase letter unmet.")  Then as I start typing again, the requirements are read out as their status changes, but the status itself is only read out if it was not announced in the deletion process.  When I re-type "P" I hear "At least one uppercase letter met".  But then when I type "a" I hear "At least one lowercase letter".  When I type "s-s" I hear "No two characters the same consecutively".  But if I type a "!" I hear "At least one special character met".  Then if press <kbd>Backspace</kbd> as statii changes, their requirement along with their new status is read out.</dd>
+								</dl>
+							</dd>
 							<dt>Sarafi, Firefox 101, and Chrome</dt>
 							<dd>When focusing on the Password field, VO reads all requirements as it should.  And as a password is typed, the changes are announced.  After typing a few characters, then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd> something strange happens. If the status of several criteria changes, only one is read out.  Then as you type requirements' status changes, if the status had changed in the deletion, the status now doesn't get read out, only the requirement.  For example, if you type out "password" then <kbd>Shift+Home</kbd> -&gt; <kbd>Delete</kbd> then "P" you'll hear "At least one uppercase letter met." Then if you type "a" you'll hear "At least 1 lowercase letter."  This happens if the live region is either assertive or polite.</dd>
 						</dl>
 						<p><strong>Note</strong>: In Firefox, the <code>lang</code> is completely ignored.  In Chrome and Safari, when reading through the page, the <code>lang</code> attribute is respected, but when form labels and <code>aria-describedby</code> sections are being read when focus is in an input, it ignores the <code>lang</code> attibute.  For example, my system settings are in English, so all the French is read out with a strong English accent.</p>
-					</section>	
+					</section>
 				</section>
+				<dl>
+					<dt>Top to Bottom</dt>
+					<dd></dd>
+					<dt>Bit by Bit</dt>
+					<dd></dd>
+					<dt>Focusing</dt>
+					<dd></dd>
+					<dt>Typying</dt>
+					<dd></dd>
+					<dt>Re-typing</dt>
+					<dd></dd>
+				</dl>
 
 				<h3>Conclusion</h3>
 				<p>This works as expected in most browser, OS, and screen reader combos, except Narrator, which seems to have issues with <code>aria-describedby</code>, with one exception:  If "Hear advanced detail, like help text, on buttons and other controls" is turned on in Narrator Settings, then the <code>aria-describedby</code> part is read in Edge only.  Also, Internet Explorer has reached end of life, so don't worry about it.  Aria-live regions sometimes in JAWS and Firefox sometimes need JAWS to be running before you start Firefox.</p>
