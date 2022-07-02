@@ -61,13 +61,13 @@ This widget comes with the following built-in requirements that can be added wit
 * *uppercase*: There must be at least 1 uppercase character.
 * *special-char*: There must be at least 1 special character.
 * *digit*: There must be at least 1 numerical character (0-9)
-* *double-chars*: The same character isn't allowed to appear in the password twice in a row.  (Ex: `..sas...` is fine, but `...ss...` isn't)  (This should probably never be used....but IT Security nincompoops may require it.)
-* *nospaces*: Spaces aren't allowed in the password. (This should probably never be used, but, again, IT Security nincompoops)
+* *max-consecutive*: The same character isn't allowed to appear in the password a few times in a row.  (Must be at least 2.)  (Ex: `..sas...` is fine, but `...ss...` isn't)   The number is set in a `data-max-consecutive` attribute.  If `data-max-consecutive` is left out, but the "max-consecutive" class is listed, it defaults to 4. (This requirement should probably never be used....but IT Security nincompoops may require it.)
+* *nospaces*: Spaces aren't allowed in the password. (This should probably never be used, but, again, IT Security nincompoops.)
 
-For example, a system that requires passwords to have at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character, with a minimum of 8 characters long would be coded like:
+For example, a system that requires passwords to have at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character, with a minimum of 8 characters long, with a maximum number of times a character can appear in a row is 5, would be coded like:
 ```
 <label for="pword1">New Password:</label>
-<input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase special-char digit" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
+<input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase special-char digit max-consecutive" data-minchars="8" data-match="pword2" data-max-consecutive="5" data-passwordRequirementsDiv="passwordReqs">
 ```
 
 ### Custom Requirements
@@ -93,6 +93,8 @@ nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Does not co
 <input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase special-char digit notPassword" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
 ```
 
+You may have noticed that the `check` function takes two arguments instead of just one. This is so that on the off chance a user starts filling out the Confirm Password input first, they will be notified as they meet requirements then too.  Though, the `aria-describedby` is only on the first input. This is to reduce verbosity.
+
 
 ## How it works
 Upon page load, the script takes all the information from the above descrbbed classes, and `data-` attributes and constructs a list of password requirements.  These are referenced with `aria-describedby` in the New Password input.  When you tab to the New Password input and start typing, as conditions become met or unmet, the X's and checkmarks toggle.  There's also text that's exposed only to screen readers that comes after the requirement to tell screen reader users if the condition is met or not.
@@ -109,21 +111,19 @@ Hosted here: [https://andrewnordlund.github.io/passwordRequirements/nordburgPwRe
 ### Other Languages
 This widget comes with both English and French.  But other languages are possible too.  It's just a little bit more complicated.  You have to add text for any requirement that you want to use, as well as "met", "unmet", and "Your password must contain."
 
-The "met", "unmet", and "Your password must contain" are all in an object called <code>nordburgPwReq.stringBundle</code>.  Just add entries with keys of your target language's 2 letter code and "met", "unmet", and "description".  For example:  in german you would put somewhere in your HTML:
+The "met", "unmet", and "Your password must contain" are all in an object called `nordburgPwReq.stringBundle`.  Just add entries with keys of your target language's 2 letter code and "met", "unmet", and "description".  For example:  in german you would put somewhere in your HTML:
 ```
 <script>
 nordburgPwReq.stringBundle["description"]["de"] = "Ihr Passwort muss enthalten"
 ...
 </script>
 ```
-And in that same script area to add text to an existing requirement, you'd use the object <code>nordburgPwReq.allPwReqs\["ruleName"\]\["text"\][2-letter language code] = "text to add";</code>
+And in that same script area to add text to an existing requirement, you'd use the object `nordburgPwReq.allPwReqs\["ruleName"\]\["text"\]\[2-letter language code\] = "text to add";`
 
-(For maximum length and minimum length, use "%d" where the number would go.)
-
-Example, in German again, for minimum and maximum number of characters, in the same <code>&lt;script&gt;</code> as above:
+Example, in German again, for minimum and maximum number of characters, in the same `&lt;script&gt;` as above:
 ```
-nordburgPwReq.allPwReqs["minchars"]["text"]["de"] = "Mindestens %d Zeichen";
-nordburgPwReq.allPwReqs["maxchars"]["text"]["de"] = "Maximal %d Zeichen";
+nordburgPwReq.allPwReqs["minchars"]["text"]["de"] = "Mindestens 5 Zeichen";
+nordburgPwReq.allPwReqs["maxchars"]["text"]["de"] = "Maximal 15 Zeichen";
 ```
 
 #### Important
@@ -131,6 +131,22 @@ In order for this to work, the components of this widget need to be a descendant
 
 ## See a Japanese demo
 Hosted here: [https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html](https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html).
+
+## A Note About Internet Explorer
+Since Internet Exploder is such a PoS browser that just won't die, there's something you need to be aware of if you plan on supporting that browser _and_ you plan on having more than one set of passwords on one site.  This should be a really rare edge-case.  But, I suppose if there was a place where you could sign up for more than one service on one page, and each service had its own set of New Password and Confirm Password inputs, then you need to be aware of this.
+
+Internet Explorer never should have gotten as big as it did.  These days it would mostly be used in Enterprise environments that exemplify [Putt's Law](https://en.wikipedia.org/wiki/Putt%27s_Law_and_the_Successful_Technocrat): "Technology is dominated by two types of people, those who understand what they do not manage and those who manage what they do not understand."  But, if you must support it, and you have a page with more than one *set* of password inputs (like the above demo page), then this widget won't work properly because it relies on `Object.assign`.  In the above demo page I put the following code directly after the french section (inside a `<section id="frenchDemoSect">`):
+
+```
+<script>
+	if (!Object.assign) {
+		let frenchDemoSect = null;
+		frenchDemoSect = document.getElementById("frenchDemoSect");
+		if (frenchDemoSect) frenchDemoSect.parentNode.removeChild(frenchDemoSect);
+	}
+</script>
+
+```
 
 ## Finally
 This widget won't prevent anyone from submitting a form that doesn't meet the requirements set out.  It only indiciates which requirements have been met at any given time. Always be sure to do validation on the back-end.

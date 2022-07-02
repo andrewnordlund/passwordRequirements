@@ -19,7 +19,7 @@
 						let re = /password/i;
 						return !(p1.match(re) || p2.match(re));
 					}};
-					nordburgPwReq.allPwReqs["double-chars"]["text"]["jp"] = "連続して同じ2文字はありません";
+					nordburgPwReq.allPwReqs["max-consecutive"]["text"]["jp"] = "連続して同じ五文字以下";
 					nordburgPwReq.allPwReqs["nospaces"]["text"]["jp"] = "場所がない";
 					nordburgPwReq.allPwReqs["minchars"]["text"]["jp"] = "少なくとも%d 文字";
 					nordburgPwReq.allPwReqs["maxchars"]["text"]["jp"] = "最大%d文字";
@@ -33,7 +33,7 @@
 					<h2>日本語で</h2>
 					<div class="fieldHolder">
 						<label for="pword1">新しいパスワード:</label>
-						<input name="pword1" id="pword1" type="password" class="newPassword notPassword minchars maxchars digit double-chars nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsJp" aria-describedby="theH1">
+						<input name="pword1" id="pword1" type="password" class="newPassword notPassword minchars maxchars digit max-consecutive nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsJp" data-max-consecutive="5">
 					</div>
 					<div class="fieldHolder">
 						<label for="pword2">パスワードを認証する:</label>
@@ -51,7 +51,7 @@
 		let re = /password/i;
 		return !(p1.match(re) || p2.match(re));
 	}};
-	nordburgPwReq.allPwReqs["double-chars"]["text"]["jp"] = "連続して同じ2文字はありません";
+	nordburgPwReq.allPwReqs["max-consecutive"]["text"]["jp"] = "連続して同じ五文字以下";
 	nordburgPwReq.allPwReqs["nospaces"]["text"]["jp"] = "場所がない";
 	nordburgPwReq.allPwReqs["minchars"]["text"]["jp"] = "少なくとも%d 文字";
 	nordburgPwReq.allPwReqs["maxchars"]["text"]["jp"] = "最大%d文字";
@@ -64,7 +64,7 @@
 
 &lt;div class="fieldHolder"&gt;
 	&lt;label for="pword1"&gt;新しいパスワード:&lt;/label&gt;
-	&lt;input name="pword1" id="pword1" type="password" class="newPassword notPassword minchars maxchars digit double-chars nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn"&gt;
+	&lt;input name="pword1" id="pword1" type="password" class="newPassword notPassword minchars maxchars digit max-consecutive nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn"&gt;
 &lt;/div&gt;
 &lt;div class="fieldHolder"&gt;
 	&lt;label for="pword2"&gt;パスワードを認証する:&lt;/label&gt;
