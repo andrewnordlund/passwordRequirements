@@ -61,7 +61,7 @@ This widget comes with the following built-in requirements that can be added wit
 * *uppercase*: There must be at least 1 uppercase character.
 * *special-char*: There must be at least 1 special character.
 * *digit*: There must be at least 1 numerical character (0-9)
-* *max-consecutive*: The same character isn't allowed to appear in the password a few times in a row.  (Must be at least 2.)  (Ex: `..sas...` is fine, but `...ss...` isn't)   The number is set in a `data-max-consecutive` attribute.  If `data-max-consecutive` is left out, but the "max-consecutive" class is listed, the default number is 4. (This requirement should probably never be used....but IT Security nincompoops may require it.)
+* *max-consecutive*: The same character isn't allowed to appear in the password a few times in a row.  (Must be at least 2.)  (Ex: `..sas...` is fine, but `...ss...` isn't)   The number is set in a `data-max-consecutive` attribute.  If `data-max-consecutive` is left out, but the "max-consecutive" class is listed, it defaults to 4. (This requirement should probably never be used....but IT Security nincompoops may require it.)
 * *nospaces*: Spaces aren't allowed in the password. (This should probably never be used, but, again, IT Security nincompoops.)
 
 For example, a system that requires passwords to have at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character, with a minimum of 8 characters long, with a maximum number of times a character can appear in a row is 5, would be coded like:
