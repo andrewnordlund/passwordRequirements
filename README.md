@@ -61,13 +61,13 @@ This widget comes with the following built-in requirements that can be added wit
 * *uppercase*: There must be at least 1 uppercase character.
 * *special-char*: There must be at least 1 special character.
 * *digit*: There must be at least 1 numerical character (0-9)
-* *double-chars*: The same character isn't allowed to appear in the password twice in a row.  (Ex: `..sas...` is fine, but `...ss...` isn't)  (This should probably never be used....but IT Security nincompoops may require it.)
-* *nospaces*: Spaces aren't allowed in the password. (This should probably never be used, but, again, IT Security nincompoops)
+* *max-consecutive*: The same character isn't allowed to appear in the password a few times in a row.  (Must be at least 2.)  (Ex: `..sas...` is fine, but `...ss...` isn't)   The number is set in a <code>data-max-consecutive</code> attribute.  If <code>data-max-consecutive</code> is left out, but the "max-consecutive" class is listed, the default number is 4. (This requirement should probably never be used....but IT Security nincompoops may require it.)
+* *nospaces*: Spaces aren't allowed in the password. (This should probably never be used, but, again, IT Security nincompoops.)
 
-For example, a system that requires passwords to have at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character, with a minimum of 8 characters long would be coded like:
+For example, a system that requires passwords to have at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character, with a minimum of 8 characters long, with a maximum number of times a character can appear in a row is 5, would be coded like:
 ```
 <label for="pword1">New Password:</label>
-<input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase special-char digit" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
+<input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase special-char digit max-consecutive" data-minchars="8" data-match="pword2" data-max-consecutive="5" data-passwordRequirementsDiv="passwordReqs">
 ```
 
 ### Custom Requirements
@@ -93,6 +93,8 @@ nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Does not co
 <input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase special-char digit notPassword" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
 ```
 
+You may have noticed that the <code>check</code> function takes two arguments instead of just one. This is so that on the off chance a user starts filling out the Confirm Password input first, they will be notified as they meet requirements then too.  Though, the <code>aria-describedby</code> is only on the first input. This is to reduce verbosity.
+
 
 ## How it works
 Upon page load, the script takes all the information from the above descrbbed classes, and `data-` attributes and constructs a list of password requirements.  These are referenced with `aria-describedby` in the New Password input.  When you tab to the New Password input and start typing, as conditions become met or unmet, the X's and checkmarks toggle.  There's also text that's exposed only to screen readers that comes after the requirement to tell screen reader users if the condition is met or not.
@@ -116,14 +118,12 @@ nordburgPwReq.stringBundle["description"]["de"] = "Ihr Passwort muss enthalten"
 ...
 </script>
 ```
-And in that same script area to add text to an existing requirement, you'd use the object <code>nordburgPwReq.allPwReqs\["ruleName"\]\["text"\][2-letter language code] = "text to add";</code>
-
-(For maximum length and minimum length, use "%d" where the number would go.)
+And in that same script area to add text to an existing requirement, you'd use the object <code>nordburgPwReq.allPwReqs\["ruleName"\]\["text"\]\[2-letter language code\] = "text to add";</code>
 
 Example, in German again, for minimum and maximum number of characters, in the same <code>&lt;script&gt;</code> as above:
 ```
-nordburgPwReq.allPwReqs["minchars"]["text"]["de"] = "Mindestens %d Zeichen";
-nordburgPwReq.allPwReqs["maxchars"]["text"]["de"] = "Maximal %d Zeichen";
+nordburgPwReq.allPwReqs["minchars"]["text"]["de"] = "Mindestens 5 Zeichen";
+nordburgPwReq.allPwReqs["maxchars"]["text"]["de"] = "Maximal 15 Zeichen";
 ```
 
 #### Important

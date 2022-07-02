@@ -16,8 +16,8 @@ let nordburgPwReq = {
 		"special-char" : {"text" : {"en" : "At least 1 special character", "fr" : "Au moins 1 caractère spécial"}, check : function (p1, p2) { return p1.match(/[^\w\s]/) || p2.match(/[^\w\s]/);}},
 		"digit" : {"text" : {"en" : "At least 1 digit", "fr" : "Au moins 1 chiffre"}, check : function (p1, p2) { return p1.match(/[0-9]/) || p2.match(/[0-9]/);}},
 		"nospaces" : {"text" : {"en" : "No spaces", "fr" : "Sans espaces"}, check : function (p1, p2) { return !(p1.match(/[\s\n\t\f ]/) || p2.match(/[\s\n\t\f ]/));}},
-		"double-chars" : {"text" : {"en" : "No two characters the same consecutively", "fr" : "Il n'y a pas deux personnages identiques consécutivement"}, check : function (p1, p2) { 
-				let regexp = /(.)\1/g;
+		"max-consecutive" : {"text" : {"en" : "No more than %d characters the same consecutively", "fr" : "Pas plus de %d caractères identiques consécutivement"}, check : function (p1, p2) { 
+				let regexp = /(.)\1{3}/g;
 				return !(p1.match(regexp) || p2.match(regexp));
 			}
 		},
@@ -104,6 +104,21 @@ let nordburgPwReq = {
 									nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["minchars"]["check"] = function(p1, p2) { return p1.length >=charCountNum || p2.length >= charCountNum;};
 								}
 							}
+							if (reqs[j] == "max-consecutive") {
+								let maxConsecutive = 4;
+								if (passwords[i].hasAttribute("data-max-consecutive")) {
+									let mxConsecutive = passwords[i].getAttribute("data-max-consecutive").replace(/\D/g, "");
+									if (mxConsecutive > 1) maxConsecutive = mxConsecutive;
+								}
+								for (let lang in nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["max-consecutive"]["text"]) {
+									nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["max-consecutive"]["text"][lang] = nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["max-consecutive"]["text"][lang].replace("%d", maxConsecutive);
+								}
+								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["max-consecutive"]["check"] = function(p1, p2) {
+									let res = "(.)\\1{" + (maxConsecutive-1) + "}";
+									let re = new RegExp(res);
+									return !(re.exec(p1) || re.exec(p2));
+								}
+							}
 						}
 					}
 					
@@ -137,8 +152,7 @@ let nordburgPwReq = {
 								nordburgPwReq.addAriaDescribedBy(ev.target);
 							}, 500);
 						}, false);
-				} else {
-			}
+				} // End of if .newPassword
 				passwords[i].addEventListener("keyup", nordburgPwReq.checkReqs, false);
 				passwords[i].addEventListener("change", nordburgPwReq.checkReqs, false);
 			}
