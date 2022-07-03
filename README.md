@@ -5,15 +5,15 @@ Password checkers (when setting or resetting a password) in a site are common.  
 
 ## How To Use It
 Download from this repo. or `$ npm install nordburg-pw-reqs`.  You'll need nordburgPwReq.js and nordburgPwReq.css.  Then in your HTML file, you'll need to include the nordburgPwReq.js and nordburgPwReq.css files in the `<head>` of your page.  Then, somewhere on the page, you'll need two password input fields: one for New Password, and one for Confirm Password.  (This widget requires/allows you to write those to give them your own styling, layout, etc.  But what is required is the following:
-* The New Password input needs to have class `newPassword`
-* The Confirm Password input needs to have class `confirmPassword`
+* The New Password input needs to have class `nbpr-new-password`
+* The Confirm Password input needs to have class `nbpr-confirm-password`
 * The New and Confirm Password inputs each need to have unique `id`s, and they need to have `data-match` attributes that point to each other.  Ex:
 ```
 <label for="pword1">New Passowrd:</label>
-<input type="password" id="pword1" data-match="pword2" class="newPassword">
+<input type="password" id="pword1" data-match="pword2" class="nbpr-new-password">
 ...
 <label for="pword2">Confirm Passowrd:</label>
-<input type="password" id="pword2" data-match="pword1" class="confirmPassword">
+<input type="password" id="pword2" data-match="pword1" class="nbpr-confirm-password">
 ```
 	- Note: If, for some reason you only want 1 password `<input>`, just don't make a second one, and leave out the `data-match` attribute from the one you do have.  "Passwords must match" will be left out as a requirement.
 * The list of password requirements needs to appear somewhere on the page.  The Javascript generates that for you, but you need to provide a `<div>` and a reference to that `<div>`.
@@ -24,36 +24,36 @@ Ex:
 <div id="passwordReqs"></div>
 ...
 <label for="pword1">New Passowrd:</label>
-<input type="password" id="pword1" data-match="pword2" class="newPassword" data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="nbpr-new-password" data-passwordRequirementsDiv="passwordReqs">
 ```
 * If your password reqirements includes a minimum number of characters, include that number in a `minlength` attribute in the New Password `<input>`, and add the class "minchars" to that `<input>`.  Ex:
 ```
 <label for="pword1">New Passowrd:</label>
-<input type="password" id="pword1" data-match="pword2" class="newPassword minchars" minlength="8" data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="nbpr-new-password minchars" minlength="8" data-passwordRequirementsDiv="passwordReqs">
 ```
 * If your password requirements includes a maxmium number of characters (and it really shouldn't unless it's 255 characters or something or if you know absolutely nothing about password strength or IT Security....I'm only including this because there are plenty of IT Security nincompoops out there calling the shots), then include that number in a `data-maxchars` attribute in the New Password Input.  Ex:
 ```
 <label for="pword1">New Passowrd:</label>
-<input type="password" id="pword1" data-match="pword2" class="newPassword maxchars" maxlength="20" data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="nbpr-new-password maxchars" maxlength="20" data-passwordRequirementsDiv="passwordReqs">
 ```
 * If, for some reason, you have different requirements for the length of password that the `<input>` _itself_ will accept, but the length requirements for the passwords are different, then use the native `minlength` and `maxlength` attributes to control that behavior, and use the attributes `data-minchars` and `data-maxchars` for your requirements. And add either class "minchars" and/or "maxchars" to the New Password `<input>`.  For example, if the `<input>` requires between 4 and 25 characters, but your requirements are between 8 and 20:
 ```
 <label for="pword1">New Passowrd:</label>
-<input type="password" id="pword1" data-match="pword2" class="newPassword minchars maxchars" data-minchars="8" data-maxchars="20" minlength="4" maxlength="25" data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="nbpr-new-password minchars maxchars" data-minchars="8" data-maxchars="20" minlength="4" maxlength="25" data-passwordRequirementsDiv="passwordReqs">
 
 ```
 * If you don't want your password minimum or maximum character requirements listed, just the "minchars" and "maxchars" classes from the `<input>`.
 * For other password requirements, include pre-defined classnames.  For example, if your requirements include a special charactor, add class `special-char` to the New Passwords input.  (All classes are to be included in the New Passwords input.)  Ex:
 ```
 <label for="pword1">New Passowrd:</label>
-<input type="password" id="pword1" data-match="pword2" class="newPassword minchars maxchars special-char" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="nbpr-new-password minchars maxchars special-char" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
 ```
 * By default the status of a requiement ("met" or "unmet") comes after the requirement itself.  (Ex: "At least 8 characters (unmet)").  This is only exposed to screen readers, and is hidden from sight.  If you would prefer the status to come before the requirement, add the class `req-pos-before` to the `<div>` you created earlier.  Example:
 ```
 <div id="passwordReqs" class="req-pos-before"></div>
 ...
 <label for="pword1">New Passowrd:</label>
-<input type="password" id="pword1" data-match="pword2" class="newPassword minchars maxchars special-char" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
+<input type="password" id="pword1" data-match="pword2" class="nbpr-new-password minchars maxchars special-char" data-minchars="8" data-maxchars="20" data-passwordRequirementsDiv="passwordReqs">
 ```
 ### Built-in Requirements
 This widget comes with the following built-in requirements that can be added with class names:
@@ -67,7 +67,7 @@ This widget comes with the following built-in requirements that can be added wit
 For example, a system that requires passwords to have at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character, with a minimum of 8 characters long, with a maximum number of times a character can appear in a row is 5, would be coded like:
 ```
 <label for="pword1">New Password:</label>
-<input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase special-char digit max-consecutive" data-minchars="8" data-match="pword2" data-max-consecutive="5" data-passwordRequirementsDiv="passwordReqs">
+<input name="pword1" id="pword1" type="password" class="nbpr-new-password minchars maxchars lowercase uppercase special-char digit max-consecutive" data-minchars="8" data-match="pword2" data-max-consecutive="5" data-passwordRequirementsDiv="passwordReqs">
 ```
 
 ### Custom Requirements
@@ -90,7 +90,7 @@ nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Does not co
 1. Add the name you've given to the list of classes in the New Password Input
 ```
 <label for="pword1">New Password:</label>
-<input name="pword1" id="pword1" type="password" class="newPassword minchars maxchars lowercase uppercase special-char digit notPassword" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
+<input name="pword1" id="pword1" type="password" class="nbpr-new-password minchars maxchars lowercase uppercase special-char digit notPassword" data-minchars="8" data-match="pword2" data-passwordRequirementsDiv="passwordReqs">
 ```
 
 You may have noticed that the `check` function takes two arguments instead of just one. This is so that on the off chance a user starts filling out the Confirm Password input first, they will be notified as they meet requirements then too.  Though, the `aria-describedby` is only on the first input. This is to reduce verbosity.
