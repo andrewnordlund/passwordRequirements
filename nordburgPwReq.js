@@ -13,27 +13,48 @@ let nordburgPwReq = {
 	allPwReqs : {
 		"lowercase" : {"text" : {"en" : "At least 1 lowercase letter", "fr" : "Au moins 1 lettre minuscule"}, check : function (p1, p2) {return p1.match(/[a-z]/) || p2.match(/[a-z]/);}},
 		"uppercase" : {"text" : {"en" : "At least 1 uppercase letter", "fr" : "Au moins 1 lettre majuscule"}, check : function (p1, p2) {return p1.match(/[A-Z]/) || p2.match(/[A-Z]/);}},
-		"special-char" : {"text" : {"en" : "At least 1 special character", "fr" : "Au moins 1 caractère spécial"}, check : function (p1, p2) { return p1.match(/[\W\s]/u) || p2.match(/[\W\s]/u);}},
+		"special-char" : {"text" : {"en" : "At least 1 special character", "fr" : "Au moins 1 caractère spécial"}, check : function (p1, p2) { 
+				let rv = false;
+				let re = new RegExp("[^\w\s]");
+				try {
+					re = new RegExp("[^\w\s]", "u");
+				}
+				catch (ex) {
+				}
+				return re.test(p1) || re.test(p2);
+			}
+		},
 		"special" : {"text" : {"en" : "At least 1 special character (-~!@#$%^&*_+=`|(){}[:;\"'<>,.? ])", "fr" : "Au moins 1 caractère spécial (-~!@#$%^&*_+=`|(){}[:;\"'<>,.? ])"}, check : function (p1, p2) {
 				let scre = /[-~!@#$%^&*_+=`\|\(\)\{\}\[:;"'<>,\.\? \]]/;
 				return p1.match(scre) || p2.match(scre);
 			}
 		},
-		"ascii-printable" : {"text" : {"en" : "At least 1 ascii-printable character", "fr" : "Au moins 1 caractère ascii imprimable"}, check : function (p1, p2) {
+		"ascii-printable" : {"text" : {"en" : "At least 1 ascii-printable character", "fr" : "Au moins 1 caractère ascii-imprimable"}, check : function (p1, p2) {
 				let re = /[\x20-\x7E]/;
 				return p1.match(re) || p2.match(re);
 			}
 		},
 		"unicode" : {"text" : {"en" : "At least 1 Unicode character", "fr" : "Au moins 1 caractère Unicode"}, check : function (p1, p2) {
-				let re = /./u;
-				return p1.match(re) || p2.match(re);
+				let rv = false;
+				let re = new RegExp(".");
+				try {
+					re = new RegExp(".", "u");
+				} catch (ex) {
+				}
+				return re.test(p1) || re.test(p2);
 			}
 		},
 		"digit" : {"text" : {"en" : "At least 1 digit", "fr" : "Au moins 1 chiffre"}, check : function (p1, p2) { return p1.match(/[0-9]/) || p2.match(/[0-9]/);}},
 		"nospaces" : {"text" : {"en" : "No spaces", "fr" : "Sans espaces"}, check : function (p1, p2) { return !(p1.match(/[\s\n\t\f ]/) || p2.match(/[\s\n\t\f ]/));}},
-		"max-consecutive" : {"text" : {"en" : "No more than %d characters the same consecutively", "fr" : "Pas plus de %d caractères identiques consécutivement"}, check : function (p1, p2) { 
-				let regexp = /(.)\1{3}/gu;
-				return !(p1.match(regexp) || p2.match(regexp));
+		"max-consecutive" : {"text" : {"en" : "No more than %d characters the same consecutively", "fr" : "Pas plus de %d caractères identiques consécutivement"}, check : function (p1, p2) {
+				rv = true;
+				let re = new RegExp("(.)\1{3}", "g");
+				try {
+					re = new RegExp("(.)\1{3}", "gu");
+				}
+				catch (ex) {
+				}
+				return !(re.test(p1) || re.test(p2));
 			}
 		},
 		"minchars" : {"text" : {"en" : "At least %d characters", "fr" : "Au moins %d caractères"}, check : function(p1, p2) { return nordburgPwReq.getLength(p1) >= 0 || nordburgPwReq.getLength(p2) >= 0}},
@@ -51,6 +72,8 @@ let nordburgPwReq = {
 
 		let passwords = document.querySelectorAll(".nbpr-new-password,.nbpr-confirm-password");
 		if (passwords) {
+			let giveWarn = false;
+			let giveWarn2 = false;
 			for (let i = 0; i < passwords.length; i++) {
 				let pLang = nordburgPwReq.defLang;
 				if (!nordburgPwReq.myPwReqs[passwords[i].id]) nordburgPwReq.myPwReqs[passwords[i].id] = {"reqs" : {}, "lang" : nordburgPwReq.defLang, "descriptor" :  null, "reqsList" : null, "reqPos"  : "after"};
@@ -121,7 +144,6 @@ let nordburgPwReq = {
 
 					// build myPwReqs
 					let reqs = passwords[i].getAttribute("class").split(" ");
-					let giveWarn = false;
 					for (let j = 0; j < reqs.length; j++) {
 						let chrCount = null;
 						chrCount = reqs[j].match(/(m(?:in|ax))(length|chars)/i);
@@ -130,7 +152,7 @@ let nordburgPwReq = {
 							if (Object.assign) {
 								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][reqs[j]] = Object.assign({}, nordburgPwReq.allPwReqs[reqs[j]]);
 							} else {
-								console.warn ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.");
+								giveWarn2 = true;
 								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][reqs[j]] = nordburgPwReq.allPwReqs[reqs[j]];
 							}
 							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"][reqs[j]]["text"] = JSON.parse(JSON.stringify(nordburgPwReq.allPwReqs[reqs[j]]["text"]));
@@ -160,13 +182,18 @@ let nordburgPwReq = {
 								}
 								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["max-consecutive"]["check"] = function(p1, p2) {
 									let res = "(.)\\1{" + (maxConsecutive-1) + "}";
-									let re = new RegExp(res, "u");		// the u flag allows for characters like 💩 et al.
+									let re = new RegExp(res);
+									try {
+										re = new RegExp(res, "u");		// the u flag allows for characters like 💩 et al.
+									}
+									catch (ex) {
+										giveWarn2 = true;
+									}
 									return !(re.exec(p1) || re.exec(p2));
 								}
 							}
 						}
 					}
-					if (giveWarn) console.warn ("Warning: The use of special, ascii-printable, and/or unicode are not recommended.  They are included here because they are a part of the passwordrules proposal (https://github.com/whatwg/html/issues/3518) includes them. You would use them with 'allowed', but not 'required'.  And the special characters here are quite limited.  Use class 'special-char' for all non-alphanumeric/non-space characters (ie: the [\W\s] in regex).");
 
 					if (passwords[i].hasAttribute("data-match")) {
 						try {
@@ -175,7 +202,7 @@ let nordburgPwReq = {
 							if (Object.assign) {
 								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"] = Object.assign({}, nordburgPwReq.allPwReqs["match"]);
 							} else {
-								console.warn ("💩 You must be using Internet Exploder 💩.  Okay, fine you can only have one set of Password requiremnts on this page. 💩");
+								giveWarn2 = true;
 								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"] = nordburgPwReq.allPwReqs["match"];
 							}
 							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"]["stat"] = "unmet";
@@ -212,6 +239,8 @@ let nordburgPwReq = {
 				}
 				nordburgPwReq.addAriaDescribedBy(document.getElementById(id));
 			}
+			if (giveWarn) console.warn ("Warning: The use of special, ascii-printable, and/or unicode are not recommended.  They are included here because they are a part of the passwordrules proposal (https://github.com/whatwg/html/issues/3518) includes them. You would use them with 'allowed', but not 'required'.  And the special characters here are quite limited.  Use class 'special-char' for all non-alphanumeric/non-space characters (ie: the [\W\s] in regex).");
+			if (giveWarn2) console.warn ("💩 You must be using Internet Exploder 💩.  Okay, fine you can only have one set of Password requiremnts on this page, along with severe limitations on accuracy of checking certain unicode characters. 💩");
 		}
 	}, // End of init
 	checkAssoc : function () {
@@ -371,7 +400,7 @@ let nordburgPwReq = {
 				if (Object.assign) {
 					nordburgPwReq.allPwReqs[req] = Object.assign({}, nordburgPwReq.custPwRequirements[req]);
 				} else {
-					console.warn ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.");
+					//console.warn ("You must be using Internet Exploder.  Okay, fine you can only have one set of Password requiremnts on this page.");
 					nordburgPwReq.allPwReqs[req] = nordburgPwReq.custPwRequirements[req];
 				}
 			}
