@@ -132,6 +132,11 @@ In order for this to work, the components of this widget need to be a descendant
 ## See a Japanese demo
 Hosted here: [https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html](https://andrewnordlund.github.io/passwordRequirements/japaneseDemo.html).
 
+## A Note About Unicode Characters
+Certain characters like the poop emoji (💩) aren't handled well in some circumstances.  On iOS 14, the poop emoji is not counted as a "Special Character".  And if there's a <code>max-consecutive</code> requirement, then Internet Explorer is going to really slow down if someone starts entering in Unicode characters.
+
+Again, the only requirement that should actually be a minimum number of characters (and, of course, the two passwords must match).  The other requirements are holdovers from the days when passwords may be kept in plain text, space-delimited text files.
+
 ## A Note About Internet Explorer
 Since Internet Exploder is such a PoS browser that just won't die, there's something you need to be aware of if you plan on supporting that browser _and_ you plan on having more than one set of passwords on one site.  This should be a really rare edge-case.  But, I suppose if there was a place where you could sign up for more than one service on one page, and each service had its own set of New Password and Confirm Password inputs, then you need to be aware of this.
 
