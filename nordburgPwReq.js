@@ -242,7 +242,7 @@ let nordburgPwReq = {
 				nordburgPwReq.addAriaDescribedBy(document.getElementById(id));
 			}
 			if (giveWarn) console.warn ("Warning: The use of special, ascii-printable, and/or unicode are not recommended.  They are included here because they are a part of the passwordrules proposal (https://github.com/whatwg/html/issues/3518) includes them. You would use them with 'allowed', but not 'required'.  And the special characters here are quite limited.  Use class 'special-char' for all non-alphanumeric/non-space characters (ie: the [\W\s] in regex).");
-			if (giveWarn2) console.warn ("💩 You must be using Internet Exploder 💩.  Okay, fine you can only have one set of Password requiremnts on this page, along with severe limitations on accuracy of checking certain unicode characters. 💩");
+			if (giveWarn2) console.warn ("💩 You must be using Internet Exploder 💩.  Okay, fine you can only have one set of Password requiremnts on this page, along with severe limitations on accuracy and performance of checking certain unicode characters. 💩");
 		}
 	}, // End of init
 	checkAssoc : function () {
