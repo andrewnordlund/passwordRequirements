@@ -5,6 +5,11 @@ let nordburgPwReq = {
 	descriptors : {},
 	minchars : {},
 	maxchars : {},
+	regexes : {
+		"special-char" : null,
+		"unicode" : null,
+		"non-consecutive" : null,
+	},
 	stringBundle : {
 		"description" : {"en" : "Your password must contain:", "fr" : "Votre mot de passe doit contenir :"},
 		"met" : {"en" : "Met", "fr" : "Remplie"},
@@ -14,14 +19,7 @@ let nordburgPwReq = {
 		"lowercase" : {"text" : {"en" : "At least 1 lowercase letter", "fr" : "Au moins 1 lettre minuscule"}, check : function (p1, p2) {return p1.match(/[a-z]/) || p2.match(/[a-z]/);}},
 		"uppercase" : {"text" : {"en" : "At least 1 uppercase letter", "fr" : "Au moins 1 lettre majuscule"}, check : function (p1, p2) {return p1.match(/[A-Z]/) || p2.match(/[A-Z]/);}},
 		"special-char" : {"text" : {"en" : "At least 1 special character", "fr" : "Au moins 1 caractère spécial"}, check : function (p1, p2) { 
-				let rv = false;
-				let re = new RegExp("[^\w\s]");
-				try {
-					re = new RegExp("[^\w\s]", "u");
-				}
-				catch (ex) {
-				}
-				return re.test(p1) || re.test(p2);
+				return nordburgPwReq.regexes["special-char"].test(p1) || nordburgPwReq.regexes["special-char"].test(p2);
 			}
 		},
 		"special" : {"text" : {"en" : "At least 1 special character (-~!@#$%^&*_+=`|(){}[:;\"'<>,.? ])", "fr" : "Au moins 1 caractère spécial (-~!@#$%^&*_+=`|(){}[:;\"'<>,.? ])"}, check : function (p1, p2) {
@@ -35,13 +33,7 @@ let nordburgPwReq = {
 			}
 		},
 		"unicode" : {"text" : {"en" : "At least 1 Unicode character", "fr" : "Au moins 1 caractère Unicode"}, check : function (p1, p2) {
-				let rv = false;
-				let re = new RegExp(".");
-				try {
-					re = new RegExp(".", "u");
-				} catch (ex) {
-				}
-				return re.test(p1) || re.test(p2);
+				return nordburgPwReq.regexes["unicode"].test(p1) || nordburgPwReq.regexes["unicode"].test(p2);
 			}
 		},
 		"digit" : {"text" : {"en" : "At least 1 digit", "fr" : "Au moins 1 chiffre"}, check : function (p1, p2) { return p1.match(/[0-9]/) || p2.match(/[0-9]/);}},
@@ -66,6 +58,7 @@ let nordburgPwReq = {
 	custPwRequirements : {},
 
 	init : function () {
+		nordburgPwReq.setRegExes();
 		let lang = nordburgPwReq.defLang;
 
 		nordburgPwReq.dealWithCustomRequirements();
@@ -183,13 +176,22 @@ let nordburgPwReq = {
 								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["max-consecutive"]["check"] = function(p1, p2) {
 									let res = "(.)\\1{" + (maxConsecutive-1) + "}";
 									let re = new RegExp(res);
+									rv = true;
 									try {
 										re = new RegExp(res, "u");		// the u flag allows for characters like 💩 et al.
+										rv = !(re.test(p1) || re.test(p2));
 									}
 									catch (ex) {
+										let ures = "([\uD800-\uDBFF][\uDC00-\uDFFF])\\1{" + (maxConsecutive-1) + "}";
+										ure = new RegExp(ures);
+										//rv = !((re.test(p1) && ure.test(p1)) || (re.test(p2) && ure.test(p2)));
+										rv = !(re.test(p1) || re.test(p2));
+										if (rv) rv = !(ure.test(p1) || ure.test(p2));
+											console.log ("Rv is " + rv + ".");
 										giveWarn2 = true;
 									}
-									return !(re.exec(p1) || re.exec(p2));
+									return rv;
+									//return !(re.exec(p1) || re.exec(p2));
 								}
 							}
 						}
@@ -240,7 +242,7 @@ let nordburgPwReq = {
 				nordburgPwReq.addAriaDescribedBy(document.getElementById(id));
 			}
 			if (giveWarn) console.warn ("Warning: The use of special, ascii-printable, and/or unicode are not recommended.  They are included here because they are a part of the passwordrules proposal (https://github.com/whatwg/html/issues/3518) includes them. You would use them with 'allowed', but not 'required'.  And the special characters here are quite limited.  Use class 'special-char' for all non-alphanumeric/non-space characters (ie: the [\W\s] in regex).");
-			if (giveWarn2) console.warn ("💩 You must be using Internet Exploder 💩.  Okay, fine you can only have one set of Password requiremnts on this page, along with severe limitations on accuracy of checking certain unicode characters. 💩");
+			if (giveWarn2) console.warn ("💩 You must be using Internet Exploder 💩.  Okay, fine you can only have one set of Password requiremnts on this page, along with severe limitations on accuracy and performance of checking certain unicode characters. 💩");
 		}
 	}, // End of init
 	checkAssoc : function () {
@@ -412,6 +414,19 @@ let nordburgPwReq = {
 		if (str.match(astralSymbols)) str = str.replace(astralSymbols, 'x');
 		return str.length;
 	}, // End of getLength
+	setRegExes : function () {
+		let scre = new RegExp("[^\\w\\s]");
+		let ure = new RegExp(".");
+		try {
+				scre = new RegExp("[^\\w\\s]", "u");
+				ure = new RegExp(".", "u");
+		}
+		catch (ex) {
+		}
+		
+		nordburgPwReq.regexes["special-char"] = scre;
+		nordburgPwReq.regexes["unicode"] = ure;
+	}, // End of setRegExes
 }
 
 document.addEventListener("DOMContentLoaded", nordburgPwReq.init, false);
