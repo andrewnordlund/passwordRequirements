@@ -11,7 +11,7 @@
 	<body>
 		<header>
 		<h1 id="theH1">Nordburg Password Requirements Test/Demo Page</h1>
-		<p>Try 💩 &nbsp; ✓ &nbsp; 👍 &nbsp; ⁿ/ₐ &nbsp; 🤷</p>
+		<p id="unicodeP" class="none">Try <span class="spaced">💩 ✓ 👍 ⁿ/ₐ 🤷</span></p>
 		</header>
 		<main>
 			<div id="mainContent">
@@ -433,5 +433,15 @@
 		<footer>
 			<p>Here is <a href="https://github.com/andrewnordlund/passwordRequirements">Nordburg Password Requirements GitHub Repo</a>.</p>
 		</footer>
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				setTimeout(function() {
+					if (nordburgPwReq.dbug) {
+						const unicodeP  = document.getElementById("unicodeP");
+						unicodeP.classList.remove("none");
+					}
+				}, 100);
+			}, false);
+		</script>
 	</body>
 </html>
