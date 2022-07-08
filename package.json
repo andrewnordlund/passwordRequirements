@@ -1,0 +1,25 @@
+{
+  "name": "nordburg-pw-reqs",
+  "version": "1.0.0",
+  "description": "An accessible password requirements widget",
+  "main": "nordburgPwReq.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewnordlund/passwordRequirements.git"
+  },
+  "keywords": [
+    "password",
+    "passwords",
+    "password",
+    "requirements"
+  ],
+  "author": "Andrew Nordlund",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrewnordlund/passwordRequirements/issues"
+  },
+  "homepage": "https://github.com/andrewnordlund/passwordRequirements#readme"
+}
