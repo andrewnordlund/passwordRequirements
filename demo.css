@@ -39,3 +39,10 @@ summary {
 	font-weight: 700;
 	margin-right: 5px;
 }
+.spaced {
+	word-spacing: 3em;
+	margin: auto 2em;
+}
+.none {
+	display: none;
+}

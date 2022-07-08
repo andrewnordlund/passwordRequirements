@@ -60,6 +60,12 @@ let nordburgPwReq = {
 	custPwRequirements : {},
 
 	init : function () {
+		let thisURL = new URL(document.location);
+		let params = thisURL.searchParams;
+		if (params.get("nordburgPwReqDbug")) {
+			if (params.get("nordburgPwReqDbug") == "true") nordburgPwReq.dbug= true;
+		}
+
 		nordburgPwReq.setRegExes();
 		let lang = nordburgPwReq.defLang;
 
@@ -193,7 +199,7 @@ let nordburgPwReq = {
 									rv = true;
 									re = nordburgPwReq.regexes["max-consecutive"][pid]["re"];
 									rv = !(re.test(p1) || re.test(p2));
-									
+									if (nordburgPwReq.dbug) console.log ("Using re: " + nordburgPwReq.regexes["max-consecutive"][pid]["res"]);
 									if (!Object.assign) {
 										let ure = nordburgPwReq.regexes["max-consecutive"]["ie"]["re"];
 										
@@ -260,6 +266,7 @@ let nordburgPwReq = {
 			if (giveWarn) console.warn ("Warning: The use of special, ascii-printable, and/or unicode are not recommended.  They are included here because they are a part of the passwordrules proposal (https://github.com/whatwg/html/issues/3518) includes them. You would use them with 'allowed', but not 'required'.  And the special characters here are quite limited.  Use class 'special-char' for all non-alphanumeric/non-space characters (ie: the [\W\s] in regex).");
 			if (giveWarn2) console.warn ("💩 You must be using Internet Exploder 💩.  Okay, fine you can only have one set of Password requiremnts on this page, along with severe limitations on accuracy and performance of checking certain unicode characters. 💩");
 		}
+		if (nordburgPwReq.dbug) nordburgPwReq.checkAssoc();
 	}, // End of init
 	checkAssoc : function () {
 		// This is entirely for debugging purposes.
