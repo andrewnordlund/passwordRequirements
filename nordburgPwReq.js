@@ -240,7 +240,12 @@ let nordburgPwReq = {
 				} // End of if .nbpr-new-password
 				passwords[i].addEventListener("keyup", nordburgPwReq.checkReqs, false);
 				passwords[i].addEventListener("change", nordburgPwReq.checkReqs, false);
-				passwords[i].addEventListener("paste", nordburgPwReq.checkReqs, false);
+				passwords[i].addEventListener("paste", function (e) {
+						setTimeout(function() {
+							console.log ("Pasted: " + e.target.value + ".");
+							nordburgPwReq.checkReqs(e);
+							}, 1);
+					}, false);
 			}
 
 			
