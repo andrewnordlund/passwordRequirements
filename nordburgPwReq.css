@@ -1,0 +1,39 @@
+@charset "utf-8";
+.requnmet::before {
+	content: "✘";
+	color: #AA0000;
+	font-weight: 700;
+	margin-right: 4px;
+}
+.reqmet::before {
+	font-family: "Brush Script MT", "fantasy", Papyrus, Coperplate, Verdana, serif;
+	font-weight: 700;
+	color: #008A1E;
+	content: "✓";
+}
+html {
+	box-sizing: border-box;
+}
+ul.pwReqsUL {
+  list-style: none;
+}
+ul.pwReqsUL>li {
+	display: table-row;
+	padding: 0;
+	height: 1.4em;
+}
+ul.pwReqsUL>li>span {
+	display: table-cell;
+	min-width: 1.5em;
+}
+.pwReqText {
+	vertical-align: middle;
+}
+.invisibleStuff {
+	clip:rect(1px,1px,1px,1px);
+	height:1px;
+	margin:0;
+	overflow:hidden;
+	position:absolute;
+	width:1px
+}

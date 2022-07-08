@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,initial-scale=1" name="viewport">
+		<title>Nordburg Password Requirements Test/Demo Page</title>
+		<link rel="Stylesheet" type="text/css" href="demo.css">
+		<link rel="Stylesheet" type="text/css" href="nordburgPwReq.css">
+		<script src="nordburgPwReq.js"></script>
+	</head>
+	<body>
+		<header>
+		<h1 id="theH1">Nordburg Password Requirements Test/Demo Page</h1>
+		<p id="unicodeP" class="none">Try <span class="spaced">💩 ✓ 👍 ⁿ/ₐ 🤷</span></p>
+		</header>
+		<main>
+			<div id="mainContent">
+				<script>
+					nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
+						let re = /password/i;
+						return !(p1.match(re) || p2.match(re));
+					}};
+					nordburgPwReq.custPwRequirements["pasMotdepasse"] = {"text" : {"en" : "Does not contain 'MotDePasse' or 'Password'", "fr" : "Ne contient pas 'MotDePasse' ou 'Password'"}, check : function (p1, p2) {
+						let re = /password|motdepasse/i;
+						return !(p1.match(re) || p2.match(re));
+					}};
+				</script>
+				<section>
+					<h2>In English</h2>
+					<div class="fieldHolder">
+						<label for="pword1">New Password:</label>
+						<input name="pword1" id="pword1" type="password" class="nbpr-new-password minlength maxlength lowercase uppercase special-char notPassword digit max-consecutive nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn" aria-describedby="theH1" data-max-consecutive="4" autocomplete="off">
+					</div>
+					<div class="fieldHolder">
+						<label for="pword2">Confirm Password:</label>
+						<input name="pword2" id="pword2" type="password" class="nbpr-confirm-password" data-match="pword1" autocomplete="off">
+					</div>
+					<div id="passwordRequirementsEn"></div>
+					<div class="fieldHolder">
+						<input value="Submit" id="submitBtn" type="button">
+					</div>
+					<details>
+						<summary>Code</summary>
+						<pre>
+&lt;script&gt;
+	nordburgPwReq.custPwRequirements["pword1"] = {"notPassword" : {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
+		let re = /password/i;
+		return !(p1.match(re) || p2.match(re));
+	}}};
+&lt;/script&gt;
+...
+
+&lt;div class="fieldHolder"&gt;
+	&lt;label for="pword1"&gt;Password:&lt;/label&gt;
+	&lt;input name="pword1" id="pword1" type="password" class="nbpr-new-password lowercase uppercase special-char digit max-consecutive nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn" aria-describedby="theH1" data-max-consecutive="4" autocomplete="off"&gt;
+&lt;/div&gt;
+&lt;div class="fieldHolder"&gt;
+	&lt;label for="pword2"&gt;Confirm Password:&lt;/label&gt;
+	&lt;input name="pword2" id="pword2" type="password" class="nbpr-confirm-password" data-match="pword1"&gt;
+&lt;/div&gt;
+&lt;div id="passwordRequirementsEn"&gt;&lt;/div&gt;
+						</pre>
+					</details>
+				</section>
+
+				<section lang="fr" id="frenchDemoSect">
+					<h2>En Français</h2>
+					<div id="passwordRequirementsFr" class="req-pos-before"></div>
+					<div class="fieldHolder">
+						<label for="pword3">Nouveau mot de passe :</label>
+						<input name="pword3" id="pword3" type="password" class="notPassword maxchars minchars nbpr-new-password lowercase uppercase special-char digit pasMotdepasse max-consecutive" minlength="4" data-minchars="6" data-max-consecutive="5" data-match="pword4"  data-maxchars="20" maxlength="21" data-passwordRequirementsDiv="passwordRequirementsFr">
+					</div>
+					<div class="fieldHolder">
+						<label for="pword4">Confirmez le mot de passe :</label>
+						<input name="pword4" id="pword4" type="password" class="nbpr-confirm-password" data-match="pword3">
+					</div>
+					<div class="fieldHolder">
+						<input value="Submit" id="submitBtn2" type="button">
+					</div>
+					<details>
+						<summary>Code</summary>
+<pre>
+&lt;div id="passwordRequirementsFr"&gt;&lt;/div&gt;
+...
+&lt;div class="fieldHolder"&gt;
+	&lt;label for="pword3"&gt;Mot de passe :&lt;/label&gt;
+	&lt;input name="pword3" id="pword3" type="password" class="notPassword maxchars minchars nbpr-new-password lowercase uppercase special-char digit pasMotdepasse max-consecutive" minlength="4" data-minchars="6" data-max-consecutive="6" data-match="pword4"  data-maxchars="20" maxlength="21" data-passwordRequirementsDiv="passwordRequirementsFr"&gt;
+&lt;/div&gt;
+&lt;div class="fieldHolder"&gt;
+	&lt;label for="pword4"&gt;Confirmez le mot de passe :&lt;/label&gt;
+	&lt;input name="pword4" id="pword4" type="password" class="nbpr-confirm-password" data-match="pword3"&gt;
+&lt;/div&gt;
+</pre>
+					</details>
+				</section>
+<script>
+	if (!Object.assign) {
+		let frenchDemoSect = null;
+		frenchDemoSect = document.getElementById("frenchDemoSect");
+		if (frenchDemoSect) frenchDemoSect.parentNode.removeChild(frenchDemoSect);
+	}
+</script>
+			</div>
+			<div>
+				<h2>Notes</h2>
+				<p>The important parts of this widget are:</p>
+				<ul>
+					<li>Only the first password field references the list of requirements using <code>aria-describedby</code></li>
+					<li>“Met” and “Unmet” only change when the criteria becomes met, or unmet.</li>
+					<li>Each list item is like:  <code>&lt;li aria-live=”polite” artia-atomic=”true”&gt;</code>.  <code>aria-live=”polite”</code> makes a screen reader read out the contents when there’s a change, and <code>aria-atomic=”true”</code> makes the screen reader read out the whole line, not just “met” or “unmet”.  Note that each list item needs to be its own live region.  If the whole widget is a live region, then the whole list gets read out whenever there’s a change.  You don’t want that.</li>
+				</ul>
+			</div>
+			<section>
+				<h2>Screen Reader results</h2>
+				<p>In the above, I have the widget demo'd in French and English.  In English, the list of requirements comes after the password inputs.  In French it comes before.  In English, the status of the requirements are exposed to screen readers after the requirement (Ex: "At least 1 uppercase letter. Met").  In French, they come before (Ex: "<span lang="fr">Remplie : Au moins 1 lettre majuscule</span>"). In both languages, the status is a <code>&lt;span&gt;</code> nested inside the <code>&lt;span&gt;</code> that has the requirement.  In English, the <code>&lt;H1&gt;</code> is referenced by the first password input with <code>aria-describedby</code> to demonstrate that you can still use <code>aria-describedby</code> and this widget won't override your values - only add to them.</p>
+				<p>The following tests will be done and results listed below:</p>
+				<dl>
+					<dt>Top to Bottom</dt>
+					<dd>Read through the page top to bottom (<kbd>Insert+Down</kbd> in NVDA, JAWS, and Narrator. <kbd>Control+option+Right</kbd> in VoiceOver OS X, swipe-right in VoiceOver iOS.) to check if the list of requirements is read as a list, if each requirement is listed with its status.</dd>
+					<dt>Bit by Bit</dt>
+					<dd>Read through the page line by line, item by item. (<kbd>Down</kbd> in NVDA and JAWS.  <kbd>Insert+Right</kbd> in Narrator. <kbd>Control+option+right arrow key</kbd> in VoiceOver OS X, swipe-right in VoiceOver iOS.)  This <em>shouldn't</em> give different results than Top to Bottom.  If it never does, I'll just stop tracking, and erase this.  Else, differences will be noted.</dd>
+					<dt>Focusing</dt>
+					<dd>When the first password field takes focus, are all elements referenced by <code>aria-describdedby</code> read out, including the <code>&lt;H1&gt;</code> in the English widget, the phrase "All passwords must contain", and each criteria along with their status?</dd>
+					<dt>Typying</dt>
+					<dd>As you type, when requirements are met or unmet is the change announced?  Does the announcement include both the requirement and its <em>new</em> status?</dd>
+					<dt>Re-typing</dt>
+					<dd>If you type a few characters, then <kbd>Shift+Home</kbd> or <kbd>Shift+Back</kbd> to select the whole password, then delete and start again, all requiremtns should be set to their initial state, then they should change as they're met/unmet as you type more characters.  I'll type "P-a-s-s" to change the status for Uppercase, Lowercase, and no two letters consecutively..  Then Select-all -&gt; Delete -&gt; retype the same thing.</dd>
+				</dl>
+				<p>Each will have notes about support and behavior.  Here's what they mean:</p>
+				<dl>
+					<dt class="full-support">Full support</dt>
+					<dd>Everything works as it should, including <code>lang</code> attributes.  A screen reader user shouldn't experience any barriers beyond the inherent complixity of the process.</dd>
+					<dt class="most-support">Mostly supported</dt>
+					<dd>Most things will work as they should, but there may be something that's not right which could be part of how the screen reader and/or operating system work, such as not respecting the <code>lang</code> attributes.  My results could be because I don't have French properly downloaded or installed on my OS or SR.  But this is mostly an edge case.</dd>
+					<dt class="partial-support">Partial support</dt>
+					<dd>Some aspects work.  Some don't.  A screen reader user may be able to find workarounds, for example if not all password requirements are read in a top-down reading, but they are when the input takes focus.</dd>
+					<dt class="no-support">No support</dt>
+					<dd>Not a thing in that test works.  A screen reader user will face a signifiant barrier.  The thing just doesn't work.</dd>
+					<dt class="odd-behavior">Odd behavior</dt>
+					<dd>This is for things that made me go "hmmmmm". Like if the screen reader only reads part of a list item; or reads it twice or thrice.</dd>
+					<dt class="not-applicable">N/A</dt>
+					<dd>Not Applicable.  Due to a limitation in the system (or my skills), this test couldn't be performed.</dd>
+				</dl>
+
+				<section>
+				<h3>Windows:</h3>
+					<section>
+						<h4>NVDA 2022.1</h4>
+						<dl>
+							<dt>Firefox 101</dt>
+							<dd>
+								<dl>
+									<dt class="full-support">Top to Bottom</dt>
+									<dd>Everything is read out as it should be. Full support.</dd>
+									<dt class="full-support">Bit by Bit</dt>
+									<dd>Everything is read out as it should be. Full support.</dd>
+									<dt class="most-support">Focusing</dt>
+									<dd>Everything is read out as it should be.  Except the French is read out with a strong English accent.  Mostly supported.</dd>
+									<dt class="full-support">Typying</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+									<dt class="full-support">Re-typing</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+								</dl>
+							</dd>
+							<dt>Edge 103</dt>
+							<dd>
+								<dl>
+									<dt class="full-support">Top to Bottom</dt>
+									<dd>Everything is read out as it should be. Full support.</dd>
+									<dt class="full-support">Bit by Bit</dt>
+									<dd>Everything is read out as it should be. Full support.</dd>
+									<dt class="most-support">Focusing</dt>
+									<dd>Everything is read out as it should be.  Except the French is read out with a strong English accent.  Mostly supported.</dd>
+									<dt class="full-support">Typying</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+									<dt class="full-support">Re-typing</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+								</dl>
+							</dd>
+							<dt>Chrome 102</dt>
+							<dd>
+								<dl>
+									<dt class="full-support">Top to Bottom</dt>
+									<dd>Everything is read out as it should be. Full support.</dd>
+									<dt class="full-support">Bit by Bit</dt>
+									<dd>Everything is read out as it should be. Full support.</dd>
+									<dt class="most-support">Focusing</dt>
+									<dd>Everything is read out as it should be.  Except the French is read out with a strong English accent.  Mostly supported.</dd>
+									<dt class="full-support">Typying</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+									<dt class="full-support">Re-typing</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+								</dl>
+							</dd>
+							<dt>Internet Explorer 11</dt>
+							<dd>
+								<dl>
+									<dt class="full-support">Top to Bottom</dt>
+									<dd>Everything is read out as it should be. Full support.</dd>
+									<dt class="full-support">Bit by Bit</dt>
+									<dd>Everything is read out as it should be. Full support.</dd>
+									<dt class="partial-support">Focusing</dt>
+									<dd>When focus lands in the <code>&lt;input&gt;</code>, the list of requirements, along with their status, is read out as it should be.  But that's all that's read out.  The <code>&lt;H1&gt;</code> and "Your password must contain" are not read out.  Partial support.</dd>
+									<dt class="partial-support">Typying</dt>
+									<dd>As I type, when the status of a requirement changes, the requirement is read out along with the status of what it <em>was</em>, not what it <em>is</em>.  Ex: when I type "P" I hear "At least 1 uppercase letter unmet". Partial support.</dd>
+									<dt class="partial-support">Re-typing</dt>
+									<dd>When I select the text and delete it, I hear the requirements that have changed all read out along with their old status.  Ex: "At least 1 uppercase letter met, At least 1 lowercase letter met", etc.  Then as I retype the password, I hear everything as I did when I first typed the password.  Partial support.</dd>
+								</dl>
+							</dd>
+
+						</dl>
+					</section>
+					<section>
+						<h4>JAWS 2021</h4>
+						<dl>
+							<dt>Firefox 101</dt>
+							<dd>
+								<dl>
+									<dt class="most-support">Top to Bottom</dt>
+									<dd>Everything is read out as it should be.  Except the French is read out with a strong English accent.  Mostly supported.</dd>
+									<dt class="most-support">Bit by Bit</dt>
+									<dd>Everything is read out as it should be.  Except the French is read out with a strong English accent.  Mostly supported.</dd>
+									<dt class="most-support">Focusing</dt>
+									<dd>Everything is read out as it should be.  Except the French is read out with a strong English accent.  Mostly supported.</dd>
+									<dt class="full-support">Typying</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+									<dt class="full-support">Re-typing</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+								</dl>
+							</dd>
+							<dt>Edge 103</dt>
+							<dd>
+								<dl>
+									<dt class="most-support">Top to Bottom</dt>
+									<dd>Everything is read out as it should be.  Except the French is read out with a strong English accent.  Mostly supported.</dd>
+									<dt class="most-support">Bit by Bit</dt>
+									<dd>Everything is read out as it should be.  Except the French is read out with a strong English accent.  Mostly supported.</dd>
+									<dt class="most-support">Focusing</dt>
+									<dd>Everything is read out as it should be.  Except the French is read out with a strong English accent.  Mostly supported.</dd>
+									<dt class="full-support">Typying</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+									<dt class="full-support">Re-typing</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+								</dl>
+							</dd>
+
+							<dt>Chrome 102</dt>
+							<dd>
+								<dl>
+									<dt class="most-support">Top to Bottom</dt>
+									<dd>Everything is read out as it should be.  Except the French is read out with a strong English accent.  Mostly supported.</dd>
+									<dt class="most-support">Bit by Bit</dt>
+									<dd>Everything is read out as it should be.  Except the French is read out with a strong English accent.  Mostly supported.</dd>
+									<dt class="most-support">Focusing</dt>
+									<dd>Everything is read out as it should be.  Except the French is read out with a strong English accent.  Mostly supported.</dd>
+									<dt class="full-support">Typying</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+									<dt class="full-support">Re-typing</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+								</dl>
+							</dd>
+							<dt>Internet Explorer 11</dt>
+							<dd>
+								<dl>
+									<dt class="full-support">Top to Bottom</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+									<dt class="full-support">Bit by Bit</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+									<dt class="full-support">Focusing</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+									<dt class="full-support">Typying</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+									<dt class="full-support">Re-typing</dt>
+									<dd>Everything is read out as it should be.  Full support.</dd>
+								</dl>
+							</dd>
+						</dl>
+					</section>
+					<section>
+						<h4>Narrator</h4>
+						<dl>
+							<dt>Firefox 101</dt>
+							<dd>
+								<dl>
+									<dt class="odd-behavior">Top to Bottom</dt>
+									<dd>It reads everything fine until it gets to the list.  At first it reads out it all as it should.  Then when it gets to the bottom and reads the last list item, it goes back up and re-reads "Your password must contain". Then it reads the list again properly.  Then when it's done reading the last list item, it goes back and re-reads the list starting with the first list item.  Then at the second list item, after it reads out the requirement, it goes back and re-reads the second half of the requirement and the status  Ex: "Passwords must match unmet.  At least 8 characters met. A maximum of 10 characters. Of 10 characters met. At least 1 lowercase letter unmet. 1 lowercase letter unmet." It seems that whenever Narrator meets a new block of content, it wants to read it all out.  Also, <code>lang</code> attributes are not respected when it gets to the French.</dd>
+									<dt class="no-support total-failure">Bit by Bit</dt>
+									<dd>Maybe I just don't know Narrator well enough yet, but when I <kbd>Insert+Right</kbd> and I come to an <code>&lt;input&gt;</code>, my focus gets placed there, and <kbd>Insert+Right</kbd> doesn't take me out, like I'm in some kind of Forms Mode.  All I hear is "No next item".  I'm going to consider this to be total failure no support.</dd>
+									<dt class="no-support">Focusing</dt>
+									<dd>When the password input takes focus, after about a 2 second pause only the very first thing in the <code>aria-describedby</code> (ie: the <code>&lt;H1&gt;</code>) is read.  In French, none of the <code>arid-describedby</code> content is read.  But the <code>lang</code> attributes are not respected. No support.</dd>
+									<dt class="no-support">Typying</dt>
+									<dd>As I type, with each character, all I hear is "hidden".  No changes are being read by Narrator.  No support.</dd>
+									<dt class="no-support">Re-typing</dt>
+									<dd>With no changes being read out as I type, this doesn't work either.  No support.</dd>
+								</dl>
+							</dd>
+							<dt>Edge 103</dt>
+							<dd>
+								<dl>
+									<dt class="full-support">Top to Bottom</dt>
+									<dd>It reads everything the way it should. respecting <code>lang</code> attributes.</dd>
+									<dt class="odd-behavior">Bit by Bit</dt>
+									<dd>When it gets to the <code>&lt;label&gt;</code>, it does not read it out immediately.  You have to press <kbd>Insert+Right</kbd> again. Then the <code>&lt;label&gt;</code> gets read.  When it gets to the list, first it reads out "1 of 10 level 1". Then when you press <kbd>Insert+Right</kbd> again it reads out the requirement.  ("At least 8 characters").  Then you have to press <kbd>Insert+Right</kbd> to hear the status. When it gets to the French, it reads the text out in French.</dd>
+									<dt class="odd-behaviour full-support">Focusing</dt>
+									<dd>When the password input takes focus, everything is read out as it should (after about a 2 second pause).  But then the <code>&lt;H1&gt;</code> is read out again at the end.  In French, <code>lang</code> attributes are respected.</dd>
+									<dt class="odd-behavior full-support">Typying</dt>
+									<dd>When I start typing, the Narrator visual focus indicator goes to the next thing (the "Confirm Password" <code>&lt;label&gt;</code>) and Narrator reads out "End of line selected".  In fact, it reads out "End ofline selected" after every character I type.  Then it reads out the "At least 1 uppcase letter met" as it should.</dd>
+									<dt class="full-support">Re-typing</dt>
+									<dd>When I select all the typed-text and press delete, Narrator reads out all changed requirements with heir new status.  And as I retype, all changes are read out as they should be.</dd>
+								</dl>
+							</dd>
+							<dt>Chrome 102</dt>
+							<dd>
+								<dl>
+									<dt class="odd-behavior">Top to Bottom</dt>
+									<dd>It reads everything the way it should until it gets to the list items.  When it reads each list item it starts with its position, but then reads out "Heading level 1". Then it reads out the requirement and its status.  Ex: "1 of 10 level 1, heading level 1, At least 8 characters unmet". And it does not respect <code>lang</code> attributes.</dd>
+									<dt class="odd-behavior">Bit by Bit</dt>
+									<dd>It skips over "In English" and goes right from "Main landmark" to "New Password". When it gets to the list, first it reads out "1 of 10 level 1 heading level 1". Then when you press <kbd>Insert+Right</kbd> again it reads out the requirement.  ("At least 8 characters").  Then you have to press <kbd>Insert+Right</kbd> to hear the status. When it gets to the French, again it skips <span lang="fr">En Français</span> and goes right to <span lang="fr">"Votre mod de passe doit contenir"</span> it reads the text out in a strong English accent.</dd>
+									<dt class="no-support">Focusing</dt>
+									<dd>When the password input takes focus, after about a 2 second pause only the very first thing in the <code>aria-describedby</code> (ie: the <code>&lt;H1&gt;</code>) is read.  In French, none of the <code>arid-describedby</code> content is read.  And the <code>lang</code> attributes are not respected. No support.</dd>
+									<dt class="no-support">Typying</dt>
+									<dd>As I type, with each character, all I hear is "hidden".  No changes are being read by Narrator.  No support.</dd>
+									<dt class="no-support">Re-typing</dt>
+									<dd>With no changes being read out as I type, this doesn't work either.  No support.</dd>
+								</dl>
+							</dd>
+							
+							<dt>Internet Explorer 11</dt>
+							<dd>
+								<dl>
+									<dt class="full-support">Top to Bottom</dt>
+									<dd>It reads everything the way it should.  Since IE can't handle more than one set of requirements on one page, I can't test the French section.</dd>
+									<dt class="full-suppert odd-behavior">Bit by Bit</dt>
+									<dd>It's goes well until it gets to the list.  For each list item, it reads the requirement, the status, and the position. Ex: "At least 8 characters unmet. 1 of 10".  But then when I press <kbd>Insert+Right</kbd>, it reads out the requirement and status, then it reads out the requirement again.  Ex: "At least 8 characters unmet At least 8 characters".  Then I press <kbd>Insert+Right</kbd> again, and it reads out the status.  When I press <kbd>Insert+Right</kbd> again, it goes to the next requirement line.</dd>
+									<dt class="partial-support">Focusing</dt>
+									<dd>When the password input takes focus, after about a 2 second pause only the list of requirements is read, but it does read each requirement along with its status.  The <code>&lt;H1&gt;</code> and "Your password must contain" are both ignored.  Partial support.</dd>
+									<dt class="full-suppert odd-behavior">Typying</dt>
+									<dd>As I type, with each character, after I hear "hidden", the changed requirements are read out with their new status. Full support with odd behavior.</dd>
+									<dt class="full-support odd-behavior">Re-typing</dt>
+									<dd>When I select the text and delete, all changed requirements, along with their new status, get read out twice.  Then when I retype the password, as things change, those changes are read out as they should be.  Full support with odd behavior.</dd>
+								</dl>
+							</dd>
+						</dl>
+					</section>
+				</section>
+				<section>
+					<h3>iOS with VoiceOver</h3>
+					<section>
+						<h4>iOS v14</h4>
+						<dl>
+							<dt>Sarafi, Firefox, and Chrome</dt>
+							<dd>
+								<dl>
+									<dt class="full-support">Top to Bottom</dt>
+									<dd>It reads top to bottom reading everything as it should, respecting all <code>lang</code> atributes.  Full support</dd>
+									<dt class="full-support">Bit by Bit</dt>
+									<dd>It reads everything as it should.  But, it does consider the requirement a separate thing than its status.  So you have to swipe-right after you hear "At least 8 characters" to hear "Unmet".  All <code>lang</code> atributes are respected.  Full support.</dd>
+									<dt class="most-support odd-behavior">Focusing</dt>
+									<dd>When VoiceOver focuses the input, everything referenced by <code>aria-describedby</code> is read out as it should be.  All <code>lang</code> atributes are respected.  But when you enter the input to start typing, it's not.  I think this is just how VoiceOver on iOS just works, but I find it odd. Mostly supported with odd behavior.</dd>
+									<dt class="most-support">Typying</dt>
+									<dd>As you type, changes are announced. But in French, the changes are read in a strong English accent.  Mostly supported</dd>
+									<dt class="not-applicable">Re-typing</dt>
+									<dd>If there's a way to do this without an external keyboard (which I don't have) then I haven't found it.  N/A</dd>
+								</dl>
+							</dd>
+						</dl>
+					</section>
+				</section>
+				<section>
+					<h3>Mac OS X with VoiceOver</h3>
+					<section>
+						<h4>Mac OS X 10.15.7 (Catalina)</h4>
+						<dl>
+							<dt>Safari 15.5</dt>
+							<dd>
+								<dl>
+									<dt class="most-support odd-behavior">Top to Bottom</dt>
+									<dd>It reads properly until I get to the list and read "List 10 items", then it just stops reading.  So if I hit <kbd>Control+Option+A</kbd> again, it reads out the last part of the first item, then jumps down to the first thing outside the list.  Ex: "Unmet Submit button".  Note that when you do get to the list, if you wait for a second or two VoiceOver reads out instructions about navigating the list.  Okay, things have just gotten funny.  In playing with this, now VoiceOver keeps reading the list when it gets to it.  It doesn't stop.  I have no idea what's going on. Mostly supported with odd behavior.</dd>
+									<dt class="full-support">Bit by Bit</dt>
+									<dd>Most is fine, but each list item is treated as two parts: the requirement, and the status. When you <kbd>Control+Option+right</kbd> to the first requirement, it reads out the requirement and position (ex: "At least 8 characters 1 of 10") then you need to <kbd>Control+Option+Right</kbd> to hear "Unmet".  Then when you get to the French part, it reads out all French text in a French accent.  Full support</dd>
+									<dt class="full-support">Focusing</dt>
+									<dd>The name, role, and value are all read.  Then it reads all descriptions including each requirement and its status as it should.  In French, everything is read with a strong English accent. Full support.</dd>
+									<dt class="full-support">Typying</dt>
+									<dd>As I type, changed requirements are read out along with their new status.  Full support.</dd>
+									<dt class="most-supported odd-behavior">Re-typing</dt>
+									<dd>When I select everything and delete it, it seems like it's trying to read all changes out, but only says one. ("At least 1 uppercase letter unmet.")  Then as I start typing again, the requirements are read out as their status changes, but the status itself is only read out if it was not announced in the deletion process.  When I retype "P" I hear "At least one uppercase letter met".  But then when I type "a" I hear "At least one lowercase letter".  When I type "s-s" I hear "No two characters the same consecutively".  But if I type a "!" I hear "At least one special character met".  Then if press <kbd>Backspace</kbd> as statii changes, their requirement along with their new status is read out.  Mostly supported with odd behavior.</dd>
+								</dl>
+							</dd>
+							<dt>Firefox 102</dt>
+							<dd>
+								<dl>
+									<dt class="partial-support odd-behavior">Top to Bottom</dt>
+									<dd>It reads properly until I get to the list and then it only reads the last thing (ie: a <code>&lt;span&gt;</code> in the list.  Ex: "Your password must contain list 10 items unmet met unmet unmet" then for the French: <span lang="fr">Votre mot do passe doit contenir</span> list 10 items <span lang="fr">Ne contient pas 'Password', Un maximum de 20 caractères</span>, etc.  Also, it reads the French part with a really strong English accent.  Partial support with odd behavior.</dd>
+									<dt class="most-support">Bit by Bit</dt>
+									<dd>Everything is fine.  When you get to the list elements, it reads each requirment with its status and position in the list.  Ex: "At least 8 characters unmet 1 of 10."  Same with the French.  Note that it still reads all French in a strong English accent.  Mostly supported.</dd>
+									<dt class="most-support">Focusing</dt>
+									<dd>The name, role, and value are all read.  Then it reads all descriptions including each requirement and its status as it should.  In French, everything is read with a strong English accent.  Mostly supported.</dd>
+									<dt class="full-support">Typying</dt>
+									<dd>As I type, changed requirements are read out along with their new status. Full support.</dd>
+									<dt class="most-support odd-behavior">Re-typing</dt>
+									<dd>When I select everything and delete it, it seems like it's trying to read all changes out, but only says one. ("At least 1 uppercase letter unmet.")  Then as I start typing again, the requirements are read out as their status changes, but the status itself is only read out if it was not announced in the deletion process.  When I retype "P" I hear "At least one uppercase letter met".  But then when I type "a" I hear "At least one lowercase letter".  When I type "s-s" I hear "No two characters the same consecutively".  But if I type a "!" I hear "At least one special character met".  Then if press <kbd>Backspace</kbd> as statii changes, their requirement along with their new status is read out.  Mostly supported with odd behavior.</dd>
+								</dl>
+							</dd>
+
+							<dt>Chrome 103</dt>
+							<dd>
+								<dl>
+									<dt class="most-support odd-behavior">Top to Bottom</dt>
+									<dd>It reads properly all the way down. However, most French is read out in a strong English accent, with the exceptions of <span lang="fr">En Français</span>, "Submit", and "Code", which it reads as French.  It's as though anything added after page-load has its <code>lang</code> attribute ignored.  Note that Chrome is the only one that reads out everything referenced by <code>aria-describedby</code> in a Top-to-Bottom scan.  The others only read that out when the input takes focus.  Mostly supported with odd behavior.</dd>
+									<dt class="most-support">Bit by Bit</dt>
+									<dd>Everything is fine.  When you get to the list elements, it reads each requirment with its status and position in the list.  Ex: "At least 8 characters unmet 1 of 10."  Same with the French.  It still reads the French in a French accent as it's reading an item.  When it reads something referenced by <code>aria-describedby</code> it reads those parts out in a strong English accent. Mostly supported.</dd>
+									<dt class="most-support">Focusing</dt>
+									<dd>The name, role, and value are all read.  Then it reads all descriptions including each requirement and its status as it should.  In French, everything is read with a strong English accent.  Mostly supported.</dd>
+									<dt class="full-support">Typying</dt>
+									<dd>As I type, changed requirements are read out along with their new status. Full support.</dd>
+									<dt class="partial-support odd-behavior">Re-typing</dt>
+									<dd>When I select everything and delete it, it seems like it's trying to read all changes out, but only says one. ("At least 1 uppercase letter unmet.")  Then as I start typing again, the requirements are read out as their status changes, but the status itself is only read out if it was not announced in the deletion process.  When I retype "P" I hear "At least one uppercase letter met".  But then when I type "a" I hear "At least one lowercase letter".  When I type "s-s" I hear "No two characters the same consecutively".  But if I type a "!" I hear "At least one special character met".  Then if press <kbd>Backspace</kbd> as statii changes, their requirement along with their new status is read out.  Partial support with odd behavior.</dd>
+
+								</dl>
+							</dd>
+						</dl>
+					</section>
+				</section>
+				<h3>Conclusion</h3>
+				<p>This works as expected in most browser, OS, and screen reader combos, except Narrator, which seems to have issues with <code>aria-describedby</code>, with one exception:  If the Narrator setting "Hear advanced detail, like help text, on buttons and other controls" is turned on, then the <code>aria-describedby</code> part is consistently read in Edge only.  Also, Internet Explorer has reached end of life, so don't worry about it.</p>
+				<p>This is pretty robust in Windows, except with Narrator with any non-Edge browser.  This works in iOS 14.  And there are a couple of issues with VoiceOver in Catalina.  As usual, Safari works best overall with VoiceOver.</p>
+				<h3>Recommendations</h3>
+				<ol>
+					<li>This is the best way I could think of doing this.  It works in most stacks.  Feel free to use!</li>
+				</ol>
+			</section>
+		</main>
+		<footer>
+			<p>Here is <a href="https://github.com/andrewnordlund/passwordRequirements">Nordburg Password Requirements GitHub Repo</a>.</p>
+		</footer>
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				setTimeout(function() {
+					if (nordburgPwReq.dbug) {
+						const unicodeP  = document.getElementById("unicodeP");
+						unicodeP.classList.remove("none");
+					}
+				}, 100);
+			}, false);
+		</script>
+	</body>
+</html>

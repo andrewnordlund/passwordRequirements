@@ -1,0 +1,8 @@
+# For this package, we need just two files plus the license and readme, which get sucked in anyway.
+*.html
+*.css
+*.js
+
+# And now add the files you need
+!nordburgPwReq.js
+!nordburgPwReq.css

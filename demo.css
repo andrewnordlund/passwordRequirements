@@ -1,0 +1,48 @@
+.fieldHolder {
+	margin-bottom: 1em;
+}
+.fieldHolder label {
+	display: block;
+}
+summary {
+	margin: 1em 0;
+}
+.full-support::before {
+	font-family: "Brush Script MT", "fantasy", Papyrus, Coperplate, Verdana, serif;
+	font-weight: 700;
+	color: #008A1E;
+	content: "✓";
+	margin-right: 5px;
+}
+.most-support::before {
+	content: "👍";
+	font-weight: 700;
+	margin-right: 5px;
+}
+.partial-support::before {
+	content: "🤞";
+	font-weight: 700;
+	margin-right: 5px;
+}
+.no-support::before {
+	content: "✘";
+	color: #AA0000;
+	font-weight: 700;
+	margin-right: 5px;
+}
+.odd-behavior::before {
+	content: "🤷";
+	margin-right: 5px;
+}
+.not-applicable::before {
+	content: "ⁿ/ₐ";
+	font-weight: 700;
+	margin-right: 5px;
+}
+.spaced {
+	word-spacing: 3em;
+	margin: auto 2em;
+}
+.none {
+	display: none;
+}
