@@ -11,6 +11,7 @@
 	<body>
 		<header>
 		<h1 id="theH1">Nordburg Password Requirements Test/Demo Page</h1>
+		<p id="vP"></p>
 		<p id="unicodeP" class="none">Try <span class="spaced">💩 ✓ 👍 ⁿ/ₐ 🤷</span></p>
 		</header>
 		<main>
@@ -436,6 +437,8 @@
 		<script>
 			document.addEventListener("DOMContentLoaded", function () {
 				setTimeout(function() {
+					const vP  = document.getElementById("vP");
+					vP.textContent = "Version " + nordburgPwReq.version;
 					if (nordburgPwReq.dbug) {
 						const unicodeP  = document.getElementById("unicodeP");
 						unicodeP.classList.remove("none");
