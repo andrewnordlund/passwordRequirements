@@ -8,7 +8,16 @@ let nordburgPwReq = {
 	regexes : {
 		"special-char" : null,
 		"unicode" : null,
-		"non-consecutive" : null,
+		"max-consecutive" : {
+			"default" : {
+				"res" : "(.)\\1{3}",
+				"re" : null
+			},
+			"ie" : {
+				"res" : "([\\uD800-\\uDBFF][\\uDC00-\\uDFFF])\\1{3}",
+				"re" : null
+			}
+		}
 	},
 	stringBundle : {
 		"description" : {"en" : "Your password must contain:", "fr" : "Votre mot de passe doit contenir :"},
@@ -39,13 +48,6 @@ let nordburgPwReq = {
 		"digit" : {"text" : {"en" : "At least 1 digit", "fr" : "Au moins 1 chiffre"}, check : function (p1, p2) { return p1.match(/[0-9]/) || p2.match(/[0-9]/);}},
 		"nospaces" : {"text" : {"en" : "No spaces", "fr" : "Sans espaces"}, check : function (p1, p2) { return !(p1.match(/[\s\n\t\f ]/) || p2.match(/[\s\n\t\f ]/));}},
 		"max-consecutive" : {"text" : {"en" : "No more than %d characters the same consecutively", "fr" : "Pas plus de %d caractères identiques consécutivement"}, check : function (p1, p2) {
-				rv = true;
-				let re = new RegExp("(.)\1{3}", "g");
-				try {
-					re = new RegExp("(.)\1{3}", "gu");
-				}
-				catch (ex) {
-				}
 				return !(re.test(p1) || re.test(p2));
 			}
 		},
@@ -173,25 +175,33 @@ let nordburgPwReq = {
 								for (let lang in nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["max-consecutive"]["text"]) {
 									nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["max-consecutive"]["text"][lang] = nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["max-consecutive"]["text"][lang].replace("%d", maxConsecutive);
 								}
-								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["max-consecutive"]["check"] = function(p1, p2) {
-									let res = "(.)\\1{" + (maxConsecutive-1) + "}";
-									let re = new RegExp(res);
+								nordburgPwReq.regexes["max-consecutive"][passwords[i].id] = {"res" : "(.)\\1{" + (maxConsecutive-1) + "}", "re" : null};
+
+								let re = new RegExp(nordburgPwReq.regexes["max-consecutive"][passwords[i].id]["res"]);
+								try {
+									re = new RegExp(nordburgPwReq.regexes["max-consecutive"][passwords[i].id]["res"], "u");	// the u flag allows for characters like 💩 et al.
+								}
+								catch (ex) {
+									nordburgPwReq.regexes["max-consecutive"]["ie"]["res"] = "([\\uD800-\\uDBFF][\\uDC00-\\uDFFF])\\1{" + (maxConsecutive-1) + "}";
+									nordburgPwReq.regexes["max-consecutive"]["ie"]["re"] = new RegExp(nordburgPwReq.regexes["max-consecutive"]["ie"]["res"]);
+									giveWarn2 = true;
+								}
+								nordburgPwReq.regexes["max-consecutive"][passwords[i].id]["re"] = re;
+
+								nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["max-consecutive"]["check"] = function(p1, p2, pid) {
+									if (!pid) return true;		// For initing LIs
 									rv = true;
-									try {
-										re = new RegExp(res, "u");		// the u flag allows for characters like 💩 et al.
-										rv = !(re.test(p1) || re.test(p2));
+									re = nordburgPwReq.regexes["max-consecutive"][pid]["re"];
+									rv = !(re.test(p1) || re.test(p2));
+									
+									if (!Object.assign) {
+										let ure = nordburgPwReq.regexes["max-consecutive"]["ie"]["re"];
+										
+										if (rv) rv = !(ure.test(p1));
+										if (rv) rv = !(ure.test(p2));
 									}
-									catch (ex) {
-										let ures = "([\uD800-\uDBFF][\uDC00-\uDFFF])\\1{" + (maxConsecutive-1) + "}";
-										ure = new RegExp(ures);
-										//rv = !((re.test(p1) && ure.test(p1)) || (re.test(p2) && ure.test(p2)));
-										rv = !(re.test(p1) || re.test(p2));
-										if (rv) rv = !(ure.test(p1) || ure.test(p2));
-											console.log ("Rv is " + rv + ".");
-										giveWarn2 = true;
-									}
+									
 									return rv;
-									//return !(re.exec(p1) || re.exec(p2));
 								}
 							}
 						}
@@ -339,7 +349,7 @@ let nordburgPwReq = {
 	}, // End of checkReqs
 	checkReq : function (p1, p2, req) {
 		let change = false;
-		if (nordburgPwReq.myPwReqs[p1.id]["reqs"][req].check(p1.value, p2.value)) {
+		if (nordburgPwReq.myPwReqs[p1.id]["reqs"][req].check(p1.value, p2.value, p1.id)) {
 			if (nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] == "unmet") {
 				change = true;
 				nordburgPwReq.myPwReqs[p1.id]["reqs"][req]["stat"] = "met";
@@ -418,14 +428,23 @@ let nordburgPwReq = {
 		let scre = new RegExp("[^\\w\\s]");
 		let ure = new RegExp(".");
 		try {
-				scre = new RegExp("[^\\w\\s]", "u");
-				ure = new RegExp(".", "u");
+			scre = new RegExp("[^\\w\\s]", "u");
+			ure = new RegExp(".", "u");
+		}
+		catch (ex) {
+		}
+	
+		let mcre = new RegExp(nordburgPwReq.regexes["max-consecutive"]["default"]["res"], "g");
+		try {
+			mcre = new RegExp(nordburgPwReq.regexes["max-consecutive"]["default"]["res"], "gu");
 		}
 		catch (ex) {
 		}
 		
+		
 		nordburgPwReq.regexes["special-char"] = scre;
 		nordburgPwReq.regexes["unicode"] = ure;
+		nordburgPwReq.regexes["max-consecutive"]["default"]["re"] = mcre;
 	}, // End of setRegExes
 }
 
