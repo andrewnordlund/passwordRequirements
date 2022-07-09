@@ -5,7 +5,7 @@ Password checkers (when setting or resetting a password) in a site are common.  
 
 ![An example of this widget; two password inputs with several requirements, some are met and some are unmet](https://user-images.githubusercontent.com/1805963/178123938-7e3db923-6c19-4941-afd0-286dfcae1f48.png)
 
-## IMPORTANT: This Widget Is Mostly Uselss
+## IMPORTANT: This Widget Is Mostly Useless
 From an IT Secuirty point of view, passwords should have "high entropy".  That's what makes them hard to guess, and more likely to be unique.  Other than a minimum length, most requirements just reduce entropy and are just "security theatre". Many of these requirements come from a day when passwords were stored in plain text files.  In these cases, having spaces could mess things up.  So spaces weren't allowed.  Any system worth its salt today would not do this, and therefore the "no spaces" requirement doesn't matter.  But many sites still have this requirement for no other reason than what I like to call IT Security Nincompoopery.
 
 Since there still are a lot of IT Security Nincompoops out there making aribrary password requirements, then this widget still has utility. (Heck, it even works in Internet Exploder!)  And if you have to implement these bass-ackwards policies, then you might as well do it as inclusively as possible.

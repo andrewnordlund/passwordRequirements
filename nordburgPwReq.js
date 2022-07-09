@@ -60,7 +60,7 @@ let nordburgPwReq = {
 
 	init : function () {
 		let sb = false;
-		if (Object.assign) {		// Because IE can't handle URL objects.  Screw IE
+		if (Object.assign) {		// Because IE can't handle URL objects.  Screw IE.  They don't get to enjoy the easter egg.
 			let thisURL = new URL(document.location);
 			let params = thisURL.searchParams;
 			if (params.has("nordburgPwReqDbug")) {
