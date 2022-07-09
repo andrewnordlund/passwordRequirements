@@ -59,15 +59,17 @@ let nordburgPwReq = {
 	custPwRequirements : {},
 
 	init : function () {
-		let thisURL = new URL(document.location);
-		let params = thisURL.searchParams;
 		let sb = false;
-		if (params.has("nordburgPwReqDbug")) {
-			if (params.get("nordburgPwReqDbug") == "true") nordburgPwReq.dbug= true;
-		}
-		if (params.has("nordburgPwReqSB")) {
-			if (nordburgPwReq.dbug) console.log ("has SB and it's value is " + params.get("nordburgPwReqSB") + ".");
-			if (params.get("nordburgPwReqSB") == "true") sb = true;
+		if (Object.assign) {
+			let thisURL = new URL(document.location);
+			let params = thisURL.searchParams;
+			if (params.has("nordburgPwReqDbug")) {
+				if (params.get("nordburgPwReqDbug") == "true") nordburgPwReq.dbug= true;
+			}
+			if (params.has("nordburgPwReqSB")) {
+				if (nordburgPwReq.dbug) console.log ("has SB and it's value is " + params.get("nordburgPwReqSB") + ".");
+				if (params.get("nordburgPwReqSB") == "true") sb = true;
+			}
 		}
 
 		nordburgPwReq.setRegExes();
