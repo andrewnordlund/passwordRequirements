@@ -24,7 +24,7 @@ Password checkers (when setting or resetting a password) in a site are common.  
 <label for="pword2">Confirm Passowrd:</label>
 <input type="password" id="pword2" data-match="pword1" class="nbpr-confirm-password">
 ```
-*Note*: If, for some reason you only want 1 password `<input>`, just don't make a second one, and leave out the `data-match` attribute from the one you do have.  "Passwords must match" will be left out as a requirement.
+**Note**: If, for some reason you only want 1 password `<input>`, just don't make a second one, and leave out the `data-match` attribute from the one you do have.  "Passwords must match" will be left out as a requirement.
 * The list of password requirements needs to appear somewhere on the page.  The Javascript generates that for you, but you need to provide a `<div>` and a reference to that `<div>`.
 	1. Create a `<div>` somewhere with a unique ID, such as: `<div id="passwordReqs"></div>`
 	1. Reference that ID value in a `data-password-requirements-container` attribute in your New Password `<input>`
