@@ -1,5 +1,5 @@
 let nordburgPwReq = {
-	version : "1.0.0",
+	version : "1.1.0",
 	dbug : false,
 	defLang : "en",
 	descriptors : {},
@@ -54,7 +54,6 @@ let nordburgPwReq = {
 		"minchars" : {"text" : {"en" : "At least %d characters", "fr" : "Au moins %d caractères"}, check : function(p1, p2) { return nordburgPwReq.getLength(p1) >= 0 || nordburgPwReq.getLength(p2) >= 0}},
 		"maxchars" : {"text" : {"en" : "A maximum of %d characters", "fr" : "Un maximum de %d caractères"}, check : function(p1, p2) { return nordburgPwReq.getLength(p1) <= 255 && nordburgPwReq.getLength(p2) <= 255;}},
 		"match" : {"text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, check : function (p1, p2) { return p1 == p2 && p1.match(/\S/);}},
-
 	},
 	myPwReqs : {},
 	custPwRequirements : {},
@@ -62,8 +61,13 @@ let nordburgPwReq = {
 	init : function () {
 		let thisURL = new URL(document.location);
 		let params = thisURL.searchParams;
-		if (params.get("nordburgPwReqDbug")) {
+		let sb = false;
+		if (params.has("nordburgPwReqDbug")) {
 			if (params.get("nordburgPwReqDbug") == "true") nordburgPwReq.dbug= true;
+		}
+		if (params.has("nordburgPwReqSB")) {
+			if (nordburgPwReq.dbug) console.log ("has SB and it's value is " + params.get("nordburgPwReqSB") + ".");
+			if (params.get("nordburgPwReqSB") == "true") sb = true;
 		}
 
 		nordburgPwReq.setRegExes();
@@ -79,13 +83,15 @@ let nordburgPwReq = {
 				let pLang = nordburgPwReq.defLang;
 				if (!nordburgPwReq.myPwReqs[passwords[i].id]) nordburgPwReq.myPwReqs[passwords[i].id] = {"reqs" : {}, "lang" : nordburgPwReq.defLang, "descriptor" :  null, "reqsList" : null, "reqPos"  : "after"};
 				if (passwords[i].classList.contains("nbpr-new-password")) {
+					if (nordburgPwReq.dbug) console.log ("sb: " + sb);
+					if (sb) passwords[i].classList.add("space-balls");
 					let usePasswordRules = false;
 					let passwordRequirementsDiv = null;
 					try {
-						passwordRequirementsDiv = document.getElementById(passwords[i].getAttribute("data-passwordRequirementsDiv"));
+						passwordRequirementsDiv = document.getElementById(passwords[i].getAttribute("data-password-requirements-container"));
 					}
 					catch (ex) {
-						console.error (ex.message + "\nI think you need to create a <div> with the id that matches the data-passwordRequrementsDiv attribute in your New Password input.");
+						console.error (ex.message + "\nI think you need to create a container (suggestion: <div>) with the id that matches the data-passwordRequrementsDiv attribute in your New Password input.");
 					}
 					
 					if (passwords[i].classList.contains("use-password-rules") && passwords[i].hasAttribute("passwordrules")) {
@@ -141,6 +147,48 @@ let nordburgPwReq = {
 					reqsList.classList.add("pwReqsUL");
 					passwordRequirementsDiv.appendChild(reqsList);
 					nordburgPwReq.myPwReqs[passwords[i].id]["reqsList"] = reqsList;
+
+					let sbp, sbp2 = null;
+					if (passwords[i].classList.contains("space-balls")) {
+						sbp = document.createElement("p");
+						sbp.setAttribute("role", "status");
+						sbp.id = "sbP" + passwords[i].id;
+						sbp.lang = pLang;
+						passwordRequirementsDiv.appendChild(sbp);
+						if (passwords[i].hasAttribute("data-match")) {
+							let otherP = null;
+							otherP = document.getElementById(passwords[i].getAttribute("data-match"));
+							if (otherP) {
+								sbP2 = document.createElement("p");
+								sbP2.setAttribute("role", "status");
+								sbP2.id ="sbP" + passwords[i].getAttribute("data-match");
+								sbP2.lang = pLang;
+								passwordRequirementsDiv.appendChild(sbP2);
+								otherP.addEventListener("blur", function (ev) {
+									let sbP, sbP2, p1 = null;
+									if (nordburgPwReq.dbug) console.log ("Doing sb2?");
+									try {
+										p1 = document.getElementById(ev.target.getAttribute("data-match"));
+										sbP2 = document.getElementById("sbP" + ev.target.id);
+										if (p1.classList.contains("space-balls")) {
+											if (ev.target.value.trim() == "12345" && p1.value.trim() == "12345") {
+												if (nordburgPwReq.dbug) console.log ("Yup.");
+												sbP2.textContent = nordburgPwReq.stringBundle["space-balls-confirm"][sbP2.lang];
+											} else {
+												if (nordburgPwReq.dbug) console.log ("Nope.  Value: " + ev.target.value.trim() + ", and stat: " + nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"]["stat"] + ".");
+												sbP2.textContent = "";
+											}
+										} else {
+											if (nordburgPwReq.dbug) console.log ("Not doing space-balls cuz class.");
+										}
+									}
+									catch (ex) {
+										console.warn (ex.message);
+									}
+								}, false);
+							}
+						}
+					}
 
 
 					// build myPwReqs
@@ -226,10 +274,6 @@ let nordburgPwReq = {
 							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"]["stat"] = "unmet";
 							nordburgPwReq.myPwReqs[passwords[i].id]["reqs"]["match"]["li"] = null;
 
-
-						
-
-
 						}
 						catch (ex) {
 							console.error ("ERROR: ensure there are two passwords with data-match attributes referring to each other's ID value.  Error: " + ex.message);
@@ -239,6 +283,25 @@ let nordburgPwReq = {
 					
 					passwords[i].addEventListener("keypress", function(ev) {nordburgPwReq.removeAriaDescribedBy(ev.target);}, false);
 					passwords[i].addEventListener("blur", function(ev) {
+							if (ev.target.classList.contains("space-balls")) {
+								let sbP, sbP2 = null;
+								if (ev.target.value.trim() == "12345") {
+									if (nordburgPwReq.dbug) console.log ("Doing spaceballs fpr target sbP" + ev.target.id);
+									sbP = document.getElementById("sbP" + ev.target.id);
+									
+									if (sbP) {
+										sbP.innerText = nordburgPwReq.stringBundle["space-balls-new"][nordburgPwReq.getLang(sbP)];
+									} else {
+										if (nordburgPwReq.dbug) console.log ("Couldn't get sbP");
+									}
+								} else {
+									if (nordburgPwReq.dbug) console.log ("Not doing spaceballs because Value: " + ev.target.value.trim());
+									sbP = document.getElementById("sbP" + ev.target.id);
+									sbP2 = document.getElementById("sbP" + ev.target.getAttribute("data-match"));
+									if (sbP) sbP.textContent = "";
+									if (sbP2) sbP2.textContent = "";
+								}
+							} // End of if space-balls
 							setTimeout(function() {
 								nordburgPwReq.addAriaDescribedBy(ev.target);
 							}, 500);
@@ -248,7 +311,7 @@ let nordburgPwReq = {
 				passwords[i].addEventListener("change", nordburgPwReq.checkReqs, false);
 				passwords[i].addEventListener("paste", function (e) {
 						setTimeout(function() {
-							console.log ("Pasted: " + e.target.value + ".");
+							if (nordburgPwReq.dbug) console.log ("Pasted: " + e.target.value + ".");
 							nordburgPwReq.checkReqs(e);
 							}, 1);
 					}, false);
@@ -458,6 +521,8 @@ let nordburgPwReq = {
 		nordburgPwReq.regexes["special-char"] = scre;
 		nordburgPwReq.regexes["unicode"] = ure;
 		nordburgPwReq.regexes["max-consecutive"]["default"]["re"] = mcre;
+		nordburgPwReq.stringBundle["space-balls-new"]  = {"en" : "That's the stupidest password I've ever heard in my life!  That's the kinda thing an idiot would have on his luggage!", "fr" : "C'est le mot de passe le plus stupide que j'ai jamais entendu de ma vie! Ça c’est le genre de chose qu’un épais aurait dans ses valises!"};
+		nordburgPwReq.stringBundle["space-balls-confirm"]  = {"en" : "That's amazing! I've got the same password on my luggage!", "fr" : "C'est incroyable! J'ai le même mot de passe sur mes valises!"};
 	}, // End of setRegExes
 }
 
