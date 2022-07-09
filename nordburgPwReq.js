@@ -60,7 +60,7 @@ let nordburgPwReq = {
 
 	init : function () {
 		let sb = false;
-		if (Object.assign) {
+		if (Object.assign) {		// Because IE can't handle URL objects.  Screw IE
 			let thisURL = new URL(document.location);
 			let params = thisURL.searchParams;
 			if (params.has("nordburgPwReqDbug")) {
@@ -89,11 +89,10 @@ let nordburgPwReq = {
 					if (sb) passwords[i].classList.add("space-balls");
 					let usePasswordRules = false;
 					let passwordRequirementsDiv = null;
-					try {
-						passwordRequirementsDiv = document.getElementById(passwords[i].getAttribute("data-password-requirements-container"));
-					}
-					catch (ex) {
-						console.error (ex.message + "\nI think you need to create a container (suggestion: <div>) with the id that matches the data-passwordRequrementsDiv attribute in your New Password input.");
+					if (passwords[i].hasAttribute("data-password-requirements-container")) passwordRequirementsDiv = document.getElementById(passwords[i].getAttribute("data-password-requirements-container"));
+					if (!passwordRequirementsDiv) {
+						console.error ("I think you need to create a container (suggestion: <div>) with the id that matches the data-passwordRequrementsDiv attribute in your New Password input.");
+						return false;
 					}
 					
 					if (passwords[i].classList.contains("use-password-rules") && passwords[i].hasAttribute("passwordrules")) {
@@ -155,7 +154,9 @@ let nordburgPwReq = {
 						sbp = document.createElement("p");
 						sbp.setAttribute("role", "status");
 						sbp.id = "sbP" + passwords[i].id;
-						sbp.lang = pLang;
+						let sbLang = pLang;
+						if (!nordburgPwReq.stringBundle["space-balls-new"][sbLang]) sbLang = nordburgPwReq.defLang;
+						sbp.lang = sbLang;
 						passwordRequirementsDiv.appendChild(sbp);
 						if (passwords[i].hasAttribute("data-match")) {
 							let otherP = null;
@@ -164,7 +165,9 @@ let nordburgPwReq = {
 								sbP2 = document.createElement("p");
 								sbP2.setAttribute("role", "status");
 								sbP2.id ="sbP" + passwords[i].getAttribute("data-match");
-								sbP2.lang = pLang;
+								let sb2Lang = pLang;
+								if (!nordburgPwReq.stringBundle["space-balls-confirm"][sb2Lang]) sb2Lang = nordburgPwReq.defLang;
+								sbP2.lang = sb2Lang;
 								passwordRequirementsDiv.appendChild(sbP2);
 								otherP.addEventListener("blur", function (ev) {
 									let sbP, sbP2, p1 = null;
@@ -523,7 +526,7 @@ let nordburgPwReq = {
 		nordburgPwReq.regexes["special-char"] = scre;
 		nordburgPwReq.regexes["unicode"] = ure;
 		nordburgPwReq.regexes["max-consecutive"]["default"]["re"] = mcre;
-		nordburgPwReq.stringBundle["space-balls-new"]  = {"en" : "That's the stupidest password I've ever heard in my life!  That's the kinda thing an idiot would have on his luggage!", "fr" : "C'est le mot de passe le plus stupide que j'ai jamais entendu de ma vie! Ça c’est le genre de chose qu’un épais aurait dans ses valises!"};
+		nordburgPwReq.stringBundle["space-balls-new"]  = {"en" : "12345? That's the stupidest password I've ever heard in my life!  That's the kinda thing an idiot would have on his luggage!", "fr" : "12345? C'est le mot de passe le plus stupide que j'ai jamais entendu de ma vie! Ça c’est le genre de chose qu’un épais aurait dans ses valises!"};
 		nordburgPwReq.stringBundle["space-balls-confirm"]  = {"en" : "That's amazing! I've got the same password on my luggage!", "fr" : "C'est incroyable! J'ai le même mot de passe sur mes valises!"};
 	}, // End of setRegExes
 }
