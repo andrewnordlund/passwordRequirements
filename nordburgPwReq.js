@@ -20,39 +20,39 @@ let nordburgPwReq = {
 		}
 	},
 	stringBundle : {
-		"description" : {"en" : "Your password must contain:", "fr" : "Votre mot de passe doit contenir :"},
+		"description" : {"en" : "Your password must :", "fr" : "Votre mot de passe doit :"},
 		"met" : {"en" : "Met", "fr" : "Exigences respectées"},
 		"unmet" : {"en" : "Unmet", "fr" : "Exigences non respectées"}
 	},
 	allPwReqs : {
-		"lowercase" : {"text" : {"en" : "At least 1 lowercase letter", "fr" : "Au moins 1 lettre minuscule"}, check : function (p1, p2) {return p1.match(/[a-z]/) || p2.match(/[a-z]/);}},
-		"uppercase" : {"text" : {"en" : "At least 1 uppercase letter", "fr" : "Au moins 1 lettre majuscule"}, check : function (p1, p2) {return p1.match(/[A-Z]/) || p2.match(/[A-Z]/);}},
-		"special-char" : {"text" : {"en" : "At least 1 special character", "fr" : "Au moins 1 caractère spécial"}, check : function (p1, p2) { 
+		"lowercase" : {"text" : {"en" : "Contain at least 1 lowercase letter", "fr" : "Contenir au moins 1 lettre minuscule"}, check : function (p1, p2) {return p1.match(/[a-z]/) || p2.match(/[a-z]/);}},
+		"uppercase" : {"text" : {"en" : "Contain at least 1 uppercase letter", "fr" : "Contenir au moins 1 lettre majuscule"}, check : function (p1, p2) {return p1.match(/[A-Z]/) || p2.match(/[A-Z]/);}},
+		"special-char" : {"text" : {"en" : "Contain at least 1 special character", "fr" : "Contenir au moins 1 caractère spécial"}, check : function (p1, p2) { 
 				return nordburgPwReq.regexes["special-char"].test(p1) || nordburgPwReq.regexes["special-char"].test(p2);
 			}
 		},
-		"special" : {"text" : {"en" : "At least 1 special character (-~!@#$%^&*_+=`|(){}[:;\"'<>,.? ])", "fr" : "Au moins 1 caractère spécial (-~!@#$%^&*_+=`|(){}[:;\"'<>,.? ])"}, check : function (p1, p2) {
+		"special" : {"text" : {"en" : "Contain at least 1 special character (-~!@#$%^&*_+=`|(){}[:;\"'<>,.? ])", "fr" : "Contenir au moins 1 caractère spécial (-~!@#$%^&*_+=`|(){}[:;\"'<>,.? ])"}, check : function (p1, p2) {
 				let scre = /[-~!@#$%^&*_+=`\|\(\)\{\}\[:;"'<>,\.\? \]]/;
 				return p1.match(scre) || p2.match(scre);
 			}
 		},
-		"ascii-printable" : {"text" : {"en" : "At least 1 ascii-printable character", "fr" : "Au moins 1 caractère ascii-imprimable"}, check : function (p1, p2) {
+		"ascii-printable" : {"text" : {"en" : "Contain at least 1 ascii-printable character", "fr" : "Contenir au moins 1 caractère ascii-imprimable"}, check : function (p1, p2) {
 				let re = /[\x20-\x7E]/;
 				return p1.match(re) || p2.match(re);
 			}
 		},
-		"unicode" : {"text" : {"en" : "At least 1 Unicode character", "fr" : "Au moins 1 caractère Unicode"}, check : function (p1, p2) {
+		"unicode" : {"text" : {"en" : "Contain at least 1 Unicode character", "fr" : "Contenir au moins 1 caractère Unicode"}, check : function (p1, p2) {
 				return nordburgPwReq.regexes["unicode"].test(p1) || nordburgPwReq.regexes["unicode"].test(p2);
 			}
 		},
-		"digit" : {"text" : {"en" : "At least 1 digit", "fr" : "Au moins 1 chiffre"}, check : function (p1, p2) { return p1.match(/[0-9]/) || p2.match(/[0-9]/);}},
-		"nospaces" : {"text" : {"en" : "No spaces", "fr" : "Sans espaces"}, check : function (p1, p2) { return !(p1.match(/[\s\n\t\f ]/) || p2.match(/[\s\n\t\f ]/));}},
-		"max-consecutive" : {"text" : {"en" : "No more than %d characters the same consecutively", "fr" : "Pas plus de %d caractères identiques consécutivement"}, check : function (p1, p2) {
+		"digit" : {"text" : {"en" : "Contain at least 1 digit", "fr" : "Contenir au moins 1 chiffre"}, check : function (p1, p2) { return p1.match(/[0-9]/) || p2.match(/[0-9]/);}},
+		"nospaces" : {"text" : {"en" : "Not contain any spaces", "fr" : "Ne pas contenir d'espaces"}, check : function (p1, p2) { return !(p1.match(/[\s\n\t\f ]/) || p2.match(/[\s\n\t\f ]/));}},
+		"max-consecutive" : {"text" : {"en" : "Not contain more than %d characters the same consecutively", "fr" : "Ne pas contenir plus de %d caractères identiques consécutivement"}, check : function (p1, p2) {
 				return !(re.test(p1) || re.test(p2));
 			}
 		},
-		"minchars" : {"text" : {"en" : "At least %d characters", "fr" : "Au moins %d caractères"}, check : function(p1, p2) { return nordburgPwReq.getLength(p1) >= 0 || nordburgPwReq.getLength(p2) >= 0}},
-		"maxchars" : {"text" : {"en" : "A maximum of %d characters", "fr" : "Un maximum de %d caractères"}, check : function(p1, p2) { return nordburgPwReq.getLength(p1) <= 255 && nordburgPwReq.getLength(p2) <= 255;}},
+		"minchars" : {"text" : {"en" : "Contain at least %d characters", "fr" : "Contenri au moins %d caractères"}, check : function(p1, p2) { return nordburgPwReq.getLength(p1) >= 0 || nordburgPwReq.getLength(p2) >= 0}},
+		"maxchars" : {"text" : {"en" : "Contain a maximum of %d characters", "fr" : "Contenir un maximum de %d caractères"}, check : function(p1, p2) { return nordburgPwReq.getLength(p1) <= 255 && nordburgPwReq.getLength(p2) <= 255;}},
 		"match" : {"text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, check : function (p1, p2) { return p1 == p2 && p1.match(/\S/);}},
 	},
 	myPwReqs : {},
