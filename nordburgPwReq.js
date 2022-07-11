@@ -21,8 +21,8 @@ let nordburgPwReq = {
 	},
 	stringBundle : {
 		"description" : {"en" : "Your password must contain:", "fr" : "Votre mot de passe doit contenir :"},
-		"met" : {"en" : "Met", "fr" : "Remplie"},
-		"unmet" : {"en" : "Unmet", "fr" : "n'a pas été remplie"}
+		"met" : {"en" : "Met", "fr" : "Exigences respectées"},
+		"unmet" : {"en" : "Unmet", "fr" : "Exigences non respectées"}
 	},
 	allPwReqs : {
 		"lowercase" : {"text" : {"en" : "At least 1 lowercase letter", "fr" : "Au moins 1 lettre minuscule"}, check : function (p1, p2) {return p1.match(/[a-z]/) || p2.match(/[a-z]/);}},
@@ -60,7 +60,7 @@ let nordburgPwReq = {
 
 	init : function () {
 		let sb = false;
-		if (Object.assign) {		// Because IE can't handle URL objects.  Screw IE.  They don't get to enjoy the easter egg.
+		if (Object.assign) {		// Because IE can't handle URL objects.  Screw IE. No Easter Egg for you!
 			let thisURL = new URL(document.location);
 			let params = thisURL.searchParams;
 			if (params.has("nordburgPwReqDbug")) {
@@ -526,8 +526,8 @@ let nordburgPwReq = {
 		nordburgPwReq.regexes["special-char"] = scre;
 		nordburgPwReq.regexes["unicode"] = ure;
 		nordburgPwReq.regexes["max-consecutive"]["default"]["re"] = mcre;
-		nordburgPwReq.stringBundle["space-balls-new"]  = {"en" : "12345? That's the stupidest password I've ever heard in my life!  That's the kinda thing an idiot would have on his luggage!", "fr" : "12345? C'est le mot de passe le plus stupide que j'ai jamais entendu de ma vie! Ça c’est le genre de chose qu’un épais aurait dans ses valises!"};
-		nordburgPwReq.stringBundle["space-balls-confirm"]  = {"en" : "That's amazing! I've got the same password on my luggage!", "fr" : "C'est incroyable! J'ai le même mot de passe sur mes valises!"};
+		nordburgPwReq.stringBundle["space-balls-new"]  = {"en" : "12345? That's the stupidest password I've ever heard in my life!  That's the kinda thing an idiot would have on his luggage!", "fr" : "12345? Mais c’est la combinaison la plus stupid qu’on est révélé! N’importe quel idiot s’en sert pour ses bagages!"};
+		nordburgPwReq.stringBundle["space-balls-confirm"]  = {"en" : "That's amazing! I've got the same password on my luggage!", "fr" : "C’est surprenant ça c’est la même mot de passe sur mes valises!"};
 	}, // End of setRegExes
 }
 

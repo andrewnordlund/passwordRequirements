@@ -69,7 +69,7 @@
 					<div id="passwordRequirementsFr" class="req-pos-before"></div>
 					<div class="fieldHolder">
 						<label for="pword3">Nouveau mot de passe :</label>
-						<input name="pword3" id="pword3" type="password" class="notPassword maxchars minchars nbpr-new-password lowercase uppercase special-char digit pasMotdepasse max-consecutive" minlength="4" data-minchars="6" data-max-consecutive="5" data-match="pword4"  data-maxchars="20" maxlength="21" data-password-requirements-container="passwordRequirementsFr">
+						<input name="pword3" id="pword3" type="password" class="maxchars minchars nospaces nbpr-new-password lowercase uppercase special-char special unicode ascii-printable digit pasMotdepasse max-consecutive" minlength="4" data-minchars="6" data-max-consecutive="5" data-match="pword4"  data-maxchars="20" maxlength="21" data-password-requirements-container="passwordRequirementsFr">
 					</div>
 					<div class="fieldHolder">
 						<label for="pword4">Confirmez le mot de passe :</label>
@@ -391,7 +391,7 @@
 							<dd>
 								<dl>
 									<dt class="partial-support odd-behavior">Top to Bottom</dt>
-									<dd>It reads properly until I get to the list and then it only reads the last thing (ie: a <code>&lt;span&gt;</code> in the list.  Ex: "Your password must contain list 10 items unmet met unmet unmet" then for the French: <span lang="fr">Votre mot do passe doit contenir</span> list 10 items <span lang="fr">Ne contient pas 'Password', Un maximum de 20 caractères</span>, etc.  Also, it reads the French part with a really strong English accent.  Partial support with odd behavior.</dd>
+									<dd>It reads properly until I get to the list and then it only reads the last thing (ie: a <code>&lt;span&gt;</code> in the list.  Ex: "Your password must contain list 10 items unmet met unmet unmet" then for the French: <span lang="fr">Votre mot do passe doit contenir</span> list 10 items <span lang="fr">"Ne contient pas 'Password', Un maximum de 20 caractères"</span>, etc.  Also, it reads the French part with a really strong English accent.  Partial support with odd behavior.</dd>
 									<dt class="most-support">Bit by Bit</dt>
 									<dd>Everything is fine.  When you get to the list elements, it reads each requirment with its status and position in the list.  Ex: "At least 8 characters unmet 1 of 10."  Same with the French.  Note that it still reads all French in a strong English accent.  Mostly supported.</dd>
 									<dt class="most-support">Focusing</dt>
