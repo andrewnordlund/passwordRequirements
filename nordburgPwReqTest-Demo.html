@@ -17,11 +17,11 @@
 		<main>
 			<div id="mainContent">
 				<script>
-					nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
+					nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Not contain 'Password'", "fr" : "Ne pas contenir 'Password'"}, check : function (p1, p2) {
 						let re = /password/i;
 						return !(p1.match(re) || p2.match(re));
 					}};
-					nordburgPwReq.custPwRequirements["pasMotdepasse"] = {"text" : {"en" : "Does not contain 'MotDePasse' or 'Password'", "fr" : "Ne contient pas 'MotDePasse' ou 'Password'"}, check : function (p1, p2) {
+					nordburgPwReq.custPwRequirements["pasMotdepasse"] = {"text" : {"en" : "Not contain 'MotDePasse' or 'Password'", "fr" : "Ne pas contenir ‘MotDePasse’ ou ‘Password’"}, check : function (p1, p2) {
 						let re = /password|motdepasse/i;
 						return !(p1.match(re) || p2.match(re));
 					}};
