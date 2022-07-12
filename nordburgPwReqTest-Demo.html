@@ -17,11 +17,11 @@
 		<main>
 			<div id="mainContent">
 				<script>
-					nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Not contain 'Password'", "fr" : "Ne pas contenir 'Password'"}, check : function (p1, p2) {
+					nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Not contain 'Password'", "fr" : "Ne pas contenir « Password »"}, check : function (p1, p2) {
 						let re = /password/i;
 						return !(p1.match(re) || p2.match(re));
 					}};
-					nordburgPwReq.custPwRequirements["pasMotdepasse"] = {"text" : {"en" : "Not contain 'MotDePasse' or 'Password'", "fr" : "Ne pas contenir ‘MotDePasse’ ou ‘Password’"}, check : function (p1, p2) {
+					nordburgPwReq.custPwRequirements["pasMotdepasse"] = {"text" : {"en" : "Not contain 'MotDePasse' or 'Password'", "fr" : "Ne pas contenir « MotDePasse » ou « Password »"}, check : function (p1, p2) {
 						let re = /password|motdepasse/i;
 						return !(p1.match(re) || p2.match(re));
 					}};
@@ -44,10 +44,14 @@
 						<summary>Code</summary>
 						<pre>
 &lt;script&gt;
-	nordburgPwReq.custPwRequirements["pword1"] = {"notPassword" : {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
+	nordburgPwReq.custPwRequirements["notPassword"] = {"notPassword" : {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne pas contenir « Password »"}, check : function (p1, p2) {
 		let re = /password/i;
 		return !(p1.match(re) || p2.match(re));
 	}}};
+	nordburgPwReq.custPwRequirements["pasMotdepasse"] = {"text" : {"en" : "Not contain 'MotDePasse' or 'Password'", "fr" : "Ne pas contenir « MotDePasse » ou « Password »"}, check : function (p1, p2) {
+		let re = /password|motdepasse/i;
+		return !(p1.match(re) || p2.match(re));
+	}};
 &lt;/script&gt;
 ...
 
@@ -76,7 +80,7 @@
 						<input name="pword4" id="pword4" type="password" class="nbpr-confirm-password" data-match="pword3">
 					</div>
 					<div class="fieldHolder">
-						<input value="Submit" id="submitBtn2" type="button">
+						<input value="Soumettre" id="submitBtn2" type="button">
 					</div>
 					<details>
 						<summary>Code</summary>

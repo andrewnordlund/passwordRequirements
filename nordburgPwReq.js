@@ -1,5 +1,5 @@
 let nordburgPwReq = {
-	version : "1.1.0",
+	version : "2.0.0",
 	dbug : false,
 	defLang : "en",
 	descriptors : {},
@@ -51,7 +51,7 @@ let nordburgPwReq = {
 				return !(re.test(p1) || re.test(p2));
 			}
 		},
-		"minchars" : {"text" : {"en" : "Contain at least %d characters", "fr" : "Contenri au moins %d caractères"}, check : function(p1, p2) { return nordburgPwReq.getLength(p1) >= 0 || nordburgPwReq.getLength(p2) >= 0}},
+		"minchars" : {"text" : {"en" : "Contain at least %d characters", "fr" : "Contenir au moins %d caractères"}, check : function(p1, p2) { return nordburgPwReq.getLength(p1) >= 0 || nordburgPwReq.getLength(p2) >= 0}},
 		"maxchars" : {"text" : {"en" : "Contain a maximum of %d characters", "fr" : "Contenir un maximum de %d caractères"}, check : function(p1, p2) { return nordburgPwReq.getLength(p1) <= 255 && nordburgPwReq.getLength(p2) <= 255;}},
 		"match" : {"text" : {"en" : "Passwords must match", "fr" : "Les mots de passe doivent correspondre"}, check : function (p1, p2) { return p1 == p2 && p1.match(/\S/);}},
 	},
