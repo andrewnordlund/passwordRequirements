@@ -17,11 +17,11 @@
 		<main>
 			<div id="mainContent">
 				<script>
-					nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
+					nordburgPwReq.custPwRequirements["notPassword"] = {"text" : {"en" : "Not contain 'Password'", "fr" : "Ne pas contenir « Password »"}, check : function (p1, p2) {
 						let re = /password/i;
 						return !(p1.match(re) || p2.match(re));
 					}};
-					nordburgPwReq.custPwRequirements["pasMotdepasse"] = {"text" : {"en" : "Does not contain 'MotDePasse' or 'Password'", "fr" : "Ne contient pas 'MotDePasse' ou 'Password'"}, check : function (p1, p2) {
+					nordburgPwReq.custPwRequirements["pasMotdepasse"] = {"text" : {"en" : "Not contain 'MotDePasse' or 'Password'", "fr" : "Ne pas contenir « MotDePasse » ou « Password »"}, check : function (p1, p2) {
 						let re = /password|motdepasse/i;
 						return !(p1.match(re) || p2.match(re));
 					}};
@@ -30,7 +30,7 @@
 					<h2>In English</h2>
 					<div class="fieldHolder">
 						<label for="pword1">New Password:</label>
-						<input name="pword1" id="pword1" type="password" class="nbpr-new-password minlength maxlength lowercase uppercase special-char notPassword digit max-consecutive nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn" aria-describedby="theH1" data-max-consecutive="4" autocomplete="off">
+						<input name="pword1" id="pword1" type="password" class="nbpr-new-password minlength maxlength lowercase uppercase special-char notPassword digit max-consecutive nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-password-requirements-container="passwordRequirementsEn" aria-describedby="theH1" data-max-consecutive="4" autocomplete="off">
 					</div>
 					<div class="fieldHolder">
 						<label for="pword2">Confirm Password:</label>
@@ -44,16 +44,20 @@
 						<summary>Code</summary>
 						<pre>
 &lt;script&gt;
-	nordburgPwReq.custPwRequirements["pword1"] = {"notPassword" : {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne contient pas 'Password'"}, check : function (p1, p2) {
+	nordburgPwReq.custPwRequirements["notPassword"] = {"notPassword" : {"text" : {"en" : "Does not contain 'Password'", "fr" : "Ne pas contenir « Password »"}, check : function (p1, p2) {
 		let re = /password/i;
 		return !(p1.match(re) || p2.match(re));
 	}}};
+	nordburgPwReq.custPwRequirements["pasMotdepasse"] = {"text" : {"en" : "Not contain 'MotDePasse' or 'Password'", "fr" : "Ne pas contenir « MotDePasse » ou « Password »"}, check : function (p1, p2) {
+		let re = /password|motdepasse/i;
+		return !(p1.match(re) || p2.match(re));
+	}};
 &lt;/script&gt;
 ...
 
 &lt;div class="fieldHolder"&gt;
 	&lt;label for="pword1"&gt;Password:&lt;/label&gt;
-	&lt;input name="pword1" id="pword1" type="password" class="nbpr-new-password lowercase uppercase special-char digit max-consecutive nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-passwordRequirementsDiv="passwordRequirementsEn" aria-describedby="theH1" data-max-consecutive="4" autocomplete="off"&gt;
+	&lt;input name="pword1" id="pword1" type="password" class="nbpr-new-password lowercase uppercase special-char digit max-consecutive nospaces" data-minchars="8" data-maxchars="10" data-match="pword2" data-password-requirements-container="passwordRequirementsEn" aria-describedby="theH1" data-max-consecutive="4" autocomplete="off"&gt;
 &lt;/div&gt;
 &lt;div class="fieldHolder"&gt;
 	&lt;label for="pword2"&gt;Confirm Password:&lt;/label&gt;
@@ -69,14 +73,14 @@
 					<div id="passwordRequirementsFr" class="req-pos-before"></div>
 					<div class="fieldHolder">
 						<label for="pword3">Nouveau mot de passe :</label>
-						<input name="pword3" id="pword3" type="password" class="notPassword maxchars minchars nbpr-new-password lowercase uppercase special-char digit pasMotdepasse max-consecutive" minlength="4" data-minchars="6" data-max-consecutive="5" data-match="pword4"  data-maxchars="20" maxlength="21" data-passwordRequirementsDiv="passwordRequirementsFr">
+						<input name="pword3" id="pword3" type="password" class="notPassword maxchars minchars nbpr-new-password lowercase uppercase special-char digit pasMotdepasse max-consecutive" minlength="4" data-minchars="6" data-max-consecutive="5" data-match="pword4"  data-maxchars="20" maxlength="21" data-password-requirements-container="passwordRequirementsFr">
 					</div>
 					<div class="fieldHolder">
 						<label for="pword4">Confirmez le mot de passe :</label>
 						<input name="pword4" id="pword4" type="password" class="nbpr-confirm-password" data-match="pword3">
 					</div>
 					<div class="fieldHolder">
-						<input value="Submit" id="submitBtn2" type="button">
+						<input value="Soumettre" id="submitBtn2" type="button">
 					</div>
 					<details>
 						<summary>Code</summary>
@@ -85,7 +89,7 @@
 ...
 &lt;div class="fieldHolder"&gt;
 	&lt;label for="pword3"&gt;Mot de passe :&lt;/label&gt;
-	&lt;input name="pword3" id="pword3" type="password" class="notPassword maxchars minchars nbpr-new-password lowercase uppercase special-char digit pasMotdepasse max-consecutive" minlength="4" data-minchars="6" data-max-consecutive="6" data-match="pword4"  data-maxchars="20" maxlength="21" data-passwordRequirementsDiv="passwordRequirementsFr"&gt;
+	&lt;input name="pword3" id="pword3" type="password" class="notPassword maxchars minchars nbpr-new-password lowercase uppercase special-char digit pasMotdepasse max-consecutive" minlength="4" data-minchars="6" data-max-consecutive="6" data-match="pword4"  data-maxchars="20" maxlength="21" data-password-requirements-container="passwordRequirementsFr"&gt;
 &lt;/div&gt;
 &lt;div class="fieldHolder"&gt;
 	&lt;label for="pword4"&gt;Confirmez le mot de passe :&lt;/label&gt;
@@ -391,7 +395,7 @@
 							<dd>
 								<dl>
 									<dt class="partial-support odd-behavior">Top to Bottom</dt>
-									<dd>It reads properly until I get to the list and then it only reads the last thing (ie: a <code>&lt;span&gt;</code> in the list.  Ex: "Your password must contain list 10 items unmet met unmet unmet" then for the French: <span lang="fr">Votre mot do passe doit contenir</span> list 10 items <span lang="fr">Ne contient pas 'Password', Un maximum de 20 caractères</span>, etc.  Also, it reads the French part with a really strong English accent.  Partial support with odd behavior.</dd>
+									<dd>It reads properly until I get to the list and then it only reads the last thing (ie: a <code>&lt;span&gt;</code> in the list.  Ex: "Your password must contain list 10 items unmet met unmet unmet" then for the French: <span lang="fr">Votre mot do passe doit contenir</span> list 10 items <span lang="fr">"Ne contient pas 'Password', Un maximum de 20 caractères"</span>, etc.  Also, it reads the French part with a really strong English accent.  Partial support with odd behavior.</dd>
 									<dt class="most-support">Bit by Bit</dt>
 									<dd>Everything is fine.  When you get to the list elements, it reads each requirment with its status and position in the list.  Ex: "At least 8 characters unmet 1 of 10."  Same with the French.  Note that it still reads all French in a strong English accent.  Mostly supported.</dd>
 									<dt class="most-support">Focusing</dt>
